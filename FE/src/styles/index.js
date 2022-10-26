@@ -28,3 +28,6 @@ export const flexColumn = css`
   display: flex;
   flex-direction: column;
 `;
+
+export { default as GlobalStyles } from "./globalStyle";
+export { default as theme } from "./theme";
