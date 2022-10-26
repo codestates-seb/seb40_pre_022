@@ -6,6 +6,8 @@ import Home from './pages/Home'
 import Join from './pages/Join'
 import MyPage from './pages/MyPage'
 import QuestionAsk from './pages/QuestionAsk'
+import QuestionDetail from './pages/QuestionDetail';
+import AllQuestion from './pages/AllQuestion';
 
 
 function App() {
@@ -18,8 +20,10 @@ function App() {
       <Route path="/" element={<Home />}></Route>
       <Route path="/login" element={<Login />}></Route>
       <Route path="/join" element={<Join />}></Route>
+      <Route path='/question' element={<AllQuestion />}></Route>
       <Route path="/question/ask" element={<QuestionAsk />}></Route>
       <Route path="/mypage" element={<MyPage />}></Route>
+      <Route path="/question/detail" element={<QuestionDetail />}></Route>
      </Routes>
      </BrowserRouter>
     </div>
