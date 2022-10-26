@@ -61,10 +61,13 @@ const GlobalStyle = createGlobalStyle`
     --textLink: blue;
     --hr: hsla(0, 0%, 0%, 0.2);
     --hoverColor: #efefef; 
+    --footer-background-color: hsl(210,8%,15%);
     background-color: var(--bg);
     a, a.logo {
       color: black;
     }
+    
+    
   }
   body.dark {
     -webkit-font-smoothing: antialiased;
@@ -73,7 +76,8 @@ const GlobalStyle = createGlobalStyle`
     --textTitle: white;
     --textLink: yellow;
     --hr: hsla(0, 0%, 100%, 0.2);
-    --hoverColor: #333; 
+    --hoverColor: #333;
+    --footer-background-color: hsl(210,8%,15%);
     background-color: var(--bg);
     color: var(--textTitle);
     a, a.logo {

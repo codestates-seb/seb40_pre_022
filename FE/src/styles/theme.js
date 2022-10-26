@@ -1,6 +1,6 @@
 const size = {
   mobile: "500px",
-  desktop: "1250px",
+  desktop: "1264px",
 };
 
 const theme = {

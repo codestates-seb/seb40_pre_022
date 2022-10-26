@@ -29,5 +29,13 @@ export const flexColumn = css`
   flex-direction: column;
 `;
 
+export const container = css`
+  max-width: 1264px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+`;
+
 export { default as GlobalStyles } from "./globalStyle";
 export { default as theme } from "./theme";
