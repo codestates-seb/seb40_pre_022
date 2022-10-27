@@ -1,60 +1,40 @@
 package com.example.project.vote.entity;
 
 import com.example.project.answer.entity.Answer;
-import com.example.project.member.entity.Member;
 import com.example.project.question.entity.Question;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.HashMap;
-import java.util.Objects;
+import java.util.Map;
 
+@Data
 @Entity
 public class Vote {
 
     @Id
-    @Column(name = "vote_id")
+    @Column(name = "VOTE_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long voteId;
 
     @OneToOne
-    @JoinColumn(name = "question_id")
+    @JoinColumn(name = "QUESTION_ID")
     private Question question;
 
     @OneToOne
-    @JoinColumn(name = "answer_id")
+    @JoinColumn(name = "ANSWER_ID")
     private Answer answer;
 
-    // Membervote의 리스트는 vote에서 참조할 경우가 있다면 추가할 예정.
-
-
-    // todo 고려할 내용
-    // 1. Member entity를 그대로 넣기.
-    // 2. Long타입의 memberId를 넣기. (2번으로 작성함)
     @ElementCollection
-    @CollectionTable
-    HashMap<Long, String> memberVoteMap = new HashMap<>();
-    // voteCount = memberVoteMap의 value값 up 갯수 - down 갯수
-    // map.values();
+    @CollectionTable(name = "MEMBER_VOTE_MAP", joinColumns = @JoinColumn(name="VOTE_ID"))
+    @MapKeyColumn(name = "MEMBER_ID")
+    @Column(name = "VOTE_RESULT")
+    Map<Long, Integer> memberVoteMap = new HashMap<>();
 
-//    int upCount = (int) memberVoteMap.values().stream()
-//            .filter(a -> a.equals("like"))
-//            .count();
-//
-//    int downCount = (int) memberVoteMap.values().stream()
-//            .filter(a -> a.equals("hate"))
-//            .count();
-
-    // Vote 가 사용되는 곳
-    // 1. Answer Vote-up, vote-down을 눌렀을 때, answerId를 통해 Vote를 가져와서, 처리함.
-    // 2. Question Vote-up, down 을 눌렀을 때, QuestionId를 통해 Vote를 가져와서 처리함.
-
-
+    @Column(name = "VOTE_COUNT")
     private int voteCount;
 
-
-    // Todo
-    // 1. HashMap 으로 <Member, String> 으로 구성
-    //
-
+    @Transient      // entity 등록으로 table에 등록되지 않기 위해 사용 (그냥 vote했는지 여부 주기위함)
+    private int voteCheck;
 
 }

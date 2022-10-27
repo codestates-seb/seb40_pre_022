@@ -2,6 +2,8 @@ package com.example.project.answer.service;
 
 import com.example.project.answer.entity.Answer;
 import com.example.project.answer.repository.AnswerRepository;
+import com.example.project.vote.entity.Vote;
+import com.example.project.vote.repository.VoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AnswerService {
     private final AnswerRepository answerRepository;
+    private final VoteRepository voteRepository;
+
     // 1. Answer 등록 로직
     public Answer createAnswer(Answer answer){
         Answer savedAnswer = answerRepository.save(answer);
@@ -30,27 +34,59 @@ public class AnswerService {
 
         return answerRepository.save(findAnswer);
     }
-    // 3. Answer 추천 로직
-    public void voteUp(long memberId, long answerId) {
+    // 3. Answer 추천/비추천 로직
+    public Vote voteUp(Vote vote, long memberId, int voteCheck) {
 
+        // todo : Vote 검증?
+
+        // 전달받은 memberId로 vote를 한 적이 없다면.
+        if(!vote.getMemberVoteMap().containsKey(memberId)){
+            vote.getMemberVoteMap().put(memberId, voteCheck);
+        }
+
+        else{
+
+            if (vote.getMemberVoteMap().get(memberId) == -1){               // 이미 -1 (싫어요) 상태에서,
+                if(voteCheck == -1) vote.getMemberVoteMap().put(memberId,0);    // -1(싫어요)면, 0 (취소)
+                else vote.getMemberVoteMap().put(memberId, 1);                  // 1(좋아요)면, 1로 변경.
+            }
+            else if(vote.getMemberVoteMap().get(memberId)==1){              // 1 (좋아요) 상태에서,
+                if(voteCheck == 1) vote.getMemberVoteMap().put(memberId,0);     // 1(좋아요)면, 0(취소)
+                else vote.getMemberVoteMap().put(memberId, -1);                 // -1(싫어요)면, -1로 변경.
+            }
+            else{ // 0 (취소상태, 아무것도 안누른 상태)
+                if(voteCheck == -1) vote.getMemberVoteMap().put(memberId,-1);    // -1(싫어요)면, -1
+                else vote.getMemberVoteMap().put(memberId, 1);                  // 1(좋아요)면, 1로 변경.
+            }
+        }
+
+        // controller의 return 값으로 voteCount랑 voteCheck만 주면 됨.
+
+        // value값들을 stream으로 sum하여, voteCount 넣어주기
+        vote.setVoteCount(
+                vote.getMemberVoteMap().values().stream()
+                        .mapToInt(a->a)
+                        .sum()
+        );
+        // 현재 member가 좋아요/싫어요 무엇을 했는지 전달해주기 위함.
+        vote.setVoteCheck(vote.getMemberVoteMap().get(memberId));
+
+
+        return voteRepository.save(vote);
     }
 
-    // 4. Answer 비추천 로직
-    public void voteDown(long memberId, long answerId) {
-    }
-
-    // 5. Answer 채택 로직
+    // 4. Answer 채택 로직
     public void acceptAnswer(long memberId, long questionId, long answerId) {
 
     }
-    // 6. Answer 삭제 로직
+    // 5. Answer 삭제 로직
     public void deleteAnswer(long answerId) {
         Answer findAnswer = findVerifiedAnswer(answerId);
 
         answerRepository.delete(findAnswer);
     }
 
-    // 7. Answer이 실제 DB에 존재하는지 검증
+    // 6. Answer이 실제 DB에 존재하는지 검증
     public Answer findVerifiedAnswer(long answerId){
         Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
         Answer findAnswer = optionalAnswer.orElseThrow(()->
@@ -59,7 +95,7 @@ public class AnswerService {
     }
 
 
-    // 8. request한 member가 Answer의 member인지 확인하는 로직 (자신의 Answer인지 확인)
+    // 7. request한 member가 Answer의 member인지 확인하는 로직 (자신의 Answer인지 확인)
     public void verifyAnswerMember(){
 
     }
