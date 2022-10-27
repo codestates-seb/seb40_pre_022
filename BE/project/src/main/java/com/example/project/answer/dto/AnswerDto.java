@@ -5,6 +5,7 @@ import com.example.project.member.entity.Member;
 import com.example.project.vote.entity.Vote;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Optional;
@@ -26,6 +27,7 @@ public class AnswerDto {
     }
 
     @Getter
+    @Setter
     @AllArgsConstructor
     public static class Patch{
 
@@ -34,17 +36,16 @@ public class AnswerDto {
 
         private String body;
 
-        public void setAnswerId(long answerId){         // PathVariable로 받은 answerId 넣어주기 위한 Setter.
-            this.answerId = answerId;
-        }
-
+        // setter 따로 생성하지 않고, @Setter로 처리함.
     }
 
 
     @Getter
+    @Setter
     @AllArgsConstructor
     public static class VotePatch{
         private long memberId;
+        private long answerId;      // answerId를 통해 연결된 Vote를 가져오기 위해 사용.
     }
 
     @Getter
@@ -63,6 +64,12 @@ public class AnswerDto {
         // member를 그대로 보내는 것은 Entity를 보내는 것이므로, 위와 같이 처리함.
 
 
+
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class VoteResponse{
 
     }
 }

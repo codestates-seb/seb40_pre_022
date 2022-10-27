@@ -11,6 +11,10 @@ public interface AnswerMapper {
     Answer answerPatchToAnswer(AnswerDto.Patch answerPatchDto);
 
 
+    voteToResponse(    ){
+
+    }
+
     AnswerDto.Response answerToAnswerResponse(Answer answer);
 
 
