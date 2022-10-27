@@ -1,16 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Btn from './style';
+import React from "react";
+import PropTypes from "prop-types";
+import Btn from "./style";
 
 export const Button = ({ primary, backgroundColor, size, label, ...props }) => {
-  const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
+  const mode = primary ? "primary" : "secondary";
   return (
     <Btn
-      type="button"
-      className={[`storybook-button--${size}`, mode].join(' ')}
+      type='button'
+      className={[`${size}`, mode].join(" ")}
       style={backgroundColor && { backgroundColor }}
-      {...props}
-    >
+      {...props}>
       {label}
     </Btn>
   );
@@ -19,7 +18,7 @@ export const Button = ({ primary, backgroundColor, size, label, ...props }) => {
 Button.propTypes = {
   primary: PropTypes.bool,
   backgroundColor: PropTypes.string,
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
+  size: PropTypes.oneOf(["small", "medium", "large"]),
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func,
 };
@@ -27,6 +26,6 @@ Button.propTypes = {
 Button.defaultProps = {
   backgroundColor: null,
   primary: false,
-  size: 'medium',
+  size: "medium",
   onClick: undefined,
 };
