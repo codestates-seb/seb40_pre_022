@@ -23,13 +23,13 @@ public class Answer extends Auditable {
     @Column(name = "answer_body")
     private String body;
 
-//    @ManyToOne
-//    @JoinColumn(name = "member_id")
-//    private Member member;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "question_id")
-//    private Question question;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "question_id")
+    private Question question;
 //
 //    @OneToOne(mappedBy = "answer")
 //    @JoinColumn(name = "vote_id")

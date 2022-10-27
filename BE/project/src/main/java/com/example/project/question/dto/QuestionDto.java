@@ -1,14 +1,19 @@
 package com.example.project.question.dto;
 
+import com.example.project.answer.entity.Answer;
+import com.example.project.dto.MultiResponseDto;
+import com.example.project.member.entity.Member;
+import com.example.project.question.entity.QuestionTag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 // 수정 - private 지정자 : ver 1.1
 public class QuestionDto {
 
-    //질문 수정시 사용될 patchDto
+    //질문 수정시 사용될 patchDto - checked
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -21,7 +26,7 @@ public class QuestionDto {
 
     }
 
-    //질문 작성시 사용될 PostDto
+    //질문 작성시 사용될 PostDto - checked
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -33,18 +38,18 @@ public class QuestionDto {
 
     }
 
-    //질문 추천시 사용될 patchDto
+    //질문 추천시 사용될 patchDto - checked
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     public static class RecommendPatchDto {
 
         private long questionId;
-        private int vote;
+        private int voteCount;
 
     }
 
-    //질문관련하여 응답할 responseDto
+    //질문 개별페이지(상세페이지)에 응답할 responseDto
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -55,18 +60,54 @@ public class QuestionDto {
         private String body;
         private int voteCount;
         private int viewCount;
-        //Member member;
-        //List<Question_tag> tags;
-        //List<Answer> answer;
+        private Member member;  // * 놓치지 말 것 (mapper에서 name, email, image userStatus만 담아야함 -> 생성자생성)
+//        private MultiResponseDto<Answer> answers;
+        private List<Answer> answers;
+        private List<QuestionTag> questionTags;  // * 놓치지 말 것 (mapper에서 tagName만 담아야함 -> 생성자 생성)
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
     }
 
-    //질문
+    //질문 목록에 응답할 responseDto
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class QuestionListResponseDto {
+
+        private long questionId;
+        private String title;
+        private String body;
+        private int voteCount;
+        private int viewCount;
+        private Member member; // * mapper에서 name, email, image만 담아야 함 -> 생성자 생성)
+        private List<QuestionTag> questionTags; // tagName만 가져오기
+        private int answerCount;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+    }
+
+    // 질문 수정을 위한 responseDto - 수정창
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class QuestionForUpdateResponseDto {
+
+        private long questionId;
+        private String title;
+        private String body;
+        private List<QuestionTag> questionTags; // name만 골라오기.
+
+    }
+
+
+    //질문 추천 비추천 responseDto
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     public static class RecommendResponseDto {
 
-        private int vote;
+        private int voteCount;
 
     }
 }
