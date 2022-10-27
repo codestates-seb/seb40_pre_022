@@ -1,34 +1,38 @@
 import styled, { css } from "styled-components";
 
 const Btn = styled.button`
-  font-family: "Nunito Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 700;
-  border: 0;
-  border-radius: 3em;
+  height: 37.8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.8em;
+  border-radius: 3px;
+  border: none;
   cursor: pointer;
-  display: inline-block;
-  line-height: 1;
 
-  &.storybook-button--primary {
+  &.primary {
     color: white;
     background-color: #1ea7fd;
   }
-  &.storybook-button--secondary {
-    color: #333;
-    background-color: transparent;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset;
+  &.secondary {
+    background-color: hsl(206deg 100% 52%);
+    color: hsl(0deg 0% 100%);
+    &:hover {
+      background-color: hsl(209deg 100% 38%);
+    }
   }
-  &.storybook-button--small {
+  &.small {
     font-size: 12px;
-    padding: 10px 16px;
   }
-  &.storybook-button--medium {
+  &.medium {
     font-size: 14px;
-    padding: 11px 20px;
   }
-  &.storybook-button--large {
+  &.large {
     font-size: 16px;
-    padding: 12px 24px;
+  }
+
+  &.header-size {
+    font-size: 0.82em;
   }
 `;
 

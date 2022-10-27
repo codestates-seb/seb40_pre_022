@@ -5,8 +5,8 @@ import {
   QuestionInfo,
   QuestionTitle,
   InfoContainer,
-  AskQuestionBtn,
 } from "./style";
+import { Button } from "../Button";
 
 const DetailHeader = () => {
   return (
@@ -14,20 +14,20 @@ const DetailHeader = () => {
       <HeaderContainer>
         <QuestionHeader>
           <QuestionTitle>제목입니다.</QuestionTitle>
-          <AskQuestionBtn>Ask Question</AskQuestionBtn>
+          <Button label='Ask Question' size='header-size' />
         </QuestionHeader>
       </HeaderContainer>
       <InfoContainer>
         <QuestionInfo>Asked</QuestionInfo>
-        <QuestionInfo color="black">today</QuestionInfo>
+        <QuestionInfo color='black'>today</QuestionInfo>
       </InfoContainer>
       <InfoContainer>
         <QuestionInfo>Modified</QuestionInfo>
-        <QuestionInfo color="black">today</QuestionInfo>
+        <QuestionInfo color='black'>today</QuestionInfo>
       </InfoContainer>
       <InfoContainer>
         <QuestionInfo>Viewed</QuestionInfo>
-        <QuestionInfo color="black">12 times</QuestionInfo>
+        <QuestionInfo color='black'>12 times</QuestionInfo>
       </InfoContainer>
     </>
   );

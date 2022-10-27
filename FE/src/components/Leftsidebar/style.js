@@ -4,7 +4,7 @@ const SidebarContainer = styled.div`
   width: 164px;
   display: flex;
   justify-content: center;
-  padding: 24px;
+  padding-top: 24px;
 `;
 
 const Home = styled.div`
@@ -20,7 +20,7 @@ const Tabtitle = styled.div`
   color: hsl(210deg 8% 45%);
   font-weight: 500;
   font-size: 0.8em;
-  margin-top: 16px;
+  margin: 5px 0;
 `;
 
 const TabList = styled.ul`
@@ -38,14 +38,21 @@ const TabItem = styled.li`
   font-size: 0.95em;
   font-size: ${(props) => props.size === "small" && "0.9em"};
   margin-left: 2px;
+  margin-bottom: 10px;
   &:hover {
     color: hsl(210deg 8% 15%);
+  }
+
+  .icon {
+    position: absolute;
+    left: -18px;
   }
 `;
 
 const ItemContainer = styled.div`
-  display: flex;
-  align-items: center;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 10px;
 `;
 
 const ImgContainer = styled.div`

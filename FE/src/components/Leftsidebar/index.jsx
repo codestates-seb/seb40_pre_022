@@ -24,33 +24,31 @@ const Leftsidebar = () => {
       <SidebarContainer>
         <TabList>
           <TabItem>
-            <Link to="/">
+            <Link to='/'>
               <Home>Home</Home>
             </Link>
           </TabItem>
           <TabItem>
             <Tabtitle>PUBLIC</Tabtitle>
-            <TabList padding="0px">
-              <Link to="/question">
-                <TabItem>
-                  <ItemContainer>
-                    <FontAwesomeIcon icon={faEarthAmericas} />
+            <TabItem>
+              <TabList>
+                <Link to='/question'>
+                  <ItemContainer className='globe test'>
+                    <FontAwesomeIcon icon={faEarthAmericas} className='icon' />
                     Questions
                   </ItemContainer>
-                </TabItem>
-              </Link>
-            </TabList>
-            <TabList>
-              {itemList.map((item) => (
-                <TabItem>{item}</TabItem>
-              ))}
-            </TabList>
+                </Link>
+                {itemList.map((item) => (
+                  <TabItem>{item}</TabItem>
+                ))}
+              </TabList>
+            </TabItem>
           </TabItem>
           {sentenceList.map((el) => (
             <TabItem>
               <Tabtitle>{el.title}</Tabtitle>
               <TabList>
-                <TabItem size="small">{el.sentence}</TabItem>
+                <TabItem size='small'>{el.sentence}</TabItem>
               </TabList>
             </TabItem>
           ))}

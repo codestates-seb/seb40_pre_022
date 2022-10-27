@@ -64,7 +64,7 @@ const GlobalStyle = createGlobalStyle`
     --footer-background-color: hsl(210,8%,15%);
     background-color: var(--bg);
     a, a.logo {
-      color: black;
+      color: hsl(210deg 8% 35%);
     }
     
     
