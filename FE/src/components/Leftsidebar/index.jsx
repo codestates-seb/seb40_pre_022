@@ -1,6 +1,5 @@
-import React from "react";
+import { React } from "react";
 import {
-  Home,
   Tabtitle,
   SidebarContainer,
   TabList,
@@ -9,45 +8,50 @@ import {
 } from "./style";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { SIDEBAR_ITEMS, SIDEBAR_SENTENCES } from "../../constants";
 
 const Leftsidebar = () => {
-  const itemList = ["Tags", "Users", "Companies"];
-  const sentenceList = [
-    { title: "COLLECTIVES", sentence: "Explore Collectives" },
-    { title: "TEAMS", sentence: "Create free Team" },
-  ];
+  let { pathname } = useLocation();
+  let path = pathname.split("/")[1];
 
   return (
     <>
       <SidebarContainer>
         <TabList>
-          <TabItem>
-            <Link to='/'>
-              <Home>Home</Home>
+          <TabItem className={pathname === "/" ? "active" : null}>
+            <Link to='/' className='link'>
+              <Tabtitle className='home'>Home</Tabtitle>
             </Link>
           </TabItem>
           <TabItem>
             <Tabtitle>PUBLIC</Tabtitle>
             <TabItem>
               <TabList>
-                <Link to='/question'>
-                  <ItemContainer>
-                    <FontAwesomeIcon icon={faEarthAmericas} className='icon' />
-                    Questions
-                  </ItemContainer>
-                </Link>
-                {itemList.map((item) => (
-                  <TabItem>{item}</TabItem>
+                <TabItem className={path === "question" ? "active" : null}>
+                  <Link to='/question'>
+                    <ItemContainer>
+                      <FontAwesomeIcon
+                        icon={faEarthAmericas}
+                        className='icon'
+                      />
+                      Questions
+                    </ItemContainer>
+                  </Link>
+                </TabItem>
+                {SIDEBAR_ITEMS.map((item) => (
+                  <TabItem className='tab'>{item}</TabItem>
                 ))}
               </TabList>
             </TabItem>
           </TabItem>
-          {sentenceList.map((el) => (
+          {SIDEBAR_SENTENCES.map((el) => (
             <TabItem>
               <Tabtitle>{el.title}</Tabtitle>
               <TabList>
-                <TabItem size='small'>{el.sentence}</TabItem>
+                <TabItem size='small' className='tab'>
+                  {el.sentence}
+                </TabItem>
               </TabList>
             </TabItem>
           ))}
