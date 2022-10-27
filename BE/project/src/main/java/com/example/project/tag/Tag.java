@@ -1,5 +1,6 @@
-package com.example.project.question.entity;
+package com.example.project.tag;
 
+import com.example.project.question.entity.QuestionTag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,32 +13,24 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Question {
+public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long questionId;  // private, long -> Long : ver 1.1
+    private Long tagId;
 
     @Column
-    private String title;
+    private String name;
 
     @Column
-    private String body;
+    private Integer usageCount;
 
-    @Column
-    private Integer viewCount;
-
-    //질문이 가지고 있는 사용된 태그들
-    @OneToMany(mappedBy = "question")
+    //태그 별로 사용된 태그의 리스트를 저장한다.
+    @OneToMany(mappedBy = "tag")
     private List<QuestionTag> questionTags = new ArrayList<>();
 
-    //사용된 태그를 추가하는 메서드
+    //사용된 태그를 리스트에 넣기 위한 메서드
     public void addQuestionTag(QuestionTag questionTag){
         questionTags.add(questionTag);
     }
-    //Vote vote;
-    //Member member;
-    //List<Answer> aList;
-
-
 }
