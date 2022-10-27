@@ -1,5 +1,6 @@
 package com.example.project.tag;
 
+import com.example.project.audit.Auditable;
 import com.example.project.question.entity.QuestionTag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Tag {
+public class Tag extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
