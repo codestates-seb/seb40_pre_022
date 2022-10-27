@@ -1,7 +1,7 @@
 import React from "react";
-import Leftsidebar from "../Leftsidebar";
+import Leftsidebar from "../../components/Leftsidebar";
 import { PageContainer, PostContainer } from "./style";
-import QuestionHeader from "./DetailHeader";
+import QuestionHeader from "../../components/DetailHeader";
 
 const QuestionsDetail = () => {
   return (
