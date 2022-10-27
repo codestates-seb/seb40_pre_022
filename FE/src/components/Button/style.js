@@ -17,6 +17,7 @@ const Btn = styled.button`
   &.secondary {
     background-color: hsl(206deg 100% 52%);
     color: hsl(0deg 0% 100%);
+    box-shadow: inset 0 1px 0 0 hsl(0deg 0% 100% / 40%);
     &:hover {
       background-color: hsl(209deg 100% 38%);
     }
