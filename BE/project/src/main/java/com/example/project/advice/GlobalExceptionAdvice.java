@@ -1,7 +1,7 @@
 package com.example.project.advice;
 
 import com.example.project.exception.BusinessLogicException;
-import com.example.project.exception.dto.ErrorResponse;
+import com.example.project.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

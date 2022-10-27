@@ -1,4 +1,4 @@
-package com.example.project.exception.dto;
+package com.example.project.response;
 
 import com.example.project.exception.ExceptionCode;
 import lombok.AllArgsConstructor;
