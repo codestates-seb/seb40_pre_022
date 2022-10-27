@@ -1,7 +1,13 @@
 import React from "react";
+import CreatePost from '../components/CreatePost/index';
+
 
 const QuestionAsk = () => {
-  return <div>QuestionAsk</div>;
+  return (
+  <>
+    <CreatePost></CreatePost>
+  </>
+  )
 };
 
 export default QuestionAsk;
