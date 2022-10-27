@@ -2,8 +2,8 @@ package com.example.project.answer.service;
 
 import com.example.project.answer.entity.Answer;
 import com.example.project.answer.repository.AnswerRepository;
-import com.example.project.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +14,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AnswerService {
     private final AnswerRepository answerRepository;
-    private final MemberRepository memberRepository;
-
     // 1. Answer 등록 로직
     public Answer createAnswer(Answer answer){
         Answer savedAnswer = answerRepository.save(answer);
@@ -47,7 +45,9 @@ public class AnswerService {
     }
     // 6. Answer 삭제 로직
     public void deleteAnswer(long answerId) {
+        Answer findAnswer = findVerifiedAnswer(answerId);
 
+        answerRepository.delete(findAnswer);
     }
 
     // 7. Answer이 실제 DB에 존재하는지 검증
@@ -64,7 +64,10 @@ public class AnswerService {
 
     }
 
-
+    // get 테스트용. 구현대상 X
+    public Answer findAnswer(long answerId) {
+        return findVerifiedAnswer(answerId);
+    }
 
 
     // Todo. 답변 생성

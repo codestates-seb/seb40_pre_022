@@ -41,11 +41,24 @@ public class AnswerController {
     public ResponseEntity patchAnswer(@PathVariable long questionId,
                                       @PathVariable long answerId,
                                       @Valid @RequestBody AnswerDto.Patch requestBody){
+        requestBody.setAnswerId(answerId);
         Answer answer = answerService.updateAnswer(mapper.answerPatchToAnswer(requestBody));
 
         AnswerDto.Response response = mapper.answerToAnswerResponse(answer);
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK
+        );
+    }
+
+    // Answer get test용입니다. 구현대상 X
+
+    @GetMapping("/{questionId}/answers/{answerId}")
+    public ResponseEntity getAnswer(@PathVariable long questionId,
+                                    @PathVariable long answerId){
+        Answer answer = answerService.findAnswer(answerId);
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.answerToAnswerResponse(answer)),
+                HttpStatus.OK
         );
     }
 

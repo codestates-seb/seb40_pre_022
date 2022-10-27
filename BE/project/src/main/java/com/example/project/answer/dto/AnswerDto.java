@@ -30,8 +30,13 @@ public class AnswerDto {
     public static class Patch{
 
         private long memberId;
+        private long answerId;
 
         private String body;
+
+        public void setAnswerId(long answerId){         // PathVariable로 받은 answerId 넣어주기 위한 Setter.
+            this.answerId = answerId;
+        }
 
     }
 
