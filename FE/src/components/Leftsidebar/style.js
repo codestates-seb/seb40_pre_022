@@ -11,8 +11,6 @@ const Home = styled.div`
   text-align: left;
   color: hsl(210deg 8% 35%);
   font-size: 1em;
-  /* margin: 4px;
-  margin-left: 8px; */
 `;
 
 const Tabtitle = styled.div`
@@ -55,16 +53,4 @@ const ItemContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-const ImgContainer = styled.div`
-  /* margin: 5px; */
-`;
-
-export {
-  SidebarContainer,
-  TabItem,
-  Tabtitle,
-  TabList,
-  Home,
-  ItemContainer,
-  ImgContainer,
-};
+export { SidebarContainer, TabItem, Tabtitle, TabList, Home, ItemContainer };

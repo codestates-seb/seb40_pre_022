@@ -6,7 +6,6 @@ import {
   TabList,
   TabItem,
   ItemContainer,
-  ImgContainer,
 } from "./style";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
@@ -33,7 +32,7 @@ const Leftsidebar = () => {
             <TabItem>
               <TabList>
                 <Link to='/question'>
-                  <ItemContainer className='globe test'>
+                  <ItemContainer>
                     <FontAwesomeIcon icon={faEarthAmericas} className='icon' />
                     Questions
                   </ItemContainer>
