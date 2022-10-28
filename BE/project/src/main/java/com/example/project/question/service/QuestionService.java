@@ -10,7 +10,6 @@ import com.example.project.question.entity.QuestionTag;
 import com.example.project.question.repository.QuestionRepository;
 import com.example.project.vote.Vote;
 import org.hibernate.query.criteria.internal.BasicPathUsageException;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
