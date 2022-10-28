@@ -5,7 +5,6 @@ import com.example.project.answer.dto.AnswerDto;
 import com.example.project.answer.entity.Answer;
 import com.example.project.member.entity.Member;
 import com.example.project.question.entity.Question;
-import com.example.project.vote.entity.Vote;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")      // unmappedTargetPolicy 는 추후 추가.
@@ -38,7 +37,13 @@ public interface AnswerMapper {
     default AnswerDto.Response answerToAnswerResponse(Answer answer){
         AnswerDto.Response response = new AnswerDto.Response();
         response.setAnswerId(answer.getAnswerId());
-        response.setMember(answer.getMember());
+
+        AnswerDto.AnswerMemberResponse answerMemberResponse = new AnswerDto.AnswerMemberResponse();
+        answerMemberResponse.setName(answer.getMember().getName());
+        answerMemberResponse.setEmail(answer.getMember().getEmail());
+        answerMemberResponse.setImage(answer.getMember().getImage());
+
+        response.setMember(answerMemberResponse);
         response.setBody(answer.getBody());
         response.setVoteCount(answer.getVote().getVoteCount());
         response.setCreatedAt(answer.getCreatedAt());

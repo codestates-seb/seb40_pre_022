@@ -5,7 +5,6 @@ import com.example.project.answer.entity.Answer;
 import com.example.project.answer.mapper.AnswerMapper;
 import com.example.project.answer.service.AnswerService;
 import com.example.project.dto.SingleResponseDto;
-import com.example.project.vote.entity.Vote;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,26 +65,36 @@ public class AnswerController {
         );
     }
 
-    // 추천하려는 member,
-    //
-    // 3. 답변 추천 up,down     미구현
-    @PatchMapping("/{questionId}/answers/vote/{answerId}")
+    // 3. 답변 추천 down
+    @PatchMapping("/{questionId}/answers/vote_up/{answerId}")
     public ResponseEntity patchAnswerVoteUp(@PathVariable long questionId,
                                           @PathVariable long answerId,
                                           @Valid @RequestBody AnswerDto.AnswerVotePatch requestBody){
         // Dto에 answerId를 담음.
         requestBody.setAnswerId(answerId);
-
         // Dto를 그대로 넘겨서 Service에서 가공함.
-        Answer answer = answerService.voteUp(requestBody);
-
-
+        Answer answer = answerService.answerVoteUp(requestBody);
 
         return new ResponseEntity<>(
-                new SingleResponseDto<>(mapper.answerToVoteResponse(answer)),
-                HttpStatus.OK
+                new SingleResponseDto<>(mapper.answerToVoteResponse(answer)), HttpStatus.OK
         );
     }
+
+    // 4. 답번 비추천 down
+    @PatchMapping("/{questionId}/answers/vote_down/{answerId}")
+    public ResponseEntity patchAnswerVoteDown(@PathVariable long questionId,
+                                            @PathVariable long answerId,
+                                            @Valid @RequestBody AnswerDto.AnswerVotePatch requestBody){
+        // Dto에 answerId를 담음.
+        requestBody.setAnswerId(answerId);
+        // Dto를 그대로 넘겨서 Service에서 가공함.
+        Answer answer = answerService.answerVoteDown(requestBody);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.answerToVoteResponse(answer)), HttpStatus.OK
+        );
+    }
+
 
     // 5. 답변 채택
     // (ㄱ) 채택하려는 member,

@@ -1,22 +1,18 @@
-export const FOOTER_TITLE_LIST = [
-  "STACK OVERFLOW",
-  "PRODUCTS",
-  "COMPANY",
-  "STACK EXCHANGE NETWORK",
-];
-
 export const FOOTER_LIST = {
   STACK_OVERFLOW: [
+    { name: "STACK OVERFLOW" },
     { name: "Questions", href: "" },
     { name: "Help", href: "" },
   ],
   PRODUCTS: [
+    { name: "PRODUCTS" },
     { name: "Teams", href: "" },
     { name: "Advertisting", href: "" },
     { name: "Collectives", href: "" },
     { name: "Talent", href: "" },
   ],
   COMPANY: [
+    { name: "COMPANY" },
     { name: "About", href: "" },
     { name: "Press", href: "" },
     { name: "Work Here", href: "" },
@@ -28,6 +24,7 @@ export const FOOTER_LIST = {
     { name: "Cookie Policy", href: "" },
   ],
   STACK_EXCHANGE_NETWORK: [
+    { name: "STACK EXCHANGE NETWORK" },
     { name: "Technology", href: "" },
     { name: "Culture & recreation", href: "" },
     { name: "Life & arts", href: "" },
@@ -38,3 +35,11 @@ export const FOOTER_LIST = {
     { name: "Data", href: "" },
   ],
 };
+
+export const SNS_LIST = [
+  { name: "Blog", href: "" },
+  { name: "Facebook", href: "" },
+  { name: "Twitter", href: "" },
+  { name: "LinkdIn", href: "" },
+  { name: "Instagram", href: "" },
+];

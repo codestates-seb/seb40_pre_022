@@ -47,8 +47,6 @@ public class AnswerDto {
     public static class AnswerVotePatch {
         private long memberId;
         private long answerId;      // answerId를 통해 연결된 Vote를 가져오기 위해 사용.
-        private int voteCheck;      // vote==1 좋아요 , vote== -1 싫어요. vote==0이면 없는것으로 처리.
-                                    // 이렇게 하면 따로 갯수처리 안하고 value값 sum으로 처리해서 사용가능.
     }
 
     @Getter
@@ -65,8 +63,7 @@ public class AnswerDto {
         private long answerId;
         private String body;
         private int voteCount;
-        private Member member;
-
+        private AnswerMemberResponse member;    // answerMemberResponse를 member로 선언, Front에서 사용시 member로 사용할 수 있도록 함.
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
     }
@@ -78,5 +75,15 @@ public class AnswerDto {
     public static class VoteResponse{
         private int voteCheck; // -1,0,1 로 좋아요 싫어요 상태 구분.
         private int voteCount; // 추천 수.
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class AnswerMemberResponse{
+        private String name;
+        private String email;
+        private String image;
     }
 }

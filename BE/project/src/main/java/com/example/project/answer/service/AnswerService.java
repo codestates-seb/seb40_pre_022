@@ -7,12 +7,12 @@ import com.example.project.member.entity.Member;
 import com.example.project.member.service.MemberService;
 import com.example.project.question.entity.Question;
 import com.example.project.question.service.QuestionService;
-import com.example.project.vote.entity.Vote;
+import com.example.project.vote.Vote;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Transactional
@@ -52,50 +52,24 @@ public class AnswerService {
 
         return answerRepository.save(findAnswer);
     }
-    // 3. Answer 추천/비추천 로직
-    public Answer voteUp(AnswerDto.AnswerVotePatch dto) {
+    // 3-1. Answer 추천 로직
+    public Answer answerVoteUp(AnswerDto.AnswerVotePatch dto) {
 
         // dto의 answerId를 통해 answer를 받아온다.
         Answer answer = findVerifiedAnswer(dto.getAnswerId());
+        voteUpCase(answer, dto.getMemberId());
 
-        // answer를 통해 vote를 가져오고, service에서만 사용할 변수 voteCheck, memberId를 각각 정의함.
-        Vote vote = answer.getVote();
-        int voteCheck = dto.getVoteCheck();
-        long memberId = dto.getMemberId();
+        return answerRepository.save(answer);
 
-        // 전달받은 memberId로 vote를 한 적이 없다면.
-        if(!vote.getMemberVoteMap().containsKey(memberId)){
-            vote.getMemberVoteMap().put(memberId, voteCheck);
-        }
+    }
 
-        else{
+    // 3-2. Answer 비추천 로직
+    public Answer answerVoteDown(AnswerDto.AnswerVotePatch dto) {
 
-            if (vote.getMemberVoteMap().get(memberId) == -1){               // 이미 -1 (싫어요) 상태에서,
-                if(voteCheck == -1) vote.getMemberVoteMap().put(memberId,0);    // -1(싫어요)면, 0 (취소)
-                else vote.getMemberVoteMap().put(memberId, 1);                  // 1(좋아요)면, 1로 변경.
-            }
-            else if(vote.getMemberVoteMap().get(memberId)==1){              // 1 (좋아요) 상태에서,
-                if(voteCheck == 1) vote.getMemberVoteMap().put(memberId,0);     // 1(좋아요)면, 0(취소)
-                else vote.getMemberVoteMap().put(memberId, -1);                 // -1(싫어요)면, -1로 변경.
-            }
-            else{ // 0 (취소상태, 아무것도 안누른 상태)
-                if(voteCheck == -1) vote.getMemberVoteMap().put(memberId,-1);    // -1(싫어요)면, -1
-                else vote.getMemberVoteMap().put(memberId, 1);                  // 1(좋아요)면, 1로 변경.
-            }
-        }
+        // dto의 answerId를 통해 answer를 받아온다.
+        Answer answer = findVerifiedAnswer(dto.getAnswerId());
+        voteDownCase(answer, dto.getMemberId());
 
-        // controller의 return 값으로 voteCount랑 voteCheck만 주면 됨.
-
-        // value값들을 stream으로 sum하여, voteCount 넣어주기
-        vote.setVoteCount(
-                vote.getMemberVoteMap().values().stream()
-                        .mapToInt(a->a)
-                        .sum()
-        );
-        // 현재 member가 좋아요/싫어요 무엇을 했는지 전달해주기 위함.
-        vote.setVoteCheck(vote.getMemberVoteMap().get(memberId));
-
-        answer.setVote(vote);
         return answerRepository.save(answer);
     }
 
@@ -130,23 +104,62 @@ public class AnswerService {
     }
 
 
-    // Todo. 답변 생성
-    // 이미 등록된 답변이 있는가? => 있어도 올릴 수 있어 . (X)
-    //
+    // voteUp계산
+    public void voteUpCase(Answer answer, long memberId){ // checked v
 
-    // Todo. 답변 수정
-    // 1. 지금 이 Answer의 작성자와 RequestBody의 member가 같은가? => 다르면, error (작성자가 아닙니다.)
-    //      1-1. 프론트 쪽에서 MemberID와 미리 비교해서 없으면 수정버튼을 만들지 않을것같기는 한데 일단 적어둡니다.
-    // 2. 답변 수정 완료.
+        Map<Long, Integer> voteMap = answer.getVote().getMemberVoteMap();  // 해당 question의 votemap을 가져온다.
 
-    // Todo. 답변 추천/비추천
-    // 1. 해당 답변의 Vote가 가지고 있는 Map에 내가(RequestBody의 Member) 등록이 되어있는가? => 되어 있다면, up인가? down인가?
-    // 2. Vote의 Map에 Member 등록하고, up down value값으로 넣기.
-    // 3. 추천/비추천 완료.
+        if(voteMap.containsKey(memberId)){    // votemap에 해당 멤버가 있으면
+            int value = voteMap.get(memberId);  // 스위치문을 위해 value를 int값으로 가져온다.
+            switch(value){
+                case 1:    // 이미 업을 누른상황
+                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()-1); // 카운트 다운
+                    voteMap.put(memberId, 0); // 1 -> 0값으로 넣어줌
+                    break;
+                case 0: // 0으로 바꾼상황
+                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()+1); // 카운트 업
+                    voteMap.put(memberId, 1); // 0 -> 1 넣어줌
+                    break;
+                case -1: // 이미 다운을 누른 상황
+                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()+1); // 카운트 업
+                    voteMap.put(memberId, 0); // -1 -> 0
+                    break;
+            }
+        }
+        else{
+            answer.getVote().setVoteCount(answer.getVote().getVoteCount()+1);
+            voteMap.put(memberId, 1);
+        }
+        answer.getVote().setVoteCheck(voteMap.get(memberId));     // voteCheck 상태 저장.
+    }
 
-    // Todo. 답변 채택
-    // 1. 해당 질문의 작성자와 requestBody로 들어온 memberId가 같은가? => 아니면 error.
-    // 2. 해당 질문이 가지고 있는 답변들에 이미 채택된 답변이 있는가? => 있으면, error.
-    // 3. 채택 완료.
+    public void voteDownCase(Answer answer, long memberId){ // checked v
+
+        Map<Long, Integer> voteMap = answer.getVote().getMemberVoteMap();  // 해당 question의 votemap을 가져온다.
+
+        if(voteMap.containsKey(memberId)){    // votemap에 해당 멤버가 있으면
+            int value = voteMap.get(memberId);  // 스위치문을 위해 value를 int값으로 가져온다.
+            switch(value){
+                case 1:    // 업이면
+                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()-1); // 카운트 다운
+                    voteMap.put(memberId, 0); // 1 -> 0
+                    break;
+                case 0:
+                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()-1); // 카운트 다운
+                    voteMap.put(memberId, -1); // 0 -> -1
+                    break;
+                case -1:
+                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()+1); // 카운트 업
+                    voteMap.put(memberId, 0); // -1 -> 0
+                    break;
+            }
+        }
+        else{
+            answer.getVote().setVoteCount(answer.getVote().getVoteCount()-1); // -1 해주면서
+            voteMap.put(memberId, -1); // -1 멤버로 새로 추가
+        }
+
+        answer.getVote().setVoteCheck(voteMap.get(memberId));     // voteCheck 상태 저장.
+    }
 
 }
