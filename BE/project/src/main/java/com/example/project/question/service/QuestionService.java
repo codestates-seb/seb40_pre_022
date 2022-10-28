@@ -80,7 +80,7 @@ public class QuestionService {
     //9 question 생성
     public Question createQuestion(Question question){
 
-        verifyExistQuestion(question.getQuestionId());
+//        verifyExistQuestion(question.getQuestionId());
 
         return questionRepository.save(question);
     }

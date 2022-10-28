@@ -31,7 +31,14 @@ public class Answer extends Auditable {
     @JoinColumn(name = "QUESTION_ID")
     private Question question;
 
-    @OneToOne(mappedBy = "answer")
+    @OneToOne(mappedBy = "answer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "VOTE_ID")
     private Vote vote;
+
+    public void setVote(Vote vote){
+        this.vote = vote;
+        if (vote.getAnswer()!=this){
+            vote.setAnswer(this);
+        }
+    }
 }

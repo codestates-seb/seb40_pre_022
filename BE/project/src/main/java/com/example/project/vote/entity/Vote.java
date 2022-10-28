@@ -3,6 +3,7 @@ package com.example.project.vote.entity;
 import com.example.project.answer.entity.Answer;
 import com.example.project.question.entity.Question;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import java.util.Map;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Vote {
 
     @Id

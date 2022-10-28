@@ -71,17 +71,16 @@ public class AnswerController {
     public ResponseEntity patchAnswerVoteUp(@PathVariable long questionId,
                                           @PathVariable long answerId,
                                           @Valid @RequestBody AnswerDto.AnswerVotePatch requestBody){
+        // Dto에 answerId를 담음.
         requestBody.setAnswerId(answerId);
 
-
-        Vote vote = answerService.voteUp(mapper.answerVotePatchToVote(requestBody),
-                requestBody.getMemberId(),
-                requestBody.getVoteCheck());
+        // Dto를 그대로 넘겨서 Service에서 가공함.
+        Answer answer = answerService.voteUp(requestBody);
 
 
 
         return new ResponseEntity<>(
-                new SingleResponseDto<>(mapper.voteToVoteResponse(vote)),
+                new SingleResponseDto<>(mapper.answerToVoteResponse(answer)),
                 HttpStatus.OK
         );
     }

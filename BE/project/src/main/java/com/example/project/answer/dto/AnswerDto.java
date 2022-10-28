@@ -3,6 +3,7 @@ package com.example.project.answer.dto;
 import com.example.project.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
@@ -34,10 +35,9 @@ public class AnswerDto {
 
         private long memberId;
         private long answerId;
+        private long questionId;
 
         private String body;
-
-        // setter 따로 생성하지 않고, @Setter로 처리함.
     }
 
 
@@ -72,7 +72,9 @@ public class AnswerDto {
     }
 
     @Getter
+    @Setter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class VoteResponse{
         private int voteCheck; // -1,0,1 로 좋아요 싫어요 상태 구분.
         private int voteCount; // 추천 수.

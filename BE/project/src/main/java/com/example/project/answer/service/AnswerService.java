@@ -1,9 +1,9 @@
 package com.example.project.answer.service;
 
+import com.example.project.answer.dto.AnswerDto;
 import com.example.project.answer.entity.Answer;
 import com.example.project.answer.repository.AnswerRepository;
 import com.example.project.vote.entity.Vote;
-import com.example.project.vote.repository.VoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,13 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-//@Transactional
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class AnswerService {
     private final AnswerRepository answerRepository;
-    private final VoteRepository voteRepository;
-
     // 1. Answer 등록 로직
     public Answer createAnswer(Answer answer){
         Answer savedAnswer = answerRepository.save(answer);
@@ -35,9 +33,15 @@ public class AnswerService {
         return answerRepository.save(findAnswer);
     }
     // 3. Answer 추천/비추천 로직
-    public Vote voteUp(Vote vote, long memberId, int voteCheck) {
+    public Answer voteUp(AnswerDto.AnswerVotePatch dto) {
 
-        // todo : Vote 검증?
+        // dto의 answerId를 통해 answer를 받아온다.
+        Answer answer = findVerifiedAnswer(dto.getAnswerId());
+
+        // answer를 통해 vote를 가져오고, service에서만 사용할 변수 voteCheck, memberId를 각각 정의함.
+        Vote vote = answer.getVote();
+        int voteCheck = dto.getVoteCheck();
+        long memberId = dto.getMemberId();
 
         // 전달받은 memberId로 vote를 한 적이 없다면.
         if(!vote.getMemberVoteMap().containsKey(memberId)){
@@ -71,8 +75,8 @@ public class AnswerService {
         // 현재 member가 좋아요/싫어요 무엇을 했는지 전달해주기 위함.
         vote.setVoteCheck(vote.getMemberVoteMap().get(memberId));
 
-
-        return voteRepository.save(vote);
+        answer.setVote(vote);
+        return answerRepository.save(answer);
     }
 
     // 4. Answer 채택 로직
