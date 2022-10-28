@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const SidebarContainer = styled.div`
+const SidebarContainer = styled.aside`
   width: 164px;
   height: 100vh;
   padding-top: 24px;

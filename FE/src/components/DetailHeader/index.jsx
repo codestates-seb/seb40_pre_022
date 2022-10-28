@@ -22,7 +22,7 @@ const DetailHeader = () => {
       <InfoWrapper>
         {DETAIL_HEADER_INFO.map((info) => {
           return (
-            <InfoContainer>
+            <InfoContainer key={info.title}>
               <QuestionInfo>{info.title}</QuestionInfo>
               <QuestionInfo color='black'>{info.content}</QuestionInfo>
             </InfoContainer>

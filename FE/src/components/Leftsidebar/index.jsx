@@ -26,32 +26,29 @@ const Leftsidebar = () => {
           </TabItem>
           <TabItem>
             <Tabtitle>PUBLIC</Tabtitle>
-            <TabItem>
-              <TabList>
-                <TabItem className={path === "question" ? "active" : null}>
-                  <Link to='/question'>
-                    <ItemContainer>
-                      <FontAwesomeIcon
-                        icon={faEarthAmericas}
-                        className='icon'
-                      />
-                      Questions
-                    </ItemContainer>
-                  </Link>
+
+            <TabList>
+              <TabItem className={path === "question" ? "active" : null}>
+                <Link to='/question'>
+                  <ItemContainer>
+                    <FontAwesomeIcon icon={faEarthAmericas} className='icon' />
+                    Questions
+                  </ItemContainer>
+                </Link>
+              </TabItem>
+              {SIDEBAR_ITEMS.map((item) => (
+                <TabItem className='tab' key={item}>
+                  {item}
                 </TabItem>
-                {SIDEBAR_ITEMS.map((item) => (
-                  <TabItem className='tab' key={item}>
-                    {item}
-                  </TabItem>
-                ))}
-              </TabList>
-            </TabItem>
+              ))}
+            </TabList>
           </TabItem>
+
           {SIDEBAR_SENTENCES.map((item) => (
-            <TabItem>
-              <Tabtitle key={item.title}>{item.title}</Tabtitle>
+            <TabItem key={item.title}>
+              <Tabtitle>{item.title}</Tabtitle>
               <TabList>
-                <TabItem size='small' className='tab' key={item.sentence}>
+                <TabItem size='small' className='tab'>
                   {item.sentence}
                 </TabItem>
               </TabList>
