@@ -62,12 +62,12 @@ const GlobalStyle = createGlobalStyle`
     --hr: hsla(0, 0%, 0%, 0.2);
     --hoverColor: #efefef; 
     --footer-background-color: hsl(210,8%,15%);
+    --orange: hsl(27,90%,55%);
+    --blue: hsl(206,90%,69.5%);
     background-color: var(--bg);
     a, a.logo {
       color: hsl(210deg 8% 35%);
     }
-    
-    
   }
   body.dark {
     -webkit-font-smoothing: antialiased;
