@@ -12,8 +12,7 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
-    // 문제) tag관련 문제를 풀어야함. 모든 계층 통과후 response를 주었을때 tag가 포함 안되어 있는 문제 발생. 어디서 문제인지 모르겠음
-    // patch도 마찬가지.
+
     default Question questionPostDtoToQuestion(QuestionDto.QuestionPostDto questionPostDto){
         Question question = new Question();
 
@@ -32,7 +31,7 @@ public interface QuestionMapper {
 
         return question;
     }
-//    Question questionPostDtoToQuestion(QuestionDto.QuestionPostDto questionPostDto);
+
     default Question questionPatchDtoToQuestion(QuestionDto.QuestionPatchDto questionPatchDto){
         Question question = new Question();
 
@@ -96,7 +95,39 @@ public interface QuestionMapper {
                     questionTagDto.setQuestionTagName(questionTag.getQuestionTagName());
                     return questionTagDto;
                 }).collect(Collectors.toList());
+
+        questionForUpdateResponseDto.setQuestionTags(questionTagDtoList);
         return questionForUpdateResponseDto;
     }
-    QuestionDto.QuestionListResponseDto questionToQuestionListResponseDto(Question question);//default사용
+    default QuestionDto.QuestionListResponseDto questionToQuestionListResponseDto(Question question) {
+        QuestionDto.QuestionListResponseDto questionListResponseDto =
+                new QuestionDto.QuestionListResponseDto();
+        QuestionDto.QuestionMemberDto questionMemberDto = new QuestionDto.QuestionMemberDto();
+
+        Member member = question.getMember();
+        questionMemberDto.setName(member.getName());
+        questionMemberDto.setEmail(member.getEmail());
+        questionMemberDto.setImgae(member.getImage());
+
+        questionListResponseDto.setQuestionId(question.getQuestionId());
+        questionListResponseDto.setTitle(question.getTitle());
+        questionListResponseDto.setBody(question.getBody());
+        questionListResponseDto.setViewCount(question.getViewCount());
+        questionListResponseDto.setVoteCount(question.getVote().getVoteCount());
+        questionListResponseDto.setQuestionMemberDto(questionMemberDto);
+
+        List<QuestionDto.QuestionTagDto> questionTagDtoList = question.getQuestionTags().stream()
+                .map(questionTag -> {
+                    QuestionDto.QuestionTagDto questionTagDto = new QuestionDto.QuestionTagDto();
+                    questionTagDto.setQuestionTagName(questionTag.getQuestionTagName());
+                    return questionTagDto;
+                }).collect(Collectors.toList());
+
+        questionListResponseDto.setQuestionTags(questionTagDtoList);
+        questionListResponseDto.setAnswerCount(question.getAnswers().size());
+        questionListResponseDto.setCreatedAt(question.getCreatedAt());
+        questionListResponseDto.setUpdatedAt(question.getModifiedAt());
+
+        return questionListResponseDto;
+    }
 }
