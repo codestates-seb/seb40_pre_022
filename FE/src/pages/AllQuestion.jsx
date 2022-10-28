@@ -1,7 +1,13 @@
 import React from "react";
+import Leftsidebar from "../components/Leftsidebar";
 
 const AllQuestion = () => {
-  return <div>AllQuestion</div>;
+  return (
+    <>
+      <Leftsidebar />
+      <div>AllQuestion</div>
+    </>
+  );
 };
 
 export default AllQuestion;
