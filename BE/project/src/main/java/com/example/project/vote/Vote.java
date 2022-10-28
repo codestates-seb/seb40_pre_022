@@ -2,6 +2,7 @@ package com.example.project.vote;
 
 import com.example.project.answer.entity.Answer;
 import com.example.project.question.entity.Question;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,10 +22,12 @@ public class Vote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long voteId;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "QUESTION_ID")
     private Question question;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ANSWER_ID")
     private Answer answer;
@@ -32,10 +35,6 @@ public class Vote {
     @Column(name = "VOTE_COUNT")
     private int voteCount;
 
-    // 1. Member entity를 그대로 넣기.
-    // 2. Long타입의 memberId를 넣기. (2번으로 작성함)
-
-    // CollectionTable의 Attribute는 추후 추가 예정.
     @ElementCollection
     @CollectionTable(
             name = "MEMBER_VOTE_MAP",
@@ -43,6 +42,11 @@ public class Vote {
     )
     @MapKeyColumn(name = "MEMBER_ID")
     @Column(name = "VOTE_RESULT")
-    Map<Long, Long> memberVoteMap = new HashMap<>();
+    Map<Long, Integer> memberVoteMap = new HashMap<>();
+
+
+    // 사용 안함?
+    @Transient      // entity 등록으로 table에 등록되지 않기 위해 사용 (그냥 vote했는지 여부 주기위함)
+    private int voteCheck;
 
 }

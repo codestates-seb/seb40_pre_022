@@ -5,6 +5,7 @@ import com.example.project.exception.BusinessLogicException;
 import com.example.project.exception.ExceptionCode;
 import com.example.project.member.entity.Member;
 import com.example.project.member.service.MemberService;
+import com.example.project.question.dto.QuestionDto;
 import com.example.project.question.entity.Question;
 import com.example.project.question.entity.QuestionTag;
 import com.example.project.question.repository.QuestionRepository;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -90,54 +92,36 @@ public class QuestionService {
     }
 
     //7,8 질문 추천 올리기 내리기 + 추후 작성
-    public long questionVoteUp(long questionId){
+    public Question questionVoteUp(QuestionDto.QuestionVotePatch dto){
 
         //1. 현재 로그인 한 사람의 정보 - 로그인 구현시 수정 필**
-
-        //2. 존재하는 멤버인지 확인하기 - 현재는 스텁 데이터 이용 중
-        Member member = new Member(1);
-
+        //2. 존재하는 멤버인지 확인하기 - 현재는 스텁 데이터 이용 중 (dto에 memberId 담아옴)
         //3. 질문존재 확인 후 가져오기
-        Question question = findVerifiedQuestion(questionId);
+        Question question = findVerifiedQuestion(dto.getQuestionId());
 
         //4. 로그인한 사람의 정보와 대조해서 count 계산
-        long voteCount = voteUpCase(question, member);
+        voteUpCase(question, dto.getMemberId());
 
         //5. votemap 최신화를 위한 저장 - 이래야 값들이 저장됨
-        questionRepository.save(question);
-
-        return voteCount;
+        return questionRepository.save(question);
     }
 
-    public long questionVoteDown(long questionId){
+    public Question questionVoteDown(QuestionDto.QuestionVotePatch dto){
 
-        //1. 현재 로그인 한 사람의 정보 - 로그인 구현시 수정 필**
-
+        //1. 현재 로그인 한 사람의 정보 - 로그인 구현시 수정 필**    => dto에 memberId 포함시켜두긴 했는데..
         //2. 존재하는 멤버인지 확인하기 - 현재는 스텁 데이터 이용 중
-        Member member = new Member(1);
-
         //3. 질문존재 확인 후 가져오기
-        Question question = findVerifiedQuestion(questionId);
+        Question question = findVerifiedQuestion(dto.getQuestionId());
 
         //4. 로그인한 사람의 정보와 대조해서 count 계산
-        long voteCount = voteDownCase(question, member);
+        voteDownCase(question, dto.getMemberId());
 
         //5. votemap 최신화를 위한 저장 - 이래야 값들이 저장된다.
-        questionRepository.save(question); // 저장한다.
-
-        return voteCount;
+        return questionRepository.save(question); // 저장한다.
     }
 
     //9 question 생성
     public Question createQuestion(Question question){
-
-        //1. 현재 로그인 한 멤버 정보 불러오기
-
-        //2. 존재하는 멤버인지 확인하기
-
-        //3. questionId로 이미 존재하는 question인지 확인하기
-        verifyExistQuestion(question.getQuestionId());
-
         //4. 1,2번 통해 확인한 멤버 정보 생성 후 연결
         Member member = new Member("누구", "무엇", "무엇"); // 기능 구현 후 로그인정보에서 가져올것
         member.addQuestion(question);
@@ -174,59 +158,60 @@ public class QuestionService {
     }
 
     // voteUp계산
-    public long voteUpCase(Question question, Member member){ // checked v
+    public void voteUpCase(Question question, long memberId){ // checked v
 
-        Map voteMap = question.getVote().getMemberVoteMap();  // 해당 question의 votemap을 가져온다.
 
-        if(voteMap.containsKey(member.getMemberId())){    // votemap에 해당 멤버가 있으면
-            int value = ((Long)voteMap.get(member.getMemberId())).intValue();  // 스위치문을 위해 value를 int값으로 가져온다.
+        Map<Long, Integer> voteMap = question.getVote().getMemberVoteMap();  // 해당 question의 votemap을 가져온다.
+
+        if(voteMap.containsKey(memberId)){    // votemap에 해당 멤버가 있으면
+            int value = voteMap.get(memberId);  // 스위치문을 위해 value를 int값으로 가져온다.
             switch(value){
                 case 1:    // 이미 업을 누른상황
                     question.getVote().setVoteCount(question.getVote().getVoteCount()-1); // 카운트 다운
-                    voteMap.put(member.getMemberId(), 0L); // 1 -> 0값으로 넣어줌
+                    voteMap.put(memberId, 0); // 1 -> 0값으로 넣어줌
                     break;
                 case 0: // 0으로 바꾼상황
                     question.getVote().setVoteCount(question.getVote().getVoteCount()+1); // 카운트 업
-                    voteMap.put(member.getMemberId(), 1L); // 0 -> 1 넣어줌
+                    voteMap.put(memberId, 1); // 0 -> 1 넣어줌
                     break;
                 case -1: // 이미 다운을 누른 상황
                     question.getVote().setVoteCount(question.getVote().getVoteCount()+1); // 카운트 업
-                    voteMap.put(member.getMemberId(), 0L); // -1 -> 0
+                    voteMap.put(memberId, 0); // -1 -> 0
                     break;
             }
         }
         else{
             question.getVote().setVoteCount(question.getVote().getVoteCount()+1);
-            voteMap.put(member.getMemberId(), 1L);
+            voteMap.put(memberId, 1);
         }
-        return question.getVote().getVoteCount();
+        question.getVote().setVoteCheck(voteMap.get(memberId));     // voteCheck 상태 저장.
     }
 
-    public long voteDownCase(Question question, Member member){ // checked v
+    public void voteDownCase(Question question, long memberId){ // checked v
 
-        Map voteMap = question.getVote().getMemberVoteMap();  // 해당 question의 votemap을 가져온다.
+        Map<Long, Integer> voteMap = question.getVote().getMemberVoteMap();  // 해당 question의 votemap을 가져온다.
 
-        if(voteMap.containsKey(member.getMemberId())){    // votemap에 해당 멤버가 있으면
-            int value = ((Long)voteMap.get(member.getMemberId())).intValue();  // 스위치문을 위해 value를 int값으로 가져온다.
+        if(voteMap.containsKey(memberId)){    // votemap에 해당 멤버가 있으면
+            int value = voteMap.get(memberId);  // 스위치문을 위해 value를 int값으로 가져온다.
             switch(value){
                 case 1:    // 업이면
                     question.getVote().setVoteCount(question.getVote().getVoteCount()-1); // 카운트 다운
-                    voteMap.put(member.getMemberId(), 0L); // 1 -> 0
+                    voteMap.put(memberId, 0); // 1 -> 0
                     break;
                 case 0:
                     question.getVote().setVoteCount(question.getVote().getVoteCount()-1); // 카운트 다운
-                    voteMap.put(member.getMemberId(), -1L); // 0 -> -1
+                    voteMap.put(memberId, -1); // 0 -> -1
                     break;
                 case -1:
                     question.getVote().setVoteCount(question.getVote().getVoteCount()+1); // 카운트 업
-                    voteMap.put(member.getMemberId(), 0L); // -1 -> 0
+                    voteMap.put(memberId, 0); // -1 -> 0
                     break;
             }
         }
         else{
             question.getVote().setVoteCount(question.getVote().getVoteCount()-1); // -1 해주면서
-            voteMap.put(member.getMemberId(), -1L); // -1 멤버로 새로 추가
+            voteMap.put(memberId, -1); // -1 멤버로 새로 추가
         }
-        return question.getVote().getVoteCount();
+        question.getVote().setVoteCheck(voteMap.get(memberId));     // voteCheck 상태 저장.
     }
 }

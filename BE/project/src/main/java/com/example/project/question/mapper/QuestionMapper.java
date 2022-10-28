@@ -4,7 +4,6 @@ import com.example.project.member.entity.Member;
 import com.example.project.question.dto.*;
 import com.example.project.question.entity.Question;
 import com.example.project.question.entity.QuestionTag;
-import com.example.project.tag.Tag;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -59,7 +58,7 @@ public interface QuestionMapper {
         Member member = question.getMember();
         questionMemberDto.setName(member.getName());
         questionMemberDto.setEmail(member.getEmail());
-        questionMemberDto.setImgae(member.getImage());
+        questionMemberDto.setImage(member.getImage());
 
         List<QuestionDto.QuestionTagDto> questionTagDtoList = question.getQuestionTags().stream()
                         .map(questionTag -> {
@@ -107,7 +106,7 @@ public interface QuestionMapper {
         Member member = question.getMember();
         questionMemberDto.setName(member.getName());
         questionMemberDto.setEmail(member.getEmail());
-        questionMemberDto.setImgae(member.getImage());
+        questionMemberDto.setImage(member.getImage());
 
         questionListResponseDto.setQuestionId(question.getQuestionId());
         questionListResponseDto.setTitle(question.getTitle());
@@ -129,5 +128,15 @@ public interface QuestionMapper {
         questionListResponseDto.setUpdatedAt(question.getModifiedAt());
 
         return questionListResponseDto;
+    }
+
+
+    // vote Response용 Dto mapper
+    default QuestionDto.VoteResponse questionToVoteResponse(Question question){
+        QuestionDto.VoteResponse response = new QuestionDto.VoteResponse();
+        response.setVoteCheck(question.getVote().getVoteCheck());
+        response.setVoteCount(question.getVote().getVoteCount());
+
+        return response;
     }
 }

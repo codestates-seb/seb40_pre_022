@@ -10,7 +10,6 @@ import javax.validation.constraints.Email;
 @Getter
 
 public class MemberDto {
-
     @Data
     @AllArgsConstructor
     @NoArgsConstructor

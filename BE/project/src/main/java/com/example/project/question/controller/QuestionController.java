@@ -6,24 +6,24 @@ import com.example.project.question.dto.QuestionDto;
 import com.example.project.question.entity.Question;
 import com.example.project.question.mapper.QuestionMapper;
 import com.example.project.question.service.QuestionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@Validated
+@RequiredArgsConstructor
 public class QuestionController {
 
     private final QuestionService questionService;
     private final QuestionMapper mapper;
-
-    public QuestionController(QuestionService questionService, QuestionMapper mapper) {
-        this.questionService = questionService;
-        this.mapper = mapper;
-    }
 
     //1. 메인페이지
     @GetMapping
@@ -90,22 +90,26 @@ public class QuestionController {
 
     //7. question 추천 올리기 + 추후 추가
     @PatchMapping("/questions/vote_up/{question_Id}")
-    public ResponseEntity patchVoteUp(@PathVariable("question_Id") long questionId){
+    public ResponseEntity patchVoteUp(@PathVariable("question_Id") long questionId,
+                                      @Valid @RequestBody QuestionDto.QuestionVotePatch requestBody){
 
-        QuestionDto.RecommendResponseDto recommendResponseDto = new QuestionDto.RecommendResponseDto();
-        recommendResponseDto.setVoteCount(questionService.questionVoteUp(questionId));
+        requestBody.setQuestionId(questionId);
+        Question question = questionService.questionVoteUp(requestBody);
 
-        return new ResponseEntity(new SingleResponseDto<>(recommendResponseDto), HttpStatus.OK);
+        return new ResponseEntity(
+                new SingleResponseDto<>(mapper.questionToVoteResponse(question)), HttpStatus.OK);
     }
 
     //8. question 추천 내리기 + 추후 추가
     @PatchMapping("/questions/vote_down/{question_Id}")
-    public ResponseEntity patchVoteDown(@PathVariable("question_Id") long questionId){
+    public ResponseEntity patchVoteDown(@PathVariable("question_Id") long questionId,
+                                        @Valid @RequestBody QuestionDto.QuestionVotePatch requestBody){
 
-        QuestionDto.RecommendResponseDto recommendResponseDto = new QuestionDto.RecommendResponseDto();
-        recommendResponseDto.setVoteCount(questionService.questionVoteDown(questionId));
+        requestBody.setQuestionId(questionId);
+        Question question = questionService.questionVoteDown(requestBody);
 
-        return new ResponseEntity(new SingleResponseDto<>(recommendResponseDto), HttpStatus.OK);
+        return new ResponseEntity(
+                new SingleResponseDto<>(mapper.questionToVoteResponse(question)), HttpStatus.OK);
     }
 
     //9. question 작성 요청

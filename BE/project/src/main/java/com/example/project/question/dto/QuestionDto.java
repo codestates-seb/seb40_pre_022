@@ -1,10 +1,6 @@
 package com.example.project.question.dto;
 
 import com.example.project.answer.entity.Answer;
-import com.example.project.dto.MultiResponseDto;
-import com.example.project.member.entity.Member;
-import com.example.project.question.entity.QuestionTag;
-import com.example.project.tag.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -105,9 +101,10 @@ public class QuestionDto {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class RecommendResponseDto {
+    public static class VoteResponse {
 
-        private long voteCount;
+        private int voteCheck;  // -1, 0, 1 좋아요 상태. (Front에서 추천 여부 달라고하긴했는데..)
+        private int voteCount;  // 추천 수.
 
     }
 
@@ -124,6 +121,14 @@ public class QuestionDto {
     public static class QuestionMemberDto{
         private String name;
         private String email;
-        private String imgae;
+        private String image;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class QuestionVotePatch {
+        private long memberId;
+        private long questionId;
     }
 }

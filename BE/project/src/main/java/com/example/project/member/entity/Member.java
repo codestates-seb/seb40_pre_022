@@ -3,6 +3,7 @@ package com.example.project.member.entity;
 import com.example.project.answer.entity.Answer;
 import com.example.project.audit.Auditable;
 import com.example.project.question.entity.Question;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -41,10 +42,12 @@ public class Member extends Auditable {
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
 
     // 이 사람이 쓴 질문들
+    @JsonIgnore
     @OneToMany(mappedBy = "member")
     private List<Question> questions = new ArrayList<>();
 
     // 이 사람이 쓴 답변들
+    @JsonIgnore
     @OneToMany(mappedBy = "member")
     private List<Answer> answers = new ArrayList<>();
 

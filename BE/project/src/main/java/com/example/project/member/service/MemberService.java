@@ -17,7 +17,7 @@ public class MemberService {
 
     // 1. 회원가입
     public Member createMember(Member member){
-        findExistMember(member.getMemberId());
+//        findExistMember(member.getMemberId());
         //2. 비밀번호 암호화
         return memberRepository.save(member);
     }
