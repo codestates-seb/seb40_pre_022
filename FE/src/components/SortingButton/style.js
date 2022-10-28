@@ -11,21 +11,18 @@ const SortingA = styled.a`
   border-width: 0.5px;
   color: hsl(210, 8%, 45%);
   font-size: 12px;
-
-  &.secondary {
-    position: relative;
-    border-radius: 3px;
-    padding: 0.8em;
-    font-family: inherit;
-    user-select: none;
-    text-align: center;
-    font-weight: normal;
-    outline: none;
-    user-select: none;
-    line-height: calc(15 / 13);
-    margin: 2 2 2 0;
-    white-space: nowrap;
-  }
+  position: relative;
+  border-radius: 3px;
+  padding: 0.8em;
+  font-family: inherit;
+  user-select: none;
+  text-align: center;
+  font-weight: normal;
+  outline: none;
+  user-select: none;
+  line-height: calc(15 / 13);
+  margin: 2 2 2 0;
+  white-space: nowrap;
 
   &.Middle {
     border-radius: 0px;
