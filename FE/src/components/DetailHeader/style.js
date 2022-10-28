@@ -27,10 +27,19 @@ const InfoContainer = styled.div`
   margin-bottom: 8px;
 `;
 
+const InfoWrapper = styled.div`
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+  border-color: hsl(210deg 8% 90%);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+`;
+
 export {
   HeaderContainer,
   QuestionHeader,
   QuestionInfo,
   QuestionTitle,
   InfoContainer,
+  InfoWrapper,
 };

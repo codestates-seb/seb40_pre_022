@@ -1,7 +1,8 @@
 import React from "react";
 import Leftsidebar from "../../components/Leftsidebar";
 import { PageContainer, PostContainer } from "./style";
-import QuestionHeader from "../../components/DetailHeader";
+import DetailPost from "../../components/DetailPost";
+import DetailHeader from "../../components/DetailHeader";
 
 const QuestionsDetail = () => {
   return (
@@ -9,7 +10,8 @@ const QuestionsDetail = () => {
       <PageContainer>
         <Leftsidebar />
         <PostContainer>
-          <QuestionHeader />
+          <DetailHeader />
+          <DetailPost />
         </PostContainer>
       </PageContainer>
     </>

@@ -40,17 +40,19 @@ const Leftsidebar = () => {
                   </Link>
                 </TabItem>
                 {SIDEBAR_ITEMS.map((item) => (
-                  <TabItem className='tab'>{item}</TabItem>
+                  <TabItem className='tab' key={item}>
+                    {item}
+                  </TabItem>
                 ))}
               </TabList>
             </TabItem>
           </TabItem>
-          {SIDEBAR_SENTENCES.map((el) => (
+          {SIDEBAR_SENTENCES.map((item) => (
             <TabItem>
-              <Tabtitle>{el.title}</Tabtitle>
+              <Tabtitle key={item.title}>{item.title}</Tabtitle>
               <TabList>
-                <TabItem size='small' className='tab'>
-                  {el.sentence}
+                <TabItem size='small' className='tab' key={item.sentence}>
+                  {item.sentence}
                 </TabItem>
               </TabList>
             </TabItem>

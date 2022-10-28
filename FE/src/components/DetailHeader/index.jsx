@@ -5,8 +5,10 @@ import {
   QuestionInfo,
   QuestionTitle,
   InfoContainer,
+  InfoWrapper,
 } from "./style";
 import { Button } from "../Button";
+import { DETAIL_HEADER_INFO } from "../../constants";
 
 const DetailHeader = () => {
   return (
@@ -17,18 +19,16 @@ const DetailHeader = () => {
           <Button label='Ask Question' size='header-size' />
         </QuestionHeader>
       </HeaderContainer>
-      <InfoContainer>
-        <QuestionInfo>Asked</QuestionInfo>
-        <QuestionInfo color='black'>today</QuestionInfo>
-      </InfoContainer>
-      <InfoContainer>
-        <QuestionInfo>Modified</QuestionInfo>
-        <QuestionInfo color='black'>today</QuestionInfo>
-      </InfoContainer>
-      <InfoContainer>
-        <QuestionInfo>Viewed</QuestionInfo>
-        <QuestionInfo color='black'>12 times</QuestionInfo>
-      </InfoContainer>
+      <InfoWrapper>
+        {DETAIL_HEADER_INFO.map((info) => {
+          return (
+            <InfoContainer>
+              <QuestionInfo>{info.title}</QuestionInfo>
+              <QuestionInfo color='black'>{info.content}</QuestionInfo>
+            </InfoContainer>
+          );
+        })}
+      </InfoWrapper>
     </>
   );
 };

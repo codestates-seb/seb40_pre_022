@@ -39,7 +39,7 @@ const TabItem = styled.li`
   font-weight: 500;
   font-size: 0.95em;
   font-size: ${(props) => props.size === "small" && "0.9em"};
-  margin-top: 7px;
+  margin-top: 5px;
   width: 164px;
   &:hover {
     color: hsl(210deg 8% 15%);
