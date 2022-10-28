@@ -2,6 +2,7 @@ package com.example.project.vote.entity;
 
 import com.example.project.answer.entity.Answer;
 import com.example.project.question.entity.Question;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,10 +20,12 @@ public class Vote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long voteId;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "QUESTION_ID")
     private Question question;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "ANSWER_ID")
     private Answer answer;

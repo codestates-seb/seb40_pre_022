@@ -33,7 +33,7 @@ public class AnswerDto {
     @AllArgsConstructor
     public static class Patch{
 
-        private long memberId;
+        private long memberId;      // 수정하려는 사용자
         private long answerId;
         private long questionId;
 
@@ -58,13 +58,14 @@ public class AnswerDto {
     }
 
     @Getter
+    @Setter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Response{
         private long answerId;
         private String body;
         private int voteCount;
         private Member member;
-        // password는 어떻게 되는지 나중에 처리할지??
 
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;

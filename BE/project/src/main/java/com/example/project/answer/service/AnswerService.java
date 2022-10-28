@@ -3,6 +3,10 @@ package com.example.project.answer.service;
 import com.example.project.answer.dto.AnswerDto;
 import com.example.project.answer.entity.Answer;
 import com.example.project.answer.repository.AnswerRepository;
+import com.example.project.member.entity.Member;
+import com.example.project.member.service.MemberService;
+import com.example.project.question.entity.Question;
+import com.example.project.question.service.QuestionService;
 import com.example.project.vote.entity.Vote;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,22 +20,32 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AnswerService {
     private final AnswerRepository answerRepository;
+    private final QuestionService questionService;
+    private final MemberService memberService;
+
     // 1. Answer 등록 로직
     public Answer createAnswer(Answer answer){
-        Answer savedAnswer = answerRepository.save(answer);
+        Question question = questionService.findVerifiedQuestion(answer.getQuestion().getQuestionId());
+        Member member = memberService.findExistMember(answer.getMember().getMemberId());
 
-        return savedAnswer;
+
+        answer.setMember(member);
+        answer.setQuestion(question);
+
+        Vote vote = new Vote();
+        vote.setAnswer(answer);
+        answer.setVote(vote);
+
+        return answerRepository.save(answer);
     }
 
     // 2. Answer 수정 로직
     public Answer updateAnswer(Answer answer, long memberId){
+        Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
 
         // memberId와 AnswerId가 다르면 오류 발생.
-        if(memberId!=answer.getMember().getMemberId())
+        if(memberId!=findAnswer.getMember().getMemberId())
             throw new RuntimeException();       // fixme ErrorCODE 수정할 것.
-
-
-        Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
 
         Optional.ofNullable(answer.getBody())
                 .ifPresent(findAnswer::setBody);

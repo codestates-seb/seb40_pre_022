@@ -4,6 +4,7 @@ import com.example.project.audit.Auditable;
 import com.example.project.member.entity.Member;
 import com.example.project.question.entity.Question;
 import com.example.project.vote.entity.Vote;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,14 +24,17 @@ public class Answer extends Auditable {
     @Column(name = "ANSWER_BODY")
     private String body;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "QUESTION_ID")
     private Question question;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "answer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "VOTE_ID")
     private Vote vote;

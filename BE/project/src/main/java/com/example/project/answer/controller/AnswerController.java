@@ -29,7 +29,6 @@ public class AnswerController {
             @Valid @RequestBody AnswerDto.Post requestBody){
         requestBody.setQuestionId(questionId);
         Answer answer = mapper.answerPostToAnswer(requestBody);
-        answer.setVote(new Vote());
 
         Answer createdAnswer = answerService.createAnswer(answer);
         AnswerDto.Response response = mapper.answerToAnswerResponse(createdAnswer);
@@ -46,7 +45,7 @@ public class AnswerController {
         requestBody.setAnswerId(answerId);
         Answer answer = answerService.updateAnswer(
                 mapper.answerPatchToAnswer(requestBody),
-                requestBody.getMemberId()
+                requestBody.getMemberId()       // 지금 수정하려는 사람의 memberId.
                 );
 
         AnswerDto.Response response = mapper.answerToAnswerResponse(answer);
