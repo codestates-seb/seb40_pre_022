@@ -12,11 +12,14 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class QuestionTag extends Auditable {
+public class QuestionTag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long questionTagId;
+    private long questionTagId;
+
+    @Column(name = "QUESTION_TAG_NAME")
+    private String questionTagName;
 
     //사용된 태그가 속한 질문
     @ManyToOne
@@ -28,14 +31,5 @@ public class QuestionTag extends Auditable {
     @JoinColumn(name = "TAG_ID")
     private Tag tag;
 
-    //사용된 태그가 속한 질문을 추가하는 메서드
-    public void addQuestion(Question question){
-        this.question = question;
-    }
-
-    //사용된 태그가 속한 태그분류를 추가하는 메서드
-    public void addTag(Tag tag){
-        this.tag = tag;
-    }
-
 }
+//add 메서드들은 없어서 지웠음. 다대일 이기 때문
