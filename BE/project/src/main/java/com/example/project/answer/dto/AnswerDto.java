@@ -68,7 +68,6 @@ public class AnswerDto {
 
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
-
     }
 
     @Getter

@@ -24,7 +24,13 @@ public class AnswerService {
     }
 
     // 2. Answer 수정 로직
-    public Answer updateAnswer(Answer answer){
+    public Answer updateAnswer(Answer answer, long memberId){
+
+        // memberId와 AnswerId가 다르면 오류 발생.
+        if(memberId!=answer.getMember().getMemberId())
+            throw new RuntimeException();       // fixme ErrorCODE 수정할 것.
+
+
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
 
         Optional.ofNullable(answer.getBody())

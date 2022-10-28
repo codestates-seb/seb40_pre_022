@@ -44,7 +44,10 @@ public class AnswerController {
                                       @PathVariable long answerId,
                                       @Valid @RequestBody AnswerDto.Patch requestBody){
         requestBody.setAnswerId(answerId);
-        Answer answer = answerService.updateAnswer(mapper.answerPatchToAnswer(requestBody));
+        Answer answer = answerService.updateAnswer(
+                mapper.answerPatchToAnswer(requestBody),
+                requestBody.getMemberId()
+                );
 
         AnswerDto.Response response = mapper.answerToAnswerResponse(answer);
         return new ResponseEntity<>(
