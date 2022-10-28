@@ -66,7 +66,7 @@ const GlobalStyle = createGlobalStyle`
     --blue: hsl(206,90%,69.5%);
     background-color: var(--bg);
     a, a.logo {
-      color: black;
+      color: hsl(210deg 8% 35%);
     }
   }
   body.dark {
