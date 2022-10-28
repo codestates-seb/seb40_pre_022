@@ -30,7 +30,7 @@ public class AnswerService {
 
 
         answer.setMember(member);
-        answer.setQuestion(question);
+        answer.setQuestion(question);       // 이건 여기서 해야하나 말아야하나?? mapper에서 그냥 id만 받아서 쓰나?
 
         Vote vote = new Vote();
         vote.setAnswer(answer);

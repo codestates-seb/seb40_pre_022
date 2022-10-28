@@ -24,7 +24,7 @@ public class Answer extends Auditable {
     @Column(name = "ANSWER_BODY")
     private String body;
 
-    @JsonIgnore
+    @JsonIgnore           // 무한 참조 순환 방지 annotation
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
