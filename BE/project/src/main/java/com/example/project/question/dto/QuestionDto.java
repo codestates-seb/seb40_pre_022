@@ -107,7 +107,7 @@ public class QuestionDto {
     @NoArgsConstructor
     public static class RecommendResponseDto {
 
-        private int voteCount;
+        private long voteCount;
 
     }
 

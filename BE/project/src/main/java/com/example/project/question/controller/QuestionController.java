@@ -100,10 +100,12 @@ public class QuestionController {
 
     //8. question 추천 내리기 + 추후 추가
     @PatchMapping("/questions/vote_down/{question_Id}")
-    public ResponseEntity patchVoteDown(@PathVariable("question_Id") long questionId,
-                                        @RequestBody QuestionDto.RecommendPatchDto recommendPatchDto){
+    public ResponseEntity patchVoteDown(@PathVariable("question_Id") long questionId){
 
-        return null;
+        QuestionDto.RecommendResponseDto recommendResponseDto = new QuestionDto.RecommendResponseDto();
+        recommendResponseDto.setVoteCount(questionService.questionVoteDown(questionId));
+
+        return new ResponseEntity(new SingleResponseDto<>(recommendResponseDto), HttpStatus.OK);
     }
 
     //9. question 작성 요청
