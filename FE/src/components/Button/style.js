@@ -47,7 +47,6 @@ const Btn = styled.button`
     border-radius: 3px;
     padding: 0.8em;
     font-family: inherit;
-    user-select: none;
     text-align: center;
     font-weight: normal;
     outline: none;
