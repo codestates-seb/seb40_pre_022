@@ -4,6 +4,7 @@ import com.example.project.answer.entity.Answer;
 import com.example.project.dto.MultiResponseDto;
 import com.example.project.member.entity.Member;
 import com.example.project.question.entity.QuestionTag;
+import com.example.project.tag.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ public class QuestionDto {
         private long questionId;
         private String title;
         private String body;
-        private List<String> tags;
+        private List<QuestionTagDto> questionTags;
 
     }
 
@@ -34,7 +35,7 @@ public class QuestionDto {
 
         private String title;
         private String body;
-        private List<String> tags;
+        private List<QuestionTagDto> questionTags;
 
     }
 
@@ -60,10 +61,10 @@ public class QuestionDto {
         private String body;
         private int voteCount;
         private int viewCount;
-        private Member member;  // * 놓치지 말 것 (mapper에서 name, email, image userStatus만 담아야함 -> 생성자생성)
+        private QuestionMemberDto questionMemberDto;  // * 놓치지 말 것 (mapper에서 name, email, image userStatus만 담아야함 -> 생성자생성)
 //        private MultiResponseDto<Answer> answers;
         private List<Answer> answers;
-        private List<QuestionTag> questionTags;  // * 놓치지 말 것 (mapper에서 tagName만 담아야함 -> 생성자 생성)
+        private List<QuestionTagDto> questionTags;  // * 놓치지 말 것 (mapper에서 tagName만 담아야함 -> 생성자 생성)
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -79,8 +80,8 @@ public class QuestionDto {
         private String body;
         private int voteCount;
         private int viewCount;
-        private Member member; // * mapper에서 name, email, image만 담아야 함 -> 생성자 생성)
-        private List<QuestionTag> questionTags; // tagName만 가져오기
+        private QuestionMemberDto questionMemberDto; // * mapper에서 name, email, image만 담아야 함 -> 생성자 생성)
+        private List<QuestionTagDto> questionTags; // tagName만 가져오기
         private int answerCount;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
@@ -96,10 +97,9 @@ public class QuestionDto {
         private long questionId;
         private String title;
         private String body;
-        private List<QuestionTag> questionTags; // name만 골라오기.
+        private List<QuestionTagDto> questionTags; // name만 골라오기.
 
     }
-
 
     //질문 추천 비추천 responseDto
     @Data
@@ -109,5 +109,21 @@ public class QuestionDto {
 
         private int voteCount;
 
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class QuestionTagDto{
+        private String questionTagName;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class QuestionMemberDto{
+        private String name;
+        private String email;
+        private String imgae;
     }
 }
