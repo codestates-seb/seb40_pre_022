@@ -1,11 +1,8 @@
 package com.example.project.question.dto;
 
 import com.example.project.answer.entity.Answer;
-import com.example.project.dto.MultiResponseDto;
-import com.example.project.member.entity.Member;
-import com.example.project.question.entity.QuestionTag;
-import com.example.project.tag.Tag;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -29,6 +26,7 @@ public class QuestionDto {
 
     //질문 작성시 사용될 PostDto - checked
     @Data
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class QuestionPostDto {
