@@ -65,7 +65,7 @@ public class AnswerDto {
         private int voteCount;
         private AnswerMemberResponse member;    // answerMemberResponse를 member로 선언, Front에서 사용시 member로 사용할 수 있도록 함.
         private LocalDateTime createdAt;
-        private LocalDateTime modifiedAt;
+        private LocalDateTime updatedAt;
     }
 
     @Getter

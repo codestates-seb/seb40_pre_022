@@ -47,7 +47,7 @@ public interface AnswerMapper {
         response.setBody(answer.getBody());
         response.setVoteCount(answer.getVote().getVoteCount());
         response.setCreatedAt(answer.getCreatedAt());
-        response.setModifiedAt(answer.getModifiedAt());
+        response.setUpdatedAt(answer.getModifiedAt());
 
         return response;
     }

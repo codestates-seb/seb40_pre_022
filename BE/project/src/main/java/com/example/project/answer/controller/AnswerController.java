@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/questions")    // fixme : / 로 할지, /questions로 할지.
+@RequestMapping("/questions")
 @Validated
 @RequiredArgsConstructor
 public class AnswerController {
@@ -109,7 +109,7 @@ public class AnswerController {
 
         answerService.acceptAnswer(requestBody.getMemberId(), questionId, answerId);
 
-        // 추가 구현
+        // todo 추가 구현
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
