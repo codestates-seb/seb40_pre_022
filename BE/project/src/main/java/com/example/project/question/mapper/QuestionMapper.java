@@ -1,10 +1,12 @@
 package com.example.project.question.mapper;
 
+import com.example.project.dto.MultiResponseDto;
 import com.example.project.member.entity.Member;
 import com.example.project.question.dto.*;
 import com.example.project.question.entity.Question;
 import com.example.project.question.entity.QuestionTag;
 import org.mapstruct.Mapper;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +14,7 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
 
-    default Question questionPostDtoToQuestion(QuestionDto.QuestionPostDto questionPostDto){
+    default Question questionPostDtoToQuestion(QuestionDto.Post questionPostDto){
         Question question = new Question();
 
         question.setTitle(questionPostDto.getTitle());
@@ -31,7 +33,7 @@ public interface QuestionMapper {
         return question;
     }
 
-    default Question questionPatchDtoToQuestion(QuestionDto.QuestionPatchDto questionPatchDto){
+    default Question questionPatchDtoToQuestion(QuestionDto.Patch questionPatchDto){
         Question question = new Question();
 
         question.setQuestionId(questionPatchDto.getQuestionId());
@@ -51,8 +53,8 @@ public interface QuestionMapper {
         return question;
     };
 
-    default QuestionDto.QuestionResponseDto questionToQuestionResponseDto(Question question) {
-        QuestionDto.QuestionResponseDto questionResponseDto = new QuestionDto.QuestionResponseDto();
+    default QuestionDto.Response questionToQuestionResponseDto(Question question) {
+        QuestionDto.Response questionResponseDto = new QuestionDto.Response();
         QuestionDto.QuestionMemberDto questionMemberDto = new QuestionDto.QuestionMemberDto();
 
         Member member = question.getMember();
@@ -80,9 +82,9 @@ public interface QuestionMapper {
 
         return questionResponseDto;
     }
-    default QuestionDto.QuestionForUpdateResponseDto questionToQuestionForUpdateResponseDto(Question question){
-        QuestionDto.QuestionForUpdateResponseDto questionForUpdateResponseDto =
-                new QuestionDto.QuestionForUpdateResponseDto();
+    default QuestionDto.QuestionForUpdateResponse questionToQuestionForUpdateResponseDto(Question question){
+        QuestionDto.QuestionForUpdateResponse questionForUpdateResponseDto =
+                new QuestionDto.QuestionForUpdateResponse();
 
         questionForUpdateResponseDto.setQuestionId(question.getQuestionId());
         questionForUpdateResponseDto.setTitle(question.getTitle());
@@ -98,9 +100,9 @@ public interface QuestionMapper {
         questionForUpdateResponseDto.setQuestionTags(questionTagDtoList);
         return questionForUpdateResponseDto;
     }
-    default QuestionDto.QuestionListResponseDto questionToQuestionListResponseDto(Question question) {
-        QuestionDto.QuestionListResponseDto questionListResponseDto =
-                new QuestionDto.QuestionListResponseDto();
+    default QuestionDto.QuestionListResponse questionToQuestionListResponseDto(Question question) {
+        QuestionDto.QuestionListResponse questionListResponseDto =
+                new QuestionDto.QuestionListResponse();
         QuestionDto.QuestionMemberDto questionMemberDto = new QuestionDto.QuestionMemberDto();
 
         Member member = question.getMember();
@@ -130,10 +132,24 @@ public interface QuestionMapper {
         return questionListResponseDto;
     }
 
+    // question vote수정을 위함 - questionId와 memberId를 넣어서 question을 가공한다.
+    default Question questionVotePatchToQuestion (QuestionDto.QuestionVotePatch questionVotePatch){
+        Question question = new Question();
+        Member member = new Member();
+
+        member.setMemberId(questionVotePatch.getMemberId());
+        question.setQuestionId(questionVotePatch.getQuestionId());
+
+        question.setMember(member);
+
+        return question;
+    }
+
 
     // vote Response용 Dto mapper
-    default QuestionDto.VoteResponse questionToVoteResponse(Question question){
-        QuestionDto.VoteResponse response = new QuestionDto.VoteResponse();
+    default QuestionDto.QuestionVoteResponse questionToVoteResponse(Question question){
+        QuestionDto.QuestionVoteResponse response = new QuestionDto.QuestionVoteResponse();
+
         response.setVoteCheck(question.getVote().getVoteCheck());
         response.setVoteCount(question.getVote().getVoteCount());
 
