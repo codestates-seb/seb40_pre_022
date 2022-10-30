@@ -1,10 +1,7 @@
 package com.example.project.answer.dto;
 
 import com.example.project.member.entity.Member;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -50,9 +47,12 @@ public class AnswerDto {
     }
 
     @Getter
+    @Setter
     @AllArgsConstructor
     public static class AcceptPatch{
         private long memberId;
+        private long questionId;
+        private long answerId;
     }
 
     @Getter
@@ -63,6 +63,7 @@ public class AnswerDto {
         private long answerId;
         private String body;
         private int voteCount;
+        private int isAccepted;                 // 답변 채택 여부
         private AnswerMemberResponse member;    // answerMemberResponse를 member로 선언, Front에서 사용시 member로 사용할 수 있도록 함.
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
@@ -85,5 +86,12 @@ public class AnswerDto {
         private String name;
         private String email;
         private String image;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class AcceptResponse {
+        private int isAccepted;
     }
 }
