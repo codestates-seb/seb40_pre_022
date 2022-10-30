@@ -2,7 +2,6 @@ package com.example.project.controller;
 
 import com.example.project.question.dto.QuestionDto;
 import com.example.project.question.mapper.QuestionMapper;
-import com.example.project.question.repository.QuestionRepository;
 import com.example.project.question.service.QuestionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -11,12 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -29,13 +26,10 @@ class QuestionControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Autowired
     private QuestionService questionService;
 
-    @MockBean
-    private QuestionRepository questionRepository;
-
-    @MockBean
+    @Autowired
     private QuestionMapper questionMapper;
 
     @Autowired
