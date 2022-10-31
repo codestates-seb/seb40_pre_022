@@ -23,7 +23,8 @@ public class MemberController {
     }
 
     //로그인은 컨트롤러로 빼기,
-    //1. 회원가입
+
+    //1. 회원가입 checked v
     @PostMapping("/signup")
     public ResponseEntity postMember(@RequestBody MemberDto.Post memberPostDto){
 

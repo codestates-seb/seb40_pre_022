@@ -20,7 +20,7 @@ public class MemberService {
 
 
 
-    // 1. 회원가입
+    // 1. 회원가입 - checked v
     public Member createMember(Member member){
 
         verifyExistMember(member.getEmail());

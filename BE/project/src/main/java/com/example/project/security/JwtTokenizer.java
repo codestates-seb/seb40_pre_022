@@ -17,7 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
-// 환경변수 설정만 알아보기.
+// 인증 성공 후 JWT발급, 발급 후 요청마다 검증
 @Component
 public class JwtTokenizer{
 
@@ -78,6 +78,16 @@ public class JwtTokenizer{
 
         return claimsJws;
     }
+
+    public void verifySignature(String jws, String base64EncodedSecretKey) {
+        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+
+        Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(jws);
+    }
+
 
     public Date getTokenExpiration(int expirationMinutes){
         Calendar calendar = Calendar.getInstance();

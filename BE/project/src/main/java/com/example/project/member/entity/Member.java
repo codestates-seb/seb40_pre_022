@@ -37,7 +37,7 @@ public class Member extends Auditable {
     private String password;
 
     // 멤버의 권환을 저장할 리스트.
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
     // 멤버의 현 상태

@@ -10,11 +10,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Optional;
 
-//db에서 멤버 정보를 검색하여 security에 사용할 "유저 정보를 등록하기 위한" 클래스
+//db에서 크레덴셜 조회, 권한정보 더해서 MemberDetail생성 (repository에서 정보, authorityutil을 통해 권한정보)
 @Component
 @RequiredArgsConstructor
 public class MemberDetailsService implements UserDetailsService {
@@ -29,6 +30,8 @@ public class MemberDetailsService implements UserDetailsService {
 
         return new MemberDetails(findMember);
     }
+
+    // 인증된 멤버의 정보. 멤버(엔티티) / 유저디테일(인증된 정보를 담는 객체)
     private final class MemberDetails extends Member implements UserDetails{
 
         MemberDetails(Member member){
@@ -38,6 +41,7 @@ public class MemberDetailsService implements UserDetailsService {
             setRoles(member.getRoles());
         }
 
+        // UserDetails의 권한정보 생성
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
             return authorityUtils.createAuthorities(this.getRoles());
