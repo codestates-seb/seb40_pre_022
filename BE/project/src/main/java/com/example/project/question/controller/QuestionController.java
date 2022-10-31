@@ -1,5 +1,7 @@
 package com.example.project.question.controller;
 
+import com.example.project.dto.MultiResponseDto;
+import com.example.project.dto.SingleResponseDto;
 import com.example.project.question.dto.QuestionDto;
 import com.example.project.question.entity.Question;
 import com.example.project.question.mapper.QuestionMapper;
@@ -29,11 +31,11 @@ public class QuestionController {
                                                   @RequestParam int size){
 
         Page<Question> result = questionService.findQuestionsByViewCount(page-1, size);
-        List<QuestionDto.QuestionResponseDto> lists = result.getContent().stream()
-                .map(list -> mapper.QuestionToQuestionResponseDto(list))
+        List<QuestionDto.QuestionListResponseDto> lists = result.getContent().stream()
+                .map(list -> mapper.QuestionToQuestionListResponseDto(list))
                 .collect(Collectors.toList());
 
-        return new ResponseEntity(lists, HttpStatus.OK);
+        return new ResponseEntity(new MultiResponseDto<>(lists, result), HttpStatus.OK);
     }
 
     //2. all question 목록 제공
@@ -42,11 +44,11 @@ public class QuestionController {
                                        @RequestParam int size){
 
         Page<Question> result = questionService.findQuestions(page-1, size);
-        List<QuestionDto.QuestionResponseDto> lists = result.getContent().stream()
-                .map(list -> mapper.QuestionToQuestionResponseDto(list))
+        List<QuestionDto.QuestionListResponseDto> lists = result.getContent().stream()
+                .map(list -> mapper.QuestionToQuestionListResponseDto(list))
                 .collect(Collectors.toList());
 
-        return new ResponseEntity(lists, HttpStatus.OK);
+        return new ResponseEntity(new MultiResponseDto<>(lists, result), HttpStatus.OK);
     }
 
     //3. 검색결과 페이지 url 토의 후 수정하기
@@ -64,7 +66,7 @@ public class QuestionController {
 
         Question result = questionService.findQuestion(questionId);
 
-        return new ResponseEntity(result, HttpStatus.OK);
+        return new ResponseEntity(new SingleResponseDto<>(mapper.QuestionToQuestionResponseDto(result)), HttpStatus.OK);
     }
 
     //5. question 수정을 위한 글 불러오기
@@ -73,7 +75,7 @@ public class QuestionController {
 
         Question result = questionService.findQuestionForUpdate(questionId);
 
-        return new ResponseEntity(result, HttpStatus.OK);
+        return new ResponseEntity(new SingleResponseDto<>(mapper.QuestionToQuestionForUpdateResponseDto(result)), HttpStatus.OK);
     }
 
     //6. question 수정
@@ -83,13 +85,13 @@ public class QuestionController {
 
         Question result = questionService.updateQuestion(mapper.QuestionPatchDtoToQuestion(questionPatchDto));
 
-        return new ResponseEntity(result, HttpStatus.OK);
+        return new ResponseEntity(new SingleResponseDto<>(mapper.QuestionToQuestionResponseDto(result)), HttpStatus.OK);
     }
 
     //7. question 추천 올리기 + 추후 추가
     @PatchMapping("/questions/vote_up/{question_Id}")
     public ResponseEntity patchVoteUp(@PathVariable("question_Id") long questionId,
-                                    @RequestBody QuestionDto.RecommendPatchDto recommendPatchDto){
+                                      @RequestBody QuestionDto.RecommendPatchDto recommendPatchDto){
 
         return null;
     }
@@ -108,7 +110,7 @@ public class QuestionController {
 
         Question result = questionService.createQuestion(mapper.QuestionPostDtoToQuestion(questionPostDto));
 
-        return new ResponseEntity(result, HttpStatus.CREATED);
+        return new ResponseEntity(new SingleResponseDto<>(mapper.QuestionToQuestionResponseDto(result)), HttpStatus.CREATED);
     }
 
     //10. question 삭제 요청

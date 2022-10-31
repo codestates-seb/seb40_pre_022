@@ -59,7 +59,8 @@ public class AnswerDto {
         private long answerId;
         private String body;
         private int voteCount;    // voteCount를 주면되나?
-        private MemberDto.OtherResponse member;
+        private Member member;
+//        private MemberDto.OtherResponse member;
         // member를 그대로 보내는 것은 Entity를 보내는 것이므로, 위와 같이 처리함.
 
 
