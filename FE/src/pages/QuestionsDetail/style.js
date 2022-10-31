@@ -8,7 +8,7 @@ const PageContainer = styled.section`
 
 const PostContainer = styled.div`
   padding: 24px;
-  width: 900px; //나중에 변경
+  width: 100%;
 `;
 
 export { PageContainer, PostContainer };

@@ -1,9 +1,15 @@
 package com.example.project.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class MultiResponseDto<T> {
     private List<T> data;
     private PageInfo pageInfo;
