@@ -9,13 +9,16 @@ import {
   PostMenu,
   UserInfo,
   UserInfoText,
+  TagContainer,
 } from "./style";
 import VoteBtn from "../VoteBtn";
 import ContentViewer from "../ContentViewer";
 import DetailUserProfile from "../DetailUserProfile";
+import { Button } from "../Button";
+import { TagWrapper } from "../CreateAnswer/style";
 
-const DetailPost = () => {
-  let markdown = `
+const DetailPost = ({ answer, answerer }) => {
+  let question = `
   # 헤딩
   **굵게**
 \`\`\`
@@ -26,14 +29,27 @@ const DetailPost = () => {
 
   `;
   return (
-    <PostLayout>
+    <PostLayout className={answer ? "answer" : null}>
       <LayoutLeft>
         <VoteBtn />
       </LayoutLeft>
       <LayoutRight>
         <PostBody>
-          <ContentViewer markdown={markdown} />
+          <ContentViewer markdown={answer || question} />
         </PostBody>
+        {answer ? null : (
+          <TagContainer>
+            <TagWrapper>
+              <Button primary={false} label='javascript' Tagged='Tagged' />
+            </TagWrapper>
+            <TagWrapper>
+              <Button primary={false} label='reactjs' Tagged='Tagged' />
+            </TagWrapper>
+            <TagWrapper>
+              <Button primary={false} label='css' Tagged='Tagged' />
+            </TagWrapper>
+          </TagContainer>
+        )}
         <InfoContainer>
           <PostMenuContainer>
             <PostMenu>Share</PostMenu>
@@ -43,7 +59,7 @@ const DetailPost = () => {
           <UserInfo className='edit'>
             <UserInfoText>edited 3 hours ago</UserInfoText>
           </UserInfo>
-          <DetailUserProfile />
+          <DetailUserProfile answerer={answerer} />
         </InfoContainer>
       </LayoutRight>
     </PostLayout>

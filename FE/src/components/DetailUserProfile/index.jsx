@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { UserInfo, UserInfoText, InfoContainer } from "../DetailPost/style";
 import { UserInfoItem } from "./style";
 
-const DetailUserProfile = () => {
+const DetailUserProfile = ({ answerer }) => {
+  const questioner = "hongdahee";
   return (
     <UserInfo>
       <UserInfoText>asked 3 hours ago</UserInfoText>
@@ -15,7 +16,11 @@ const DetailUserProfile = () => {
           </UserInfoItem>
         </Link>
         <Link to='/mypage'>
-          <UserInfoItem className='user-name'>Dahee Hong</UserInfoItem>
+          {
+            <UserInfoItem className='user-name'>
+              {answerer || questioner}
+            </UserInfoItem>
+          }
         </Link>
       </InfoContainer>
     </UserInfo>

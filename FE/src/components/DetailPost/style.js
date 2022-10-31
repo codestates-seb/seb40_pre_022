@@ -1,8 +1,13 @@
 import styled from "styled-components";
+import { flexColumn } from "../../styles";
 
 const PostLayout = styled.div`
   display: grid;
   grid-template-columns: max-content 1fr;
+  padding: 1em 0;
+  &.answer {
+    border-bottom: 1px solid hsl(210deg 8% 90%);
+  }
 `;
 
 const LayoutLeft = styled.div`
@@ -15,6 +20,8 @@ const LayoutRight = styled.div`
   grid-column: 2;
   width: auto;
   min-width: 0;
+  ${flexColumn}
+  justify-content: space-between;
 `;
 
 const PostBody = styled.div`
@@ -61,6 +68,10 @@ const UserInfoText = styled.div`
   font-size: 12px;
 `;
 
+const TagContainer = styled.div`
+  margin: 1.5em 0;
+`;
+
 export {
   PostLayout,
   LayoutLeft,
@@ -71,4 +82,5 @@ export {
   PostMenu,
   UserInfo,
   UserInfoText,
+  TagContainer,
 };

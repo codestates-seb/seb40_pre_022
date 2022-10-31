@@ -5,7 +5,7 @@ import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { Button } from "../../../components/Button";
 
-const Leftsidebar = () => {
+const QuestionHeader = () => {
   const itemList = ["Newest", "Votes", "Views", "Unanwsered"];
   const Questions = "0 quesions";
 

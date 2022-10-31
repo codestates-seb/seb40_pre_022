@@ -7,6 +7,7 @@ import {
   AnswerMainTitle,
   BtnContainer,
   AnswerText,
+  TagWrapper,
 } from "./style";
 import ContentEditor from "../ContentEditor";
 
@@ -21,9 +22,18 @@ const CreateAnswer = () => {
         </BtnContainer>
       </AnswerForm>
       <AnswerText>
-        Browse other questions tagged tag1 tag2 tag3 or
+        Browse other questions tagged
+        <TagWrapper>
+          <Button label='javascript' Tagged='Tagged' />
+        </TagWrapper>
+        <TagWrapper>
+          <Button label='reactjs' Tagged='Tagged' />
+        </TagWrapper>
+        <TagWrapper>
+          <Button label='css' Tagged='Tagged' />
+        </TagWrapper>
         <Link to='/question/ask' className='link'>
-          {" " + "ask your own question."}
+          ask your own question.
         </Link>
       </AnswerText>
     </AnswerContainer>

@@ -6,6 +6,7 @@ const SidebarContainer = styled.aside`
   padding-top: 24px;
   position: sticky;
   top: 0;
+  border-right: 1px solid hsl(210deg 8% 90%);
   @media screen and (max-width: 640px) {
     display: none;
   }
