@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
+    Optional<Question> findByTitleContaining(String keyword);
+    Optional<Question> findByBodyContaining(String keyword);
 }

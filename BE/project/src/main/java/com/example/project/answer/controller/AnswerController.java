@@ -5,7 +5,6 @@ import com.example.project.answer.entity.Answer;
 import com.example.project.answer.mapper.AnswerMapper;
 import com.example.project.answer.service.AnswerService;
 import com.example.project.dto.SingleResponseDto;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +26,7 @@ public class AnswerController {
     @PostMapping("/{questionId}/answers")
     public ResponseEntity postAnswer(@PathVariable long questionId,
             @Valid @RequestBody AnswerDto.Post requestBody){
+        requestBody.setQuestionId(questionId);
         Answer answer = mapper.answerPostToAnswer(requestBody);
 
         Answer createdAnswer = answerService.createAnswer(answer);
@@ -42,7 +42,10 @@ public class AnswerController {
                                       @PathVariable long answerId,
                                       @Valid @RequestBody AnswerDto.Patch requestBody){
         requestBody.setAnswerId(answerId);
-        Answer answer = answerService.updateAnswer(mapper.answerPatchToAnswer(requestBody));
+        Answer answer = answerService.updateAnswer(
+                mapper.answerPatchToAnswer(requestBody),
+                requestBody.getMemberId()       // 지금 수정하려는 사람의 memberId.
+                );
 
         AnswerDto.Response response = mapper.answerToAnswerResponse(answer);
         return new ResponseEntity<>(
@@ -62,33 +65,36 @@ public class AnswerController {
         );
     }
 
-    // 추천하려는 member,
-    //
-    // 3. 답변 추천 up,     미구현
-    @PatchMapping("/{questionId}/answers/vote-up/{answerId}")
+    // 3. 답변 추천 down
+    @PatchMapping("/{questionId}/answers/vote_up/{answerId}")
     public ResponseEntity patchAnswerVoteUp(@PathVariable long questionId,
                                           @PathVariable long answerId,
-                                          @Valid @RequestBody AnswerDto.VotePatch requestBody){
-        answerService.voteUp(requestBody.getMemberId(), answerId);
+                                          @Valid @RequestBody AnswerDto.AnswerVotePatch requestBody){
+        // Dto에 answerId를 담음.
+        requestBody.setAnswerId(answerId);
+        // Dto를 그대로 넘겨서 Service에서 가공함.
+        Answer answer = answerService.answerVoteUp(requestBody);
 
-        // fixme. 뭔가 리팩토링 해야할 느낌임. (question에서도 voteUp 사용..)
-
-        // todo . 추가 구현
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.answerToVoteResponse(answer)), HttpStatus.OK
+        );
     }
 
-    // 4. 답변 추천 down,      미구현
-    @PatchMapping("/{questionId}/answers/vote-down/{answerId}")
+    // 4. 답번 비추천 down
+    @PatchMapping("/{questionId}/answers/vote_down/{answerId}")
     public ResponseEntity patchAnswerVoteDown(@PathVariable long questionId,
-                                          @PathVariable long answerId,
-                                          @Valid @RequestBody AnswerDto.VotePatch requestBody){
-        answerService.voteDown(requestBody.getMemberId(), answerId);
+                                            @PathVariable long answerId,
+                                            @Valid @RequestBody AnswerDto.AnswerVotePatch requestBody){
+        // Dto에 answerId를 담음.
+        requestBody.setAnswerId(answerId);
+        // Dto를 그대로 넘겨서 Service에서 가공함.
+        Answer answer = answerService.answerVoteDown(requestBody);
 
-        // todo . 추가 구현
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.answerToVoteResponse(answer)), HttpStatus.OK
+        );
     }
+
 
     // 5. 답변 채택
     // (ㄱ) 채택하려는 member,

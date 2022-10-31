@@ -17,16 +17,17 @@ import java.util.List;
 public class Tag extends Auditable {
 
     @Id
+    @Column(name = "TAG_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tagId;
+    private long tagId;
 
-    @Column
-    private String name;
+    @Column(name = "TAG_NAME")
+    private String tagName;
 
-    @Column
-    private Integer usageCount;
+    @Column(name = "TAG_COUNT")
+    private int usageCount;
 
-    //태그 별로 사용된 태그의 리스트를 저장한다.
+    //태그 분류별로 사용된 태그의 리스트를 저장한다.
     @OneToMany(mappedBy = "tag")
     private List<QuestionTag> questionTags = new ArrayList<>();
 
