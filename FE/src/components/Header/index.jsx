@@ -1,16 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { Wrapper, Container } from './style'
+import { Wrapper, Container, ProductsBox, ProductsDropBox, SearchBox, SearchInnerBox, SearchDropBox } from './style'
 import { HEADER_PRODUCTS , HEADER_ICONS, SEARCH_TOOLTIPS } from '../../constants/header';
+import { Button } from '@components/Button';
 
 const Header = () => {
   return (
     <Wrapper>
       <Container>
-        <Link to='/'>stack<strong>overflow</strong></Link>
-        <div>
-          <button>Products</button>
-          <ul>
+        <Link className='logo' to='/'><span>stack overflow</span></Link>
+        <ProductsBox>
+          <Button label='Products'>Products</Button>
+          <ProductsDropBox>
             {
             HEADER_PRODUCTS.map((product, i)=>{
               const { title, detail } = product
@@ -21,12 +22,13 @@ const Header = () => {
                 </li>
               )
             })}
-          </ul>
-        </div>
-        <div>
-          <div>
+            <li><Link>About the company</Link></li>
+          </ProductsDropBox>
+        </ProductsBox>
+        <SearchBox>
+          <SearchInnerBox>
               <input type='text' placeholder='Search...' />
-              <ul>
+              <SearchDropBox>
               {SEARCH_TOOLTIPS.map((tooltip, i)=>{
                 const { title, detail } = tooltip
                   return (
@@ -37,12 +39,12 @@ const Header = () => {
                     )
               })}
               <li>
-                  <button>Ask a question</button>
+                  <Button label='Products' size='small'>Ask a questio</Button>
                   <Link>Search help</Link>
               </li>
-              </ul>
-          </div>
-        </div>
+              </SearchDropBox>
+          </SearchInnerBox>
+        </SearchBox>
         <ul>
           {
           HEADER_ICONS.map((icons, i)=>{
