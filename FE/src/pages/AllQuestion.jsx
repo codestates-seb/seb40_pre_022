@@ -1,12 +1,12 @@
 import React from "react";
+import Layout from "../components/Layout";
 import Leftsidebar from "../components/Leftsidebar";
 
 const AllQuestion = () => {
   return (
-    <>
-      <Leftsidebar />
+    <Layout>
       <div>AllQuestion</div>
-    </>
+    </Layout>
   );
 };
 
