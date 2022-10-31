@@ -1,4 +1,4 @@
-package com.example.project.security;
+package com.example.project.security.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -68,6 +68,7 @@ public class JwtTokenizer{
                 .compact();
     }
 
+    // claim 정보를 얻기 위한 메서드
     public Jws<Claims> getClaims(String jws, String base64EncodedSecretKey) {
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
 
