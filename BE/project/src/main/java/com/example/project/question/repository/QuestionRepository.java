@@ -10,7 +10,4 @@ import java.util.Optional;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-    Page<Question> findByTitleContaining(String keyword, Pageable pageable);
-    Page<Question> findByBodyContaining(String keyword, Pageable pageable);
-    Page<Question> findByTagContaining(String keyword, Pageable pageable);
 }

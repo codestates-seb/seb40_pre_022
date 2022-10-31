@@ -13,7 +13,7 @@ public class MemberDto {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class MemberPostDto{
+    public static class Post{
 
         private String name;
         @Email
@@ -24,7 +24,7 @@ public class MemberDto {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class MemberPatchDto{
+    public static class Patch{
         private long memberId;
         private String name;
         private String password;
@@ -33,7 +33,7 @@ public class MemberDto {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class MemberResponseDto{
+    public static class Response{
         private long memberId;
         private String name;
         private String email;
