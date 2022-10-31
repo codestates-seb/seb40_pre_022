@@ -1,13 +1,16 @@
 package com.example.project.security;
 
 import com.example.project.security.auth.JwtAuthenticationFilter;
+import com.example.project.security.auth.JwtVerificationFilter;
 import com.example.project.security.utils.JwtTokenizer;
+import com.example.project.security.utils.MemberAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -33,6 +36,8 @@ public class SecurityConfiguration {
                 .and()
                 .csrf().disable() // 로컬테스트시에만.
                 .cors(withDefaults()) // corsConfigurationSource bean을 이용함 = cors필터 적용
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .formLogin().disable() // csr 방식이기 때문에.
                 .httpBasic().disable() // 토큰을 이용할것이기 때문에. basic은 header에 id/pw 다 줌
                 .apply(new CustomFilterConfigurer())
@@ -67,12 +72,16 @@ public class SecurityConfiguration {
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager =
                     builder.getSharedObject(AuthenticationManager.class);
+            MemberAuthorityUtils authorityUtils = new MemberAuthorityUtils(); // **맞는지는 모르겠지만, 추가함 파라미터로 넘기기 위해
 
             JwtAuthenticationFilter jwtAuthenticationFilter =
                     new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
             jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
-            builder.addFilter(jwtAuthenticationFilter);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+
+            builder.addFilter(jwtAuthenticationFilter)
+                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class); ;
         }
     }
 }
