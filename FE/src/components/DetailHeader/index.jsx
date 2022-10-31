@@ -9,14 +9,17 @@ import {
 } from "./style";
 import { Button } from "../Button";
 import { DETAIL_HEADER_INFO } from "../../constants";
+import { Link } from "react-router-dom";
 
 const DetailHeader = () => {
   return (
     <>
       <HeaderContainer>
         <QuestionHeader>
-          <QuestionTitle>제목입니다.</QuestionTitle>
-          <Button label='Ask Question' size='header-size' />
+          <QuestionTitle>Title</QuestionTitle>
+          <Link to='/question/ask'>
+            <Button label='Ask Question' size='header-size' />
+          </Link>
         </QuestionHeader>
       </HeaderContainer>
       <InfoWrapper>
