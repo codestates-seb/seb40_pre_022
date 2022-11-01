@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -46,7 +47,10 @@ public class QuestionService {
     //3 키워드별 question 조회 + 추후 추가
     public Page<Question> findQuestionByKeyword(String keyword, int page, int size){
         // 1. keyword로 레포지터리에서 검색한다.
-        // 2. 정보를 싸그리 가져다가 viewCount순으로 정렬한다??
+
+        // 2. 중복을 제거한다 set
+
+        // 3. 합친다.
         return null;
     }
 
@@ -92,32 +96,34 @@ public class QuestionService {
     }
 
     //7,8 질문 추천 올리기 내리기 + 추후 작성
-    public Question questionVoteUp(QuestionDto.QuestionVotePatch dto){
+
+    public Question questionVoteUp(Question question){
 
         //1. 현재 로그인 한 사람의 정보 - 로그인 구현시 수정 필**
-        //2. 존재하는 멤버인지 확인하기 - 현재는 스텁 데이터 이용 중 (dto에 memberId 담아옴)
+        //2. 존재하는 멤버인지 확인하기 - 현재는 dto에 memberId 담아옴
         //3. 질문존재 확인 후 가져오기
-        Question question = findVerifiedQuestion(dto.getQuestionId());
+        Question findQuestion = findVerifiedQuestion(question.getQuestionId());
 
         //4. 로그인한 사람의 정보와 대조해서 count 계산
-        voteUpCase(question, dto.getMemberId());
+        voteUpCase(findQuestion, question.getMember().getMemberId());
 
         //5. votemap 최신화를 위한 저장 - 이래야 값들이 저장됨
-        return questionRepository.save(question);
+        return questionRepository.save(findQuestion);
     }
 
-    public Question questionVoteDown(QuestionDto.QuestionVotePatch dto){
+    public Question questionVoteDown(Question question){
 
         //1. 현재 로그인 한 사람의 정보 - 로그인 구현시 수정 필**    => dto에 memberId 포함시켜두긴 했는데..
         //2. 존재하는 멤버인지 확인하기 - 현재는 스텁 데이터 이용 중
         //3. 질문존재 확인 후 가져오기
-        Question question = findVerifiedQuestion(dto.getQuestionId());
+
+        Question findQuestion = findVerifiedQuestion(question.getQuestionId());
 
         //4. 로그인한 사람의 정보와 대조해서 count 계산
-        voteDownCase(question, dto.getMemberId());
+        voteDownCase(findQuestion, question.getMember().getMemberId());
 
         //5. votemap 최신화를 위한 저장 - 이래야 값들이 저장된다.
-        return questionRepository.save(question); // 저장한다.
+        return questionRepository.save(findQuestion); // 저장한다.
     }
 
     //9 question 생성
