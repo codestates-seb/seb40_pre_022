@@ -109,6 +109,7 @@ public class AnswerService {
     }
 
     // 6. Answer이 실제 DB에 존재하는지 검증
+    @Transactional(readOnly = true)
     public Answer findVerifiedAnswer(long answerId){
         Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
         Answer findAnswer = optionalAnswer.orElseThrow(()->
