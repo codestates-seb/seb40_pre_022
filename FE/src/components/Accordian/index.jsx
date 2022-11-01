@@ -1,13 +1,22 @@
 import React, { useState } from "react";
-import { AskRight, RoleContainer, Title, Content, Ol, Ul } from "./style";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+
+import {
+  AskRightAside,
+  AskStep,
+  RoleContainer,
+  Title,
+  Content,
+  Ol,
+  Ul,
+} from "./style";
 
 const step1_1 = [
   {
     title: "1. Summarize the problem",
     content: [
-      "Include details about your goal",
-      "Describe expected and actual results",
-      "Include any error messages",
+      "Include details about your goal\nDescribe expected and actual results\nInclude any error messages",
     ],
   },
   {
@@ -24,7 +33,7 @@ const step1_1 = [
   },
 ];
 
-const QuestionAskRight = () => {
+const Accordian = () => {
   const [select, setSelect] = useState(false);
 
   const clicked = (idx) => {
@@ -36,8 +45,8 @@ const QuestionAskRight = () => {
   };
 
   return (
-    <>
-      <AskRight>
+    <AskRightAside>
+      <AskStep>
         <RoleContainer>
           <Title>Step 1: Draft your question</Title>
           <Content>
@@ -50,7 +59,14 @@ const QuestionAskRight = () => {
               return (
                 <Ol key={idx} onClick={(e) => clicked(idx)}>
                   <li className='li-content'>
-                    <div className='li-title-logo'>{el.title}</div>
+                    <div className='li-title-logo'>
+                      {el.title}
+                      {select === idx ? (
+                        <FontAwesomeIcon icon={faChevronUp} />
+                      ) : (
+                        <FontAwesomeIcon icon={faChevronDown} />
+                      )}
+                    </div>
                     <div>
                       {el.content.map((el, idx2) => {
                         return (
@@ -68,9 +84,9 @@ const QuestionAskRight = () => {
             })}
           </Content>
         </RoleContainer>
-      </AskRight>
-    </>
+      </AskStep>
+    </AskRightAside>
   );
 };
 
-export default QuestionAskRight;
+export default Accordian;

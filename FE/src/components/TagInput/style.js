@@ -1,9 +1,5 @@
 import styled, { css } from "styled-components";
 
-export const Container = styled.div`
-  /* margin-bottom: 30px; */
-`;
-
 export const HashTagContainer = styled.div`
   position: relative;
   display: flex;
@@ -20,19 +16,13 @@ export const HashTagContainer = styled.div`
     border: none;
 
     &::placeholder {
-      color: var(--black-300);
+      color: rgb(133, 133, 133);
     }
 
     &:focus {
       outline: none;
     }
   }
-`;
-
-export const SLabel = styled.label`
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
 `;
 
 export const HashTags = styled.div`

@@ -13,11 +13,12 @@ import {
   EditInput,
   TagsContainer,
   BtnBox,
+  TagTitle,
 } from "./style";
 
 const QuestionEdit = () => {
   const [tagInput, setTagInput] = useState("");
-  const [tagArr, setTagArr] = useState(["java", "react"]);
+  const [tagArr, setTagArr] = useState(["javascript", "react"]);
 
   const handleTagInputOnKeyUp = useCallback(
     (e) => {
@@ -56,6 +57,7 @@ const QuestionEdit = () => {
           <ContentEditor></ContentEditor>
           <ContentViewer></ContentViewer>
           <TagsContainer>
+            <TagTitle>Tags</TagTitle>
             <TagInput
               value={tagInput}
               tagArr={tagArr}
@@ -69,7 +71,7 @@ const QuestionEdit = () => {
           <EditInput placeholder='briefly explain your changes (corrected spelling, fixed grammar, improved formatting)'></EditInput>
           <BtnBox>
             <Button label='Save edits'></Button>
-            <Button label='Cancel'></Button>
+            <Button primary='Linkbutton' label='Cancel'></Button>
           </BtnBox>
         </EditBox>
         <EditSidebar></EditSidebar>
