@@ -4,7 +4,7 @@ import { flexCenter } from "../../styles/index";
 export const Wrapper = styled.div`
   ${flexCenter}
   flex-direction: column;
-  min-width: 260px;
+  min-width: 280px;
   margin: 0 auto;
   .logo span {
     display: block;
@@ -20,7 +20,24 @@ export const Wrapper = styled.div`
 
 export const FormWrap = styled.div`
   width: 100%;
+  padding: 24px;
   border-radius: 5px;
   background: #fff;
   border: 1px solid var(--lightgray);
+  button {
+    width: 100%;
+  }
+`;
+
+export const Info = styled.ul`
+  margin-top: 50px;
+  font-size: 0.8rem;
+  text-align: center;
+  li {
+    margin-bottom: 15px;
+    a {
+      font-weight: 700;
+      color: var(--darkblue);
+    }
+  }
 `;
