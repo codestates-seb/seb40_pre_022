@@ -6,7 +6,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create  # (1) ??? ?? ??
+      ddl-auto: validate  # validate로 Entity-Table 매핑이 제대로 되어있는지만 확인함.
     show-sql: true      # (2) SQL ?? ??
     properties:
       hibernate:
