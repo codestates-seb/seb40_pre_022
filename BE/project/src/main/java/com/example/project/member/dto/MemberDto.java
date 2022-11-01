@@ -8,12 +8,11 @@ import javax.validation.constraints.NotBlank;
 @Getter
 
 public class MemberDto {
-
     @Data
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class MemberPostDto{
+    public static class Post{
 
         @NotBlank
         private String name;
@@ -27,7 +26,7 @@ public class MemberDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class MemberPatchDto{
+    public static class Patch{
         private long memberId;
         @NotBlank
         private String name;
@@ -38,7 +37,7 @@ public class MemberDto {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class MemberResponseDto{
+    public static class Response{
         private long memberId;
         private String name;
         private String email;

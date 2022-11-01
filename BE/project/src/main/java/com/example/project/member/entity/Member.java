@@ -3,7 +3,9 @@ package com.example.project.member.entity;
 import com.example.project.answer.entity.Answer;
 import com.example.project.audit.Auditable;
 import com.example.project.question.entity.Question;
+
 import lombok.*;
+
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,16 +35,22 @@ public class Member extends Auditable {
     @Column(name = "MEMBER_PASSWORD")
     private String password;
 
+    // 멤버의 권환을 저장할 리스트.
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
+
     // 멤버의 현 상태
     @Enumerated(value = EnumType.STRING)
     @Column
     private MemberStatus memberStatus = MemberStatus.MEMBER_ACTIVE;
 
     // 이 사람이 쓴 질문들
+    @JsonIgnore
     @OneToMany(mappedBy = "member")
     private List<Question> questions = new ArrayList<>();
 
     // 이 사람이 쓴 답변들
+    @JsonIgnore
     @OneToMany(mappedBy = "member")
     private List<Answer> answers = new ArrayList<>();
 
@@ -84,5 +92,11 @@ public class Member extends Auditable {
             this.status = status;
             this.message = message;
         }
+    }
+
+    // 멤버의 권한 정보목록
+    public enum MemberRole{
+        ROLE_USER,
+        ROLE_ADMIN
     }
 }

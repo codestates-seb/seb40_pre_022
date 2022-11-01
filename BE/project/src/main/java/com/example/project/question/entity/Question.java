@@ -4,6 +4,7 @@ package com.example.project.question.entity;
 import com.example.project.answer.entity.Answer;
 import com.example.project.audit.Auditable;
 import com.example.project.member.entity.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.example.project.vote.Vote;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,15 +42,18 @@ public class Question extends Auditable {
     private Vote vote;
 
     //질문을 작성한 사람
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     //질문이 가지고 있는 사용된 태그들
+    @JsonIgnore
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<QuestionTag> questionTags = new ArrayList<>();
 
     //질문에 달린 답변들
+    @JsonIgnore
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<Answer> answers = new ArrayList<>();
 

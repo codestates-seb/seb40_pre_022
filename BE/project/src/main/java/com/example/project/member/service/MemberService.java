@@ -2,23 +2,36 @@ package com.example.project.member.service;
 
 import com.example.project.member.entity.Member;
 import com.example.project.member.repository.MemberRepository;
+import com.example.project.security.utils.MemberAuthorityUtils;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final MemberAuthorityUtils authorityUtils;
 
-    public MemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
 
-    // 1. 회원가입
+
+    // 1. 회원가입 - checked v
     public Member createMember(Member member){
-        findExistMember(member.getMemberId());
+
+        verifyExistMember(member.getEmail());
         //2. 비밀번호 암호화
+        String encyptedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encyptedPassword);
+
+        //3. Role DB에 저장
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
+
         return memberRepository.save(member);
     }
 
@@ -52,7 +65,7 @@ public class MemberService {
     }
 
     // 멤버가 존재하는지 여부. 존재시 에러 던짐
-    public void VerifyExistMember(String email){
+    public void verifyExistMember(String email){
         Optional<Member> member = memberRepository.findByEmail(email);
         if(member.isPresent())
             throw new RuntimeException();

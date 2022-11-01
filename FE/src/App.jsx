@@ -8,6 +8,7 @@ import MyPage from "./pages/MyPage";
 import QuestionAsk from "./pages/QuestionAsk";
 import AllQuestion from "./pages/AllQuestion";
 import QuestionsDetail from "./pages/QuestionsDetail";
+import QuestionEdit from "./pages/QuestionEdit";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path='/join' element={<Join />}></Route>
             <Route path='/question' element={<AllQuestion />}></Route>
             <Route path='/question/ask' element={<QuestionAsk />}></Route>
+            <Route path='/question/edit' element={<QuestionEdit />}></Route>
             <Route path='/mypage' element={<MyPage />}></Route>
             <Route
               path='/question/detail'

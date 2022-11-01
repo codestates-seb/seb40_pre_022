@@ -1,29 +1,31 @@
 package com.example.project.question.controller;
 
+import com.example.project.answer.entity.Answer;
+import com.example.project.answer.service.AnswerService;
 import com.example.project.dto.MultiResponseDto;
 import com.example.project.dto.SingleResponseDto;
 import com.example.project.question.dto.QuestionDto;
 import com.example.project.question.entity.Question;
 import com.example.project.question.mapper.QuestionMapper;
 import com.example.project.question.service.QuestionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@Validated
+@RequiredArgsConstructor
 public class QuestionController {
 
     private final QuestionService questionService;
     private final QuestionMapper mapper;
-
-    public QuestionController(QuestionService questionService, QuestionMapper mapper) {
-        this.questionService = questionService;
-        this.mapper = mapper;
-    }
 
     //1. 메인페이지
     @GetMapping
@@ -31,7 +33,7 @@ public class QuestionController {
                                                   @RequestParam int size){
 
         Page<Question> result = questionService.findQuestionsByViewCount(page-1, size);
-        List<QuestionDto.QuestionListResponseDto> lists = result.getContent().stream()
+        List<QuestionDto.QuestionListResponse> lists = result.getContent().stream()
                 .map(list -> mapper.questionToQuestionListResponseDto(list))
                 .collect(Collectors.toList());
 
@@ -44,7 +46,7 @@ public class QuestionController {
                                        @RequestParam int size){
 
         Page<Question> result = questionService.findQuestions(page-1, size);
-        List<QuestionDto.QuestionListResponseDto> lists = result.getContent().stream()
+        List<QuestionDto.QuestionListResponse> lists = result.getContent().stream()
                 .map(list -> mapper.questionToQuestionListResponseDto(list))
                 .collect(Collectors.toList());
 
@@ -81,36 +83,38 @@ public class QuestionController {
     //6. question 수정
     @PatchMapping("/questions/{question_Id}")
     public ResponseEntity patchQuestion(@PathVariable("question_Id") long questionId,
-                                        @RequestBody QuestionDto.QuestionPatchDto questionPatchDto){
+                                        @RequestBody QuestionDto.Patch questionPatchDto){
 
         Question result = questionService.updateQuestion(mapper.questionPatchDtoToQuestion(questionPatchDto));
 
         return new ResponseEntity(new SingleResponseDto<>(mapper.questionToQuestionResponseDto(result)), HttpStatus.OK);
     }
 
-    //7. question 추천 올리기 + 추후 추가
+    //7. question 추천 올리기
     @PatchMapping("/questions/vote_up/{question_Id}")
-    public ResponseEntity patchVoteUp(@PathVariable("question_Id") long questionId){
+    public ResponseEntity patchVoteUp(@PathVariable("question_Id") long questionId,
+                                      @Valid @RequestBody QuestionDto.QuestionVotePatch requestBody){
 
-        QuestionDto.RecommendResponseDto recommendResponseDto = new QuestionDto.RecommendResponseDto();
-        recommendResponseDto.setVoteCount(questionService.questionVoteUp(questionId));
+        Question question = questionService.questionVoteUp(mapper.questionVotePatchToQuestion(requestBody));
 
-        return new ResponseEntity(new SingleResponseDto<>(recommendResponseDto), HttpStatus.OK);
+        return new ResponseEntity(
+                new SingleResponseDto<>(mapper.questionToVoteResponse(question)), HttpStatus.OK);
     }
 
-    //8. question 추천 내리기 + 추후 추가
+    //8. question 추천 내리기 - **url수정이나 dto안의 필드 requestparam 수정 가능.
     @PatchMapping("/questions/vote_down/{question_Id}")
-    public ResponseEntity patchVoteDown(@PathVariable("question_Id") long questionId){
+    public ResponseEntity patchVoteDown(@PathVariable("question_Id") long questionId,
+                                        @Valid @RequestBody QuestionDto.QuestionVotePatch requestBody){
 
-        QuestionDto.RecommendResponseDto recommendResponseDto = new QuestionDto.RecommendResponseDto();
-        recommendResponseDto.setVoteCount(questionService.questionVoteDown(questionId));
+        Question question = questionService.questionVoteDown(mapper.questionVotePatchToQuestion(requestBody));
 
-        return new ResponseEntity(new SingleResponseDto<>(recommendResponseDto), HttpStatus.OK);
+        return new ResponseEntity(
+                new SingleResponseDto<>(mapper.questionToVoteResponse(question)), HttpStatus.OK);
     }
 
     //9. question 작성 요청
     @PostMapping("/questions/ask/submit")
-    public ResponseEntity postQuestion(@RequestBody QuestionDto.QuestionPostDto questionPostDto){
+    public ResponseEntity postQuestion(@RequestBody QuestionDto.Post questionPostDto){
 
         Question result = questionService.createQuestion(mapper.questionPostDtoToQuestion(questionPostDto));
 

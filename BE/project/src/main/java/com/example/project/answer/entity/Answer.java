@@ -3,6 +3,7 @@ package com.example.project.answer.entity;
 import com.example.project.audit.Auditable;
 import com.example.project.member.entity.Member;
 import com.example.project.question.entity.Question;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.example.project.vote.Vote;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,15 +24,25 @@ public class Answer extends Auditable {
     @Column(name = "ANSWER_BODY")
     private String body;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore           // 무한 참조 순환 방지 annotation
+    @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ManyToOne
     @JoinColumn(name = "QUESTION_ID")
     private Question question;
 
-    @OneToOne(mappedBy = "answer")
+    @JsonIgnore
+    @OneToOne(mappedBy = "answer", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "VOTE_ID")
     private Vote vote;
+
+    public void setVote(Vote vote){
+        this.vote = vote;
+        if (vote.getAnswer()!=this){
+            vote.setAnswer(this);
+        }
+    }
 }

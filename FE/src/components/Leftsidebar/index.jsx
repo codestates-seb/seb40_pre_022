@@ -14,6 +14,7 @@ import { SIDEBAR_ITEMS, SIDEBAR_SENTENCES } from "../../constants";
 const Leftsidebar = () => {
   let { pathname } = useLocation();
   let path = pathname.split("/")[1];
+  if (window.location.pathname === "/question/ask") return null;
 
   return (
     <>
