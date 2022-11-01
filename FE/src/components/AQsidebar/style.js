@@ -25,6 +25,7 @@ const Yellowidget = styled.div`
     0 2px 8px hsla(0, 0%, 0%, 0.05);
 `;
 
+const YWList = styled.ul``;
 
 const YWListtitle = styled.li`
   padding: 12px 16px;
