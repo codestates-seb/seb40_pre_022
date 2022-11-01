@@ -1,13 +1,38 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faL, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 import { Wrapper, Container, ProductsBox, ProductsDropBox, SearchBox, SearchInnerBox, SearchDropBox, IconUl } from './style'
 import { HEADER_PRODUCTS , HEADER_ICONS, SEARCH_TOOLTIPS } from '../../constants/header';
 import { Button } from '@components/Button';
 
 const Header = () => {
+  const [isTooltip, setIsTooltip] = useState(false)
+  const [isSearchBox, setIsSearchBox] = useState(false)
+  const productsTooltip = useRef()
+
+  useEffect(()=>{
+    document.addEventListener('mousedown', handleClickOutside);
+    return()=>{
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+  },[productsTooltip])
+
+  const handleClickOutside = (e) => {
+    if(productsTooltip.current && !productsTooltip.current.contains(e.target)) setIsTooltip(false)
+  }
+
+  const handleToggle = (e) => {
+    if(e ==='search'){
+      setIsSearchBox(!isSearchBox)
+    }
+    if(e === 'products'){
+      setIsTooltip(!isTooltip)
+    }
+    console.log(isSearchBox)
+  }
+
   return (
     <Wrapper>
       <Container>
@@ -16,8 +41,8 @@ const Header = () => {
         </Link>
         <Link className='logo' to='/'><span>stack overflow</span></Link>
         <ProductsBox>
-          <Button primary='Linkbutton' label='Products'>Products</Button>
-          <ProductsDropBox>
+          <Button primary='Linkbutton' label='Products' className={isTooltip ? 'active':''} onClick={()=>handleToggle('products')}>Products</Button>
+          {isTooltip && <ProductsDropBox ref={productsTooltip}>
             {
             HEADER_PRODUCTS.map((product, i)=>{
               const { title, detail } = product
@@ -29,10 +54,10 @@ const Header = () => {
               )
             })}
             <li><Link>About the company</Link></li>
-          </ProductsDropBox>
+          </ProductsDropBox>}
         </ProductsBox>
         <SearchBox>
-          <SearchInnerBox>
+          <SearchInnerBox className={isSearchBox ? 'active' : ''}>
               <FontAwesomeIcon className='icon' icon={faMagnifyingGlass} />
               <input type='text' placeholder='Search...' />
               <SearchDropBox>
@@ -46,17 +71,17 @@ const Header = () => {
                     )
               })}
               <li>
-                  <Button label='Ask a questio' size='small' />
+                  <Button label='Ask a question' size='small' />
                   <Link>Search help</Link>
               </li>
               </SearchDropBox>
           </SearchInnerBox>
         </SearchBox>
         <IconUl>
-          <li><FontAwesomeIcon className='icon' icon={faMagnifyingGlass} /></li>
+          <li><FontAwesomeIcon className='icon' icon={faMagnifyingGlass} onClick={()=>handleToggle('search')} /></li>
           <li>
-            <Link className='profile' to='/'>
-              <img src="../../../public/initialProfile.png" alt='profile' />
+            <Link className='profile' to='/mypage'>
+              <img src="/initialProfile.png" alt='profile' />
               <span>1</span>
             </Link>
           </li>

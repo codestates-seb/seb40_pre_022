@@ -91,7 +91,7 @@ export const ProductsBox = styled.div`
   margin-left: 10px;
   z-index: 1;
   ${flexCenter}
-  button.Linkbutton {
+  button {
     min-width: 80px;
     background: transparent;
     border: 0px solid transparent;
@@ -99,6 +99,9 @@ export const ProductsBox = styled.div`
     font-size: 0.85rem;
     line-height: normal;
     border-radius: 50px;
+    &.active {
+      background-color: var(--orange);
+    }
     @media ${(props) => props.theme.mobile} {
       min-width: 60px;
       height: 28px;
@@ -185,6 +188,12 @@ export const SearchBox = styled.div`
 export const SearchInnerBox = styled.div`
   position: relative;
   width: 100%;
+  @media ${(props) => props.theme.mobile} {
+    display: none;
+    &.active {
+      display: block;
+    }
+  }
   .icon {
     position: absolute;
     top: 50%;
@@ -194,10 +203,14 @@ export const SearchInnerBox = styled.div`
   }
   input {
     width: 100%;
+    min-width: 500px;
     height: 33px;
     border: 1px solid var(--lightgray);
     border-radius: 5px;
     padding-left: 33px;
+    @media ${(props) => props.theme.mobile} {
+      min-width: auto;
+    }
     :focus {
       outline: none;
       border-color: hsl(206, 90%, 69.5%);
@@ -206,6 +219,7 @@ export const SearchInnerBox = styled.div`
       display: grid;
       @media ${(props) => props.theme.mobile} {
         display: flex;
+        min-width: calc(100% - 3px);
       }
     }
   }
