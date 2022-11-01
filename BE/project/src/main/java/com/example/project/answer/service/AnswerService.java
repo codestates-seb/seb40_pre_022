@@ -130,14 +130,6 @@ public class AnswerService {
     }
 
 
-    // 채택된 답변 있는지 확인하는 로직.
-    private void acceptAnswerCheck(Question question){
-        for (Answer answer1 : question.getAnswers()) {
-            if(answer1.getIsAccepted() == 1)  throw new RuntimeException();    // 채택된 답변이 이미 있으면, 에러 처리.
-        }
-    }
-
-
     // voteUp계산
     public void voteUpCase(Answer answer, long memberId){ // checked v
 
