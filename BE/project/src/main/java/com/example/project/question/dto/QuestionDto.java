@@ -1,11 +1,12 @@
 package com.example.project.question.dto;
 
 import com.example.project.answer.entity.Answer;
-import com.example.project.dto.MultiResponseDto;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 // 수정 - private 지정자 : ver 1.1
@@ -13,12 +14,15 @@ public class QuestionDto {
 
     //질문 수정시 사용될 patchDto - checked
     @Data
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Patch {
 
         private long questionId;
+        @NotBlank
         private String title;
+        @NotBlank
         private String body;
         private List<QuestionTagDto> questionTags;
 
@@ -26,11 +30,14 @@ public class QuestionDto {
 
     //질문 작성시 사용될 PostDto - checked
     @Data
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Post {
 
+        @NotBlank
         private String title;
+        @NotBlank
         private String body;
         private List<QuestionTagDto> questionTags;
 

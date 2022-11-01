@@ -2,6 +2,7 @@ package com.example.project.answer.dto;
 
 import com.example.project.dto.MultiResponseDto;
 import com.example.project.member.entity.Member;
+
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -9,8 +10,9 @@ import java.time.LocalDateTime;
 
 public class AnswerDto {
 
-    // 답변 등록을 위한 requestBody
+
     @Getter
+    @Builder
     @Setter
     @AllArgsConstructor
     public static class Post{
@@ -30,12 +32,15 @@ public class AnswerDto {
 
     //답변 수정을 위한 requestBody
     @Getter
+    @Builder
     @Setter
     @AllArgsConstructor
     public static class Patch{
 
         private long memberId;      // 수정하려는 사용자 ** 추후 보안시 변경 가능사항
         private long answerId;
+
+        @NotBlank
         private long questionId;
 
         private String body;
