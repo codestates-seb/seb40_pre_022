@@ -71,10 +71,6 @@ export const Container = styled.div`
   }
   .profile {
     ${flexCenter}
-    margin:0 15px 0 20px;
-    @media ${(props) => props.theme.mobile} {
-      margin: 0;
-    }
     span {
       margin: 3px 0 0 5px;
       font-size: 0.8rem;
