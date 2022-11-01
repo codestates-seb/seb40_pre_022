@@ -4,8 +4,8 @@ import { flexCenter } from "../../styles/index";
 export const Wrapper = styled.div`
   ${flexCenter}
   flex-direction: column;
-  min-width: 280px;
-  margin: 0 auto;
+  width: 280px;
+  margin: 100px auto;
   .logo span {
     display: block;
     width: 28px;

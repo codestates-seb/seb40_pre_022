@@ -17,9 +17,9 @@ const Logout = () => {
           <FormWrap>
             <ul>
               {LOGOUT_ICONS.map((ico, idx)=>{
-               const {contents, href, icon} = ico;
+               const { contents, href } = ico;
                 return(
-                <li key={idx}><Link to={{pathname: href}}>{contents}</Link></li>
+                <li key={idx}><a href={href} target="_blank">{contents}</a></li>
                 )
               })}
             </ul>
