@@ -24,9 +24,11 @@ public class MemberController {
         this.mapper = mapper;
     }
 
-    //1. 회원가입
+    //로그인은 컨트롤러로 빼기,
+
+    //1. 회원가입 checked v
     @PostMapping("/signup")
-    public ResponseEntity postMember(@RequestBody MemberDto.MemberPostDto memberPostDto){
+    public ResponseEntity postMember(@RequestBody MemberDto.Post memberPostDto){
 
         Member result = memberService.createMember(mapper.memberPostDtoToMember(memberPostDto));
 
@@ -37,7 +39,7 @@ public class MemberController {
     @PatchMapping("/{user_id}/{username}")
     public ResponseEntity patchMember(@PathVariable("user_id") long userId,
                                       @PathVariable("username") long username,
-                                      @RequestBody MemberDto.MemberPatchDto memberPatchDto){
+                                      @RequestBody MemberDto.Patch memberPatchDto){
 
         Member result = memberService.updateMember(mapper.memberPatchDtoToMember(memberPatchDto));
 

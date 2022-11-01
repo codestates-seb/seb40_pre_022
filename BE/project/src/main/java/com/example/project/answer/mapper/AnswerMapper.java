@@ -53,9 +53,8 @@ public interface AnswerMapper {
         return response;
     }
 
-
     // 답변 채택 Dto
-    default Answer answerAcceptToAnswer(AnswerDto.AcceptPatch acceptPatch){
+    default Answer answerAcceptToAnswer(AnswerDto.AcceptPatch acceptPatch) {
         Answer answer = new Answer();
         Member member = new Member();
         Question question = new Question();
@@ -72,6 +71,20 @@ public interface AnswerMapper {
         return answer;
     }
 
+    //여기서 필요 정보를 가공해서 answer로 넘기면 dto를 서비스단까지 옮길 필요가 없습니다.
+    default Answer answerVoteDtoToAnswer(AnswerDto.AnswerVotePatch answerVotePatch){
+        Answer answer = new Answer();
+        Member member = new Member();
+
+        member.setMemberId(answerVotePatch.getMemberId());
+        answer.setAnswerId(answerVotePatch.getAnswerId());
+
+        answer.setMember(member);
+
+        return answer;
+    }
+
     // AcceptResponse로 변환. (default 정의 필요 없을듯)
     AnswerDto.AcceptResponse answerToAcceptResponse(Answer answer);
+
 }

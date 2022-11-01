@@ -4,6 +4,11 @@ const SidebarContainer = styled.aside`
   width: 164px;
   height: 100vh;
   padding-top: 24px;
+  position: sticky;
+  top: 0;
+  @media screen and (max-width: 640px) {
+    display: none;
+  }
 `;
 
 const Tabtitle = styled.div`
@@ -41,6 +46,7 @@ const TabItem = styled.li`
   font-size: ${(props) => props.size === "small" && "0.9em"};
   margin-top: 5px;
   width: 164px;
+  cursor: pointer;
   &:hover {
     color: hsl(210deg 8% 15%);
   }

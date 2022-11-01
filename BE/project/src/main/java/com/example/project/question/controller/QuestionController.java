@@ -1,5 +1,7 @@
 package com.example.project.question.controller;
 
+import com.example.project.answer.entity.Answer;
+import com.example.project.answer.service.AnswerService;
 import com.example.project.dto.MultiResponseDto;
 import com.example.project.dto.SingleResponseDto;
 import com.example.project.question.dto.QuestionDto;
@@ -32,7 +34,7 @@ public class QuestionController {
                                                   @RequestParam int size){
 
         Page<Question> result = questionService.findQuestionsByViewCount(page-1, size);
-        List<QuestionDto.QuestionListResponseDto> lists = result.getContent().stream()
+        List<QuestionDto.QuestionListResponse> lists = result.getContent().stream()
                 .map(list -> mapper.questionToQuestionListResponseDto(list))
                 .collect(Collectors.toList());
 
@@ -45,7 +47,7 @@ public class QuestionController {
                                        @RequestParam int size){
 
         Page<Question> result = questionService.findQuestions(page-1, size);
-        List<QuestionDto.QuestionListResponseDto> lists = result.getContent().stream()
+        List<QuestionDto.QuestionListResponse> lists = result.getContent().stream()
                 .map(list -> mapper.questionToQuestionListResponseDto(list))
                 .collect(Collectors.toList());
 
@@ -81,33 +83,31 @@ public class QuestionController {
 
     //6. question 수정
     @PatchMapping("/questions/{question_Id}")
-    public ResponseEntity patchQuestion(@PathVariable("question_Id") @Positive long questionId,
-                                        @Valid @RequestBody QuestionDto.QuestionPatchDto questionPatchDto){
+    public ResponseEntity patchQuestion(@PathVariable("question_Id") long questionId,
+                                        @Valid @RequestBody QuestionDto.Patch questionPatchDto){
 
         Question result = questionService.updateQuestion(mapper.questionPatchDtoToQuestion(questionPatchDto));
 
         return new ResponseEntity(new SingleResponseDto<>(mapper.questionToQuestionResponseDto(result)), HttpStatus.OK);
     }
 
-    //7. question 추천 올리기 + 추후 추가
+    //7. question 추천 올리기
     @PatchMapping("/questions/vote_up/{question_Id}")
     public ResponseEntity patchVoteUp(@PathVariable("question_Id") long questionId,
                                       @Valid @RequestBody QuestionDto.QuestionVotePatch requestBody){
 
-        requestBody.setQuestionId(questionId);
-        Question question = questionService.questionVoteUp(requestBody);
+        Question question = questionService.questionVoteUp(mapper.questionVotePatchToQuestion(requestBody));
 
         return new ResponseEntity(
                 new SingleResponseDto<>(mapper.questionToVoteResponse(question)), HttpStatus.OK);
     }
 
-    //8. question 추천 내리기 + 추후 추가
+    //8. question 추천 내리기 - **url수정이나 dto안의 필드 requestparam 수정 가능.
     @PatchMapping("/questions/vote_down/{question_Id}")
     public ResponseEntity patchVoteDown(@PathVariable("question_Id") long questionId,
                                         @Valid @RequestBody QuestionDto.QuestionVotePatch requestBody){
 
-        requestBody.setQuestionId(questionId);
-        Question question = questionService.questionVoteDown(requestBody);
+        Question question = questionService.questionVoteDown(mapper.questionVotePatchToQuestion(requestBody));
 
         return new ResponseEntity(
                 new SingleResponseDto<>(mapper.questionToVoteResponse(question)), HttpStatus.OK);
@@ -115,7 +115,7 @@ public class QuestionController {
 
     //9. question 작성 요청
     @PostMapping("/questions/ask/submit")
-    public ResponseEntity postQuestion(@Valid @RequestBody QuestionDto.QuestionPostDto questionPostDto){
+    public ResponseEntity postQuestion(@Valid @RequestBody QuestionDto.Post questionPostDto){
 
         Question result = questionService.createQuestion(mapper.questionPostDtoToQuestion(questionPostDto));
 

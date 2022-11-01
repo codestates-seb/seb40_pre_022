@@ -65,15 +65,13 @@ public class AnswerController {
         );
     }
 
-    // 3. 답변 추천 down
+    // 3. 답변 추천 up
     @PatchMapping("/{questionId}/answers/vote_up/{answerId}")
     public ResponseEntity patchAnswerVoteUp(@PathVariable long questionId,
                                           @PathVariable long answerId,
                                           @Valid @RequestBody AnswerDto.AnswerVotePatch requestBody){
-        // Dto에 answerId를 담음.
-        requestBody.setAnswerId(answerId);
-        // Dto를 그대로 넘겨서 Service에서 가공함.
-        Answer answer = answerService.answerVoteUp(requestBody);
+
+        Answer answer = answerService.answerVoteUp(mapper.answerVoteDtoToAnswer(requestBody));
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.answerToVoteResponse(answer)), HttpStatus.OK
@@ -85,10 +83,8 @@ public class AnswerController {
     public ResponseEntity patchAnswerVoteDown(@PathVariable long questionId,
                                             @PathVariable long answerId,
                                             @Valid @RequestBody AnswerDto.AnswerVotePatch requestBody){
-        // Dto에 answerId를 담음.
-        requestBody.setAnswerId(answerId);
-        // Dto를 그대로 넘겨서 Service에서 가공함.
-        Answer answer = answerService.answerVoteDown(requestBody);
+
+        Answer answer = answerService.answerVoteDown(mapper.answerVoteDtoToAnswer(requestBody));
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.answerToVoteResponse(answer)), HttpStatus.OK
@@ -106,8 +102,6 @@ public class AnswerController {
         requestBody.setQuestionId(questionId);
 
         Answer answer = answerService.acceptAnswer(mapper.answerAcceptToAnswer(requestBody));
-
-
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.answerToAcceptResponse(answer)), HttpStatus.OK
