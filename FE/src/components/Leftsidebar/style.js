@@ -7,7 +7,7 @@ const SidebarContainer = styled.aside`
   position: sticky;
   top: 0;
   border-right: 1px solid hsl(210deg 8% 90%);
-  @media screen and (max-width: 640px) {
+  @media ${(props) => props.theme.mobile} {
     display: none;
   }
 `;

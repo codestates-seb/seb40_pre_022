@@ -84,6 +84,10 @@ const Btn = styled.button`
     line-height: 1;
     white-space: nowrap;
     margin: 2 2 2 0;
+    &:hover {
+      background-color: hsl(205deg 53% 88%);
+      color: hsl(206deg 100% 52%);
+    }
   }
 `;
 

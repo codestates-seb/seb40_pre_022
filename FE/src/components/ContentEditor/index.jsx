@@ -1,9 +1,11 @@
 import { React, useRef, useState } from "react";
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
+import { useRecoilState } from "recoil";
+import AnswerEditData from "../../states/AnswerEditData";
 
 const ContentEditor = () => {
-  const [answerData, setAnswerData] = useState("");
+  const [answerData, setAnswerData] = useRecoilState(AnswerEditData);
   const editorRef = useRef();
 
   const onChangeHandle = () => {
@@ -13,10 +15,9 @@ const ContentEditor = () => {
   return (
     <Editor
       placeholder='내용을 입력해주세요.'
-      previewStyle='tab' // 미리보기 스타일 지정
-      height='300px' // 에디터 창 높이
+      previewStyle='tab'
+      height='300px'
       toolbarItems={[
-        // 툴바 옵션 설정
         ["heading", "bold", "italic", "strike"],
         ["hr", "quote"],
         ["ul", "ol", "task", "indent", "outdent"],

@@ -10,15 +10,34 @@ import {
   TagWrapper,
 } from "./style";
 import ContentEditor from "../ContentEditor";
+import AnswerEditData from "../../states/AnswerEditData";
+import { data } from "../../db/data.json";
+import { useRecoilValue } from "recoil";
 
 const CreateAnswer = () => {
+  const answer = useRecoilValue(AnswerEditData);
+  let time = new Date().toJSON();
+  const clickHandle = () => {
+    if (answer.length <= 0) return;
+    data[0].answers.data.push({
+      body: answer,
+      author: { displayName: "answerer" },
+      createdAt: time,
+      updatedAt: time,
+    });
+  };
+
   return (
     <AnswerContainer>
       <AnswerMainTitle>Your Answer</AnswerMainTitle>
       <AnswerForm>
         <ContentEditor />
         <BtnContainer>
-          <Button label='Post Your Answer' size='header-size' />
+          <Button
+            label='Post Your Answer'
+            size='header-size'
+            onClick={clickHandle}
+          />
         </BtnContainer>
       </AnswerForm>
       <AnswerText>

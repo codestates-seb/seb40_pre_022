@@ -26,7 +26,6 @@ const LayoutRight = styled.div`
 
 const PostBody = styled.div`
   font-size: 15px;
-
   .markdown {
     margin-bottom: 1.1em;
   }
@@ -55,7 +54,9 @@ const UserInfo = styled.div`
   color: hsl(210deg 8% 45%);
   flex: 1;
   border-radius: 3px;
-
+  &.answerer {
+    background-color: white;
+  }
   &.edit {
     color: rgb(10, 93, 193);
     background-color: white;

@@ -16,50 +16,47 @@ import ContentViewer from "../ContentViewer";
 import DetailUserProfile from "../DetailUserProfile";
 import { Button } from "../Button";
 import { TagWrapper } from "../CreateAnswer/style";
+import { Link } from "react-router-dom";
+import { data } from "../../db/data.json";
 
-const DetailPost = ({ answer, answerer }) => {
-  let question = `
-  # 헤딩
-  **굵게**
-\`\`\`
-  코드블럭
-\`\`\`
-
-  *기울이기*
-
-  `;
+const DetailPost = ({ answer, answerer, createdAt, updatedAt, profile }) => {
+  let question = data[0];
+  console.log(question.answers.questionTags);
   return (
     <PostLayout className={answer ? "answer" : null}>
       <LayoutLeft>
-        <VoteBtn />
+        <VoteBtn answer={answer} />
       </LayoutLeft>
       <LayoutRight>
         <PostBody>
-          <ContentViewer markdown={answer || question} />
+          <ContentViewer markdown={answer || question.body} />
         </PostBody>
-        {answer ? null : (
-          <TagContainer>
-            <TagWrapper>
-              <Button primary={false} label='javascript' Tagged='Tagged' />
-            </TagWrapper>
-            <TagWrapper>
-              <Button primary={false} label='reactjs' Tagged='Tagged' />
-            </TagWrapper>
-            <TagWrapper>
-              <Button primary={false} label='css' Tagged='Tagged' />
-            </TagWrapper>
-          </TagContainer>
-        )}
+        <TagContainer>
+          {answer
+            ? null
+            : question.answers.questionTags.map((el) => (
+                <TagWrapper>
+                  <Button primary={false} label={el.tagName} Tagged='Tagged' />
+                </TagWrapper>
+              ))}
+        </TagContainer>
+
         <InfoContainer>
           <PostMenuContainer>
             <PostMenu>Share</PostMenu>
-            <PostMenu>Edit</PostMenu>
+            <Link to='/question/edit'>
+              <PostMenu>Edit</PostMenu>
+            </Link>
             <PostMenu>Follow</PostMenu>
           </PostMenuContainer>
           <UserInfo className='edit'>
-            <UserInfoText>edited 3 hours ago</UserInfoText>
+            <UserInfoText>{updatedAt}</UserInfoText>
           </UserInfo>
-          <DetailUserProfile answerer={answerer} />
+          <DetailUserProfile
+            answerer={answerer}
+            createdAt={createdAt}
+            profile={profile}
+          />
         </InfoContainer>
       </LayoutRight>
     </PostLayout>

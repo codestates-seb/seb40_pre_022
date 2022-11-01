@@ -1,24 +1,34 @@
 import React from "react";
-import initialProfile from "../../../public/initialProfile.png";
 import { Link } from "react-router-dom";
 import { UserInfo, UserInfoText, InfoContainer } from "../DetailPost/style";
 import { UserInfoItem } from "./style";
+import { calculateTime } from "../../utils/calculateTime";
+import { data } from "../../db/data.json";
 
-const DetailUserProfile = ({ answerer }) => {
-  const questioner = "hongdahee";
+const DetailUserProfile = ({ answerer, createdAt, profile }) => {
+  const questionData = data[0];
+  const question = {
+    username: questionData.user.displayName,
+    createdAt: questionData.createdAt,
+  };
   return (
-    <UserInfo>
-      <UserInfoText>asked 3 hours ago</UserInfoText>
+    <UserInfo className={answerer ? "answerer" : null}>
+      <UserInfoText>
+        {createdAt || calculateTime(question.createdAt)}
+      </UserInfoText>
       <InfoContainer>
         <Link to='/mypage'>
           <UserInfoItem>
-            <img src={initialProfile} className='img' />
+            <img
+              src={answerer ? profile : "/public/initialProfile.png"}
+              className='img'
+            />
           </UserInfoItem>
         </Link>
         <Link to='/mypage'>
           {
             <UserInfoItem className='user-name'>
-              {answerer || questioner}
+              {answerer || question.username}
             </UserInfoItem>
           }
         </Link>
