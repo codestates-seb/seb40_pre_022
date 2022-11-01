@@ -1,7 +1,8 @@
-package com.example.project.security.auth;
+package com.example.project.security.filter;
 
 import com.example.project.member.entity.Member;
-import com.example.project.security.utils.JwtTokenizer;
+import com.example.project.security.dto.LoginDto;
+import com.example.project.security.jwt.JwtTokenizer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -54,6 +55,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("Refresh", refreshToken);
+
+//        this.getSuccessHandler().onAuthenticationSuccess(request,response,authResult); - 오류 잡기
     }
 
     // accessToken 생성

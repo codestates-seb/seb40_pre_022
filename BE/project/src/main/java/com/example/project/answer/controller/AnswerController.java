@@ -54,7 +54,6 @@ public class AnswerController {
     }
 
     // Answer get test용입니다. 구현대상 X
-
     @GetMapping("/{questionId}/answers/{answerId}")
     public ResponseEntity getAnswer(@PathVariable long questionId,
                                     @PathVariable long answerId){

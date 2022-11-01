@@ -1,7 +1,8 @@
-package com.example.project.security.utils;
+package com.example.project.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 // 인증 성공 후 JWT발급, 발급 후 요청마다 검증
 @Component
-public class JwtTokenizer{
+public class JwtTokenizer {
 
     @Getter
     @Value("${JWT_SECRET_KEY}")
@@ -57,7 +58,7 @@ public class JwtTokenizer{
     // refreshtoken 생성
     public String generateRefreshToken(String subject,
                                        Date expiration,
-                                       String base64EncodedSecretKey){
+                                       String base64EncodedSecretKey) {
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
 
         return Jwts.builder()
@@ -90,7 +91,7 @@ public class JwtTokenizer{
     }
 
 
-    public Date getTokenExpiration(int expirationMinutes){
+    public Date getTokenExpiration(int expirationMinutes) {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, expirationMinutes);
         Date expiration = calendar.getTime();
@@ -104,5 +105,23 @@ public class JwtTokenizer{
         Key key = Keys.hmacShaKeyFor(keyBytes);
 
         return key;
+    }
+
+    //토큰에서 값 추출
+    public String getSubject(String jws) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jws).getBody().getSubject();
+    }
+
+    //유효한 토큰인지 확인
+    public boolean validateToken(String token) {
+        try {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            if (claims.getBody().getExpiration().before(new Date())) {
+                return false;
+            }
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
     }
 }
