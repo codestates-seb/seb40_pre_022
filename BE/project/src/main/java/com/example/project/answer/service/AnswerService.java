@@ -9,6 +9,9 @@ import com.example.project.question.entity.Question;
 import com.example.project.question.service.QuestionService;
 import com.example.project.vote.Vote;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,24 +56,24 @@ public class AnswerService {
         return answerRepository.save(findAnswer);
     }
     // 3-1. Answer 추천 로직
-    public Answer answerVoteUp(AnswerDto.AnswerVotePatch dto) {
+    public Answer answerVoteUp(Answer answer) {
 
         // dto의 answerId를 통해 answer를 받아온다.
-        Answer answer = findVerifiedAnswer(dto.getAnswerId());
-        voteUpCase(answer, dto.getMemberId());
+        Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
+        voteUpCase(findAnswer, answer.getMember().getMemberId());
 
-        return answerRepository.save(answer);
+        return answerRepository.save(findAnswer);
 
     }
 
     // 3-2. Answer 비추천 로직
-    public Answer answerVoteDown(AnswerDto.AnswerVotePatch dto) {
+    public Answer answerVoteDown(Answer answer) {
 
         // dto의 answerId를 통해 answer를 받아온다.
-        Answer answer = findVerifiedAnswer(dto.getAnswerId());
-        voteDownCase(answer, dto.getMemberId());
+        Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
+        voteUpCase(findAnswer, answer.getMember().getMemberId());
 
-        return answerRepository.save(answer);
+        return answerRepository.save(findAnswer);
     }
 
     // 4. Answer 채택 로직
@@ -160,6 +163,11 @@ public class AnswerService {
         }
 
         answer.getVote().setVoteCheck(voteMap.get(memberId));     // voteCheck 상태 저장.
+    }
+
+    //answer pagination하는 로직
+    public Page<Answer> findAnswers(int page, int size){
+        return answerRepository.findAll(PageRequest.of(page, size, Sort.by("questionId").descending()));
     }
 
 }

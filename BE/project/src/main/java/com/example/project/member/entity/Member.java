@@ -36,6 +36,10 @@ public class Member extends Auditable {
     @Column(name = "MEMBER_PASSWORD")
     private String password;
 
+    // 멤버의 권환을 저장할 리스트.
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
+
     // 멤버의 현 상태
     @Enumerated(value = EnumType.STRING)
     @Column
@@ -89,5 +93,11 @@ public class Member extends Auditable {
             this.status = status;
             this.message = message;
         }
+    }
+
+    // 멤버의 권한 정보목록
+    public enum MemberRole{
+        ROLE_USER,
+        ROLE_ADMIN
     }
 }

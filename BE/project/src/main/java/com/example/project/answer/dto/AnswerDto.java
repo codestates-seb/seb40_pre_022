@@ -1,15 +1,15 @@
 package com.example.project.answer.dto;
 
+import com.example.project.dto.MultiResponseDto;
 import com.example.project.member.entity.Member;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 public class AnswerDto {
+
+    // 답변 등록을 위한 requestBody
     @Getter
     @Setter
     @AllArgsConstructor
@@ -28,19 +28,20 @@ public class AnswerDto {
         }
     }
 
+    //답변 수정을 위한 requestBody
     @Getter
     @Setter
     @AllArgsConstructor
     public static class Patch{
 
-        private long memberId;      // 수정하려는 사용자
+        private long memberId;      // 수정하려는 사용자 ** 추후 보안시 변경 가능사항
         private long answerId;
         private long questionId;
 
         private String body;
     }
 
-
+    //답변 추천수 변경을 위한 requestBody
     @Getter
     @Setter
     @AllArgsConstructor
@@ -55,6 +56,7 @@ public class AnswerDto {
         private long memberId;
     }
 
+    //답변 응답을 위한 responseBody
     @Getter
     @Setter
     @AllArgsConstructor
@@ -68,6 +70,7 @@ public class AnswerDto {
         private LocalDateTime modifiedAt;
     }
 
+    //답변 추천수 변경을 위한 responseBody
     @Getter
     @Setter
     @AllArgsConstructor
@@ -77,6 +80,7 @@ public class AnswerDto {
         private int voteCount; // 추천 수.
     }
 
+    //답변 응답에 Member의 필요응답 필드만 돌려주기 위함
     @Getter
     @Setter
     @AllArgsConstructor
@@ -85,5 +89,12 @@ public class AnswerDto {
         private String name;
         private String email;
         private String image;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class AnswerListResponse{
+        private MultiResponseDto answerList;
     }
 }
