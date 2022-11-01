@@ -6,11 +6,13 @@ import com.example.project.security.utils.MemberAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MemberService {
 
@@ -50,6 +52,7 @@ public class MemberService {
     }
 
     // 3. 멤버 정보 불러오기
+    @Transactional(readOnly = true)
     public Member getMember(long memberId){
 
         return findExistMember(memberId);
@@ -71,12 +74,14 @@ public class MemberService {
     }
 
     // 존재하는 멤버 찾음. 없을시 에러 던짐
+    @Transactional(readOnly = true)
     public Member findExistMember(long memberId){
         Optional<Member> member = memberRepository.findById(memberId);
         Member findMember = member.orElseThrow(()->new RuntimeException());
         return findMember;
     }
 
+    @Transactional(readOnly = true)
     public Member findExistMemberByEmail(String email){
         Optional<Member> member = memberRepository.findByEmail(email);
         Member findMember = member.orElseThrow(()->new RuntimeException());

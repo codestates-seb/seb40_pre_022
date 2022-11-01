@@ -109,6 +109,7 @@ public class AnswerService {
     }
 
     // 6. Answer이 실제 DB에 존재하는지 검증
+    @Transactional(readOnly = true)
     public Answer findVerifiedAnswer(long answerId){
         Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
         Answer findAnswer = optionalAnswer.orElseThrow(()->
@@ -126,14 +127,6 @@ public class AnswerService {
     private void acceptAnswerCheck(Question question){
         for (Answer answer1 : question.getAnswers()) {
             if(answer1.getIsAccepted() == 1)  throw new BusinessLogicException(ExceptionCode.ACCEPT_ANSWER_EXISTS);    // 채택된 답변이 이미 있으면, 에러 처리.
-        }
-    }
-
-
-    // 채택된 답변 있는지 확인하는 로직.
-    private void acceptAnswerCheck(Question question){
-        for (Answer answer1 : question.getAnswers()) {
-            if(answer1.getIsAccepted() == 1)  throw new RuntimeException();    // 채택된 답변이 이미 있으면, 에러 처리.
         }
     }
 
