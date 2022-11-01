@@ -53,17 +53,6 @@ public class AnswerController {
         );
     }
 
-    // Answer get test용입니다. 구현대상 X
-    @GetMapping("/{questionId}/answers/{answerId}")
-    public ResponseEntity getAnswer(@PathVariable long questionId,
-                                    @PathVariable long answerId){
-        Answer answer = answerService.findAnswer(answerId);
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(mapper.answerToAnswerResponse(answer)),
-                HttpStatus.OK
-        );
-    }
-
     // 3. 답변 추천 up
     @PatchMapping("/{questionId}/answers/vote_up/{answerId}")
     public ResponseEntity patchAnswerVoteUp(@PathVariable long questionId,

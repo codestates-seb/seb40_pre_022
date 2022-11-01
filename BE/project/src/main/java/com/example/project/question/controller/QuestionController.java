@@ -78,9 +78,9 @@ public class QuestionController {
 
     //5. question 수정을 위한 글 불러오기
     @GetMapping("/questions/edit/{question_Id}")
+
     public ResponseEntity getQuestionForUpdate(HttpServletRequest request,
                                                @PathVariable("question_Id") long questionId){
-
         String memberEmail = extractMemberEmail(request);
         Question result = questionService.findQuestionForUpdate(questionId, memberEmail);
 
@@ -93,7 +93,6 @@ public class QuestionController {
     public ResponseEntity patchQuestion(HttpServletRequest request,
                                         @PathVariable("question_Id") long questionId,
                                         @RequestBody QuestionDto.Patch questionPatchDto){
-
         String memberEmail = extractMemberEmail(request);
         Question result = questionService.updateQuestion(mapper.questionPatchDtoToQuestion(questionPatchDto), memberEmail);
 

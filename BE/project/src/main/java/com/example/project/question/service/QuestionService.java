@@ -93,7 +93,6 @@ public class QuestionService {
     }
 
     //7,8 질문 추천 올리기 내리기 + 추후 작성
-
     public Question questionVoteUp(Question question, String memberEmail){
 
         //1. 로그인한 사람이 존재하는지 확인 - 당연히 존재하겠지만 로직적으로 접근
