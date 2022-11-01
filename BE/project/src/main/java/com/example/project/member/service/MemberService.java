@@ -76,4 +76,16 @@ public class MemberService {
         Member findMember = member.orElseThrow(()->new RuntimeException());
         return findMember;
     }
+
+    public Member findExistMemberByEmail(String email){
+        Optional<Member> member = memberRepository.findByEmail(email);
+        Member findMember = member.orElseThrow(()->new RuntimeException());
+        return findMember;
+    }
+
+    public void DoesMemberExist(String email){
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if(!member.isPresent())
+            throw new RuntimeException();
+    }
 }

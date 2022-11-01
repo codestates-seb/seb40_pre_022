@@ -1,12 +1,15 @@
-package com.example.project.security;
+package com.example.project.security.config;
 
-import com.example.project.security.auth.JwtAuthenticationFilter;
-import com.example.project.security.auth.JwtVerificationFilter;
-import com.example.project.security.utils.JwtTokenizer;
+import com.example.project.security.filter.JwtAuthenticationFilter;
+import com.example.project.security.filter.JwtVerificationFilter;
+import com.example.project.security.handler.MemberAuthFailureHandler;
+import com.example.project.security.handler.MemberAuthSuccessHandler;
+import com.example.project.security.jwt.JwtTokenizer;
 import com.example.project.security.utils.MemberAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -43,7 +46,22 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().permitAll()
+                        .antMatchers(HttpMethod.POST, "/login").permitAll() // 1. 로그인 : EVERYONE
+                        //member
+                        .antMatchers(HttpMethod.POST, "/members/signup").permitAll() // 2. 회원가입 : EVERYONE
+                        .antMatchers(HttpMethod.GET, "/members").hasAnyRole("USER", "ADMIN") // 2. 회원정보 접근 : USER, ADMIN
+                        .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER") // 2. 회원 삭제 : USER
+                        .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER") // 2. 회원 정보 수정 : USER
+                        //answer
+                        .antMatchers(HttpMethod.POST, "/questions/*/answers").hasRole("USER") // 3. 답변 등록 : USER
+                        .antMatchers(HttpMethod.PATCH, "/questions/*/answers/**").hasRole("USER") // 3. 답변 수정관련 : USER
+                        .antMatchers(HttpMethod.DELETE, "/questions/*/answers/**").hasRole("USER") // 3. 답변 삭제
+                        //question
+                        .antMatchers(HttpMethod.GET, "/questions/edit/*").hasRole("USER") // 4. 질문 수정을 위한 불러오기 : USER, ADMIN
+                        .antMatchers(HttpMethod.GET, "/questions/**").permitAll() // 4. 글 목록, 상세페이지 : EVERYONE
+                        .antMatchers(HttpMethod.POST, "/questions/**").hasAnyRole("USER") // 4. 질문 생성 : USER, ADMIN
+                        .antMatchers(HttpMethod.PATCH, "/questions/**").hasRole("USER") // 4. 질문 수정 : USER
+                        .antMatchers(HttpMethod.DELETE, "/questions/**").hasAnyRole("USER", "ADMIN") // 4. 질문 삭제 : USER, ADMIN
                 );
 
         return http.build();
@@ -77,6 +95,9 @@ public class SecurityConfiguration {
             JwtAuthenticationFilter jwtAuthenticationFilter =
                     new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
             jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthSuccessHandler());
+            jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthFailureHandler());
+            builder.addFilter(jwtAuthenticationFilter);
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
 

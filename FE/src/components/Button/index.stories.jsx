@@ -12,8 +12,8 @@ export default {
 
 const Template = (args) => <Button {...args} />;
 
-export const Secondary = Template.bind({});
-Secondary.args = {
+export const Normalbutton = Template.bind({});
+Normalbutton.args = {
   label: "Button",
 };
 
@@ -29,37 +29,56 @@ Small.args = {
   label: "Button",
 };
 
+export const Linkbutton = Template.bind({});
+Linkbutton.args = {
+  primary: "Linkbutton",
+  label: "Sorting",
+};
+
 export const Middle = Template.bind({});
 Middle.args = {
-  primary: true,
+  primary: "Linkbutton",
   label: "Sorting",
   Position: "Middle",
 };
 
 export const Left = Template.bind({});
 Left.args = {
-  primary: true,
+  primary: "Linkbutton",
   label: "Sorting",
   Position: "Left",
 };
 
 export const Right = Template.bind({});
 Right.args = {
-  primary: true,
+  primary: "Linkbutton",
   label: "Sorting",
   Position: "Right",
 };
 
 export const Choosed = Template.bind({});
 Choosed.args = {
-  primary: true,
+  primary: "Linkbutton",
   label: "Sorting",
   Choosed: "Choosed",
 };
 
 export const Tagged = Template.bind({});
 Tagged.args = {
-  primary: true,
+  primary: "Linkbutton",
   label: "Sorting",
   Tagged: "Tagged",
+};
+
+export const Mypagebutton = Template.bind({});
+Mypagebutton.args = {
+  primary: "Mypagebutton",
+  label: "Sorting",
+};
+
+export const MypageSelected = Template.bind({});
+MypageSelected.args = {
+  primary: "Mypagebutton",
+  label: "Sorting",
+  Selected: "Selected",
 };

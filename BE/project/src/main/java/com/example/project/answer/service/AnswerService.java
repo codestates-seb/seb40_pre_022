@@ -87,7 +87,7 @@ public class AnswerService {
         // 1. 해당 question의 member가 지금 요청하는 member와 같은지 확인.
         if (findQuestion.getMember().getMemberId() != answer.getMember().getMemberId())
             throw new BusinessLogicException(ExceptionCode.CANNOT_CHANGE_ANSWER);
-
+            
         // 2. 채택된 answerId(isAccepted==1 인 경우)를 또 채택하려하면 , 채택을 취소 (0)으로 처리 후, 저장 하고 return.
         if(findAnswer.getIsAccepted()==1){
             findAnswer.setIsAccepted(0);
@@ -126,6 +126,14 @@ public class AnswerService {
     private void acceptAnswerCheck(Question question){
         for (Answer answer1 : question.getAnswers()) {
             if(answer1.getIsAccepted() == 1)  throw new BusinessLogicException(ExceptionCode.ACCEPT_ANSWER_EXISTS);    // 채택된 답변이 이미 있으면, 에러 처리.
+        }
+    }
+
+
+    // 채택된 답변 있는지 확인하는 로직.
+    private void acceptAnswerCheck(Question question){
+        for (Answer answer1 : question.getAnswers()) {
+            if(answer1.getIsAccepted() == 1)  throw new RuntimeException();    // 채택된 답변이 이미 있으면, 에러 처리.
         }
     }
 
