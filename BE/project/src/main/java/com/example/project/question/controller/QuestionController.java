@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,7 +63,7 @@ public class QuestionController {
 
     //4. question 상세 페이지
     @GetMapping("/questions/{question_Id}")
-    public ResponseEntity getQuestion(@PathVariable("question_Id") long questionId){
+    public ResponseEntity getQuestion(@PathVariable("question_Id") @Positive long questionId){
 
         Question result = questionService.findQuestion(questionId);
 
@@ -71,7 +72,7 @@ public class QuestionController {
 
     //5. question 수정을 위한 글 불러오기
     @GetMapping("/questions/edit/{question_Id}")
-    public ResponseEntity getQuestionForUpdate(@PathVariable("question_Id") long questionId){
+    public ResponseEntity getQuestionForUpdate(@PathVariable("question_Id") @Positive long questionId){
 
         Question result = questionService.findQuestionForUpdate(questionId);
 
@@ -80,8 +81,8 @@ public class QuestionController {
 
     //6. question 수정
     @PatchMapping("/questions/{question_Id}")
-    public ResponseEntity patchQuestion(@PathVariable("question_Id") long questionId,
-                                        @RequestBody QuestionDto.QuestionPatchDto questionPatchDto){
+    public ResponseEntity patchQuestion(@PathVariable("question_Id") @Positive long questionId,
+                                        @Valid @RequestBody QuestionDto.QuestionPatchDto questionPatchDto){
 
         Question result = questionService.updateQuestion(mapper.questionPatchDtoToQuestion(questionPatchDto));
 
@@ -114,7 +115,7 @@ public class QuestionController {
 
     //9. question 작성 요청
     @PostMapping("/questions/ask/submit")
-    public ResponseEntity postQuestion(@RequestBody QuestionDto.QuestionPostDto questionPostDto){
+    public ResponseEntity postQuestion(@Valid @RequestBody QuestionDto.QuestionPostDto questionPostDto){
 
         Question result = questionService.createQuestion(mapper.questionPostDtoToQuestion(questionPostDto));
 

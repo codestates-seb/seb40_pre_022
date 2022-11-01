@@ -15,6 +15,7 @@ public class MemberDto {
     @NoArgsConstructor
     public static class MemberPostDto{
 
+
         private String name;
         @Email
         private String email;
