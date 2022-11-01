@@ -1,7 +1,10 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import { EMAIL_REGEX, PW_REGEX } from '../../constants/regex';
+import { loginState, userState } from "../../store/user";
 
 import Layout from '@components/Layout';
 import TextInput from '@components/TextInput';
@@ -12,7 +15,7 @@ import { Wrapper, FormWrap, Info } from './style';
 
 const user = {
   email:'test@test.com',
-  pw:'test1234!@#$'
+  pw:'test123@@@'
 }
 
 const Login = () => {
@@ -21,6 +24,21 @@ const Login = () => {
 
   const [emailError, setEmailError] = useState(false);
   const [pwError, setPwError] = useState(false);
+
+  const [isLogin, setIsLogin] = useRecoilState(loginState);
+  const [_, setUserInfo] = useRecoilState(userState)
+  const resetLogin = useResetRecoilState(loginState)
+
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    if(isLogin){     
+      navigate('/');
+    }
+    return ()=>{
+      resetLogin
+    }
+  },[isLogin])
 
   const handleChangeEmail = useCallback ((e)=> {
       if(EMAIL_REGEX.test(e.target.value)){
@@ -45,8 +63,15 @@ const Login = () => {
     }
 
     if(user.email === email && user.pw === pw){
-      alert('로그인 성공')
-    } 
+        alert('로그인 성공');
+        setIsLogin(true);
+        setUserInfo({ email:user.email })
+
+        localStorage.setItem("isLogin", true);
+        localStorage.setItem('user', JSON.stringify({ email:user.email }))
+    } else {
+      alert('아이디나 비밀번호가 다릅니다!');
+    }
   })
 
   return (
