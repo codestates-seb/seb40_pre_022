@@ -2,12 +2,15 @@ package com.example.project.answer.dto;
 
 import com.example.project.member.entity.Member;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 
 public class AnswerDto {
+
     @Getter
+    @Builder
     @AllArgsConstructor
     public static class Post{
         private long memberId;
@@ -23,12 +26,13 @@ public class AnswerDto {
     }
 
     @Getter
+    @Builder
     @AllArgsConstructor
     public static class Patch{
 
         private long memberId;
         private long answerId;
-
+        @NotBlank
         private String body;
 
         public void setAnswerId(long answerId){         // PathVariable로 받은 answerId 넣어주기 위한 Setter.
