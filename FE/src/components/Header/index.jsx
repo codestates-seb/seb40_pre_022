@@ -1,6 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { Wrapper, Container, ProductsBox, ProductsDropBox, SearchBox, SearchInnerBox, SearchDropBox } from './style'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+
+import { Wrapper, Container, ProductsBox, ProductsDropBox, SearchBox, SearchInnerBox, SearchDropBox, IconUl } from './style'
 import { HEADER_PRODUCTS , HEADER_ICONS, SEARCH_TOOLTIPS } from '../../constants/header';
 import { Button } from '@components/Button';
 
@@ -8,9 +11,12 @@ const Header = () => {
   return (
     <Wrapper>
       <Container>
+        <Link className='menu' to='/'>
+          <FontAwesomeIcon icon={faBars} />
+        </Link>
         <Link className='logo' to='/'><span>stack overflow</span></Link>
         <ProductsBox>
-          <Button label='Products'>Products</Button>
+          <Button primary label='Products'>Products</Button>
           <ProductsDropBox>
             {
             HEADER_PRODUCTS.map((product, i)=>{
@@ -27,6 +33,7 @@ const Header = () => {
         </ProductsBox>
         <SearchBox>
           <SearchInnerBox>
+              <FontAwesomeIcon className='icon' icon={faMagnifyingGlass} />
               <input type='text' placeholder='Search...' />
               <SearchDropBox>
               {SEARCH_TOOLTIPS.map((tooltip, i)=>{
@@ -39,23 +46,30 @@ const Header = () => {
                     )
               })}
               <li>
-                  <Button label='Products' size='small'>Ask a questio</Button>
+                  <Button label='Ask a questio' size='small' />
                   <Link>Search help</Link>
               </li>
               </SearchDropBox>
           </SearchInnerBox>
         </SearchBox>
-        <ul>
+        <IconUl>
+          <li><FontAwesomeIcon className='icon' icon={faMagnifyingGlass} /></li>
+          <li>
+            <Link className='profile' to='/'>
+              <img src="../../../public/initialProfile.png" alt='profile' />
+              <span>1</span>
+            </Link>
+          </li>
           {
           HEADER_ICONS.map((icons, i)=>{
             const { title, icon } = icons
             return (
               <li key={i}>
-                <span role="menuitem" title={title}>{icon}</span>
+                <FontAwesomeIcon className='icon' role="menuitem" title={title} icon={icon} />
               </li>
             )
           })}
-        </ul>
+        </IconUl>
       </Container>
     </Wrapper>
   )
