@@ -106,7 +106,7 @@ public class QuestionService {
         //3. 로그인한 사람의 정보와 대조해서 count 계산
         voteUpCase(findQuestion, memberService.findExistMemberByEmail(memberEmail).getMemberId());
 
-        //5. votemap 최신화를 위한 저장 - 이래야 값들이 저장됨
+        //4. votemap 최신화를 위한 저장 - 이래야 값들이 저장됨
         return questionRepository.save(findQuestion);
     }
 
@@ -122,7 +122,7 @@ public class QuestionService {
         //3. 로그인한 사람의 정보와 대조해서 count 계산
         voteDownCase(findQuestion, memberService.findExistMemberByEmail(memberEmail).getMemberId());
 
-        //5. votemap 최신화를 위한 저장 - 이래야 값들이 저장된다.
+        //4. votemap 최신화를 위한 저장 - 이래야 값들이 저장된다.
         return questionRepository.save(findQuestion); // 저장한다.
     }
 
