@@ -6,6 +6,7 @@ import com.example.project.audit.Auditable;
 import com.example.project.member.entity.Member;
 import com.example.project.vote.Vote;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Question extends Auditable {
 
     @Id
