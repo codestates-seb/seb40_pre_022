@@ -2,6 +2,8 @@ package com.example.project.security.config;
 
 import com.example.project.security.filter.JwtAuthenticationFilter;
 import com.example.project.security.filter.JwtVerificationFilter;
+import com.example.project.security.handler.MemberAuthFailureHandler;
+import com.example.project.security.handler.MemberAuthSuccessHandler;
 import com.example.project.security.jwt.JwtTokenizer;
 import com.example.project.security.utils.MemberAuthorityUtils;
 import lombok.RequiredArgsConstructor;
@@ -93,6 +95,9 @@ public class SecurityConfiguration {
             JwtAuthenticationFilter jwtAuthenticationFilter =
                     new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
             jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthSuccessHandler());
+            jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthFailureHandler());
+            builder.addFilter(jwtAuthenticationFilter);
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
 
