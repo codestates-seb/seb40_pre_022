@@ -96,6 +96,7 @@ public class QuestionService {
     }
 
     //7,8 질문 추천 올리기 내리기 + 추후 작성
+
     public Question questionVoteUp(Question question){
 
         //1. 현재 로그인 한 사람의 정보 - 로그인 구현시 수정 필**
@@ -115,6 +116,7 @@ public class QuestionService {
         //1. 현재 로그인 한 사람의 정보 - 로그인 구현시 수정 필**    => dto에 memberId 포함시켜두긴 했는데..
         //2. 존재하는 멤버인지 확인하기 - 현재는 스텁 데이터 이용 중
         //3. 질문존재 확인 후 가져오기
+
         Question findQuestion = findVerifiedQuestion(question.getQuestionId());
 
         //4. 로그인한 사람의 정보와 대조해서 count 계산

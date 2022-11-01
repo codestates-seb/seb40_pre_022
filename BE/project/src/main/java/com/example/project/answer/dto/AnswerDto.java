@@ -2,7 +2,6 @@ package com.example.project.answer.dto;
 
 import com.example.project.dto.MultiResponseDto;
 import com.example.project.member.entity.Member;
-
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -39,7 +38,6 @@ public class AnswerDto {
 
         private long memberId;      // 수정하려는 사용자 ** 추후 보안시 변경 가능사항
         private long answerId;
-
         @NotBlank
         private long questionId;
 
@@ -56,9 +54,12 @@ public class AnswerDto {
     }
 
     @Getter
+    @Setter
     @AllArgsConstructor
     public static class AcceptPatch{
         private long memberId;
+        private long questionId;
+        private long answerId;
     }
 
     //답변 응답을 위한 responseBody
@@ -70,9 +71,10 @@ public class AnswerDto {
         private long answerId;
         private String body;
         private int voteCount;
+        private int isAccepted;                 // 답변 채택 여부
         private AnswerMemberResponse member;    // answerMemberResponse를 member로 선언, Front에서 사용시 member로 사용할 수 있도록 함.
         private LocalDateTime createdAt;
-        private LocalDateTime modifiedAt;
+        private LocalDateTime updatedAt;
     }
 
     //답변 추천수 변경을 위한 responseBody
@@ -99,6 +101,10 @@ public class AnswerDto {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
+    public static class AcceptResponse {
+        private int isAccepted;
+    }
+
     public static class AnswerListResponse{
         private MultiResponseDto answerList;
     }

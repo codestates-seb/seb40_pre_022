@@ -3,10 +3,8 @@ package com.example.project.member.entity;
 import com.example.project.answer.entity.Answer;
 import com.example.project.audit.Auditable;
 import com.example.project.question.entity.Question;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
