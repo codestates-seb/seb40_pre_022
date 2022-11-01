@@ -1,18 +1,51 @@
-import React from "react";
+import { React, useState, useCallback } from "react";
 import { Button } from "../../components/Button";
 import Layout from "../../components/Layout";
 import ContentEditor from "../../components/ContentEditor";
 import ContentViewer from "../../components/ContentViewer";
 import EditSidebar from "../../components/EditSidebar";
+import TagInput from "../../components/TagInput";
+import { ENG_REGEX } from "../../constants/regex";
 import {
   EditBox,
   EditContainer,
   EditTitleText,
   EditInput,
+  TagsContainer,
   BtnBox,
 } from "./style";
 
 const QuestionEdit = () => {
+  const [tagInput, setTagInput] = useState("");
+  const [tagArr, setTagArr] = useState(["java", "react"]);
+
+  const handleTagInputOnKeyUp = useCallback(
+    (e) => {
+      const target = e.target;
+      if (
+        e.key === "Enter" &&
+        target.value.trim() !== "" &&
+        !tagArr.includes(target.value)
+      ) {
+        setTagArr((prev) => [...prev, target.value]);
+        setTagInput("");
+      }
+    },
+    [tagArr],
+  );
+
+  const handleTagInputChange = (e) => {
+    const { value } = e.target;
+    if (ENG_REGEX.test(value)) {
+      setTagInput(value);
+    }
+  };
+
+  const handleTagDelete = (name) => {
+    const deletedTags = tagArr.filter((tag) => tag !== name);
+    setTagArr(deletedTags);
+  };
+
   return (
     <Layout>
       <EditContainer>
@@ -22,6 +55,16 @@ const QuestionEdit = () => {
           <EditTitleText>Body</EditTitleText>
           <ContentEditor></ContentEditor>
           <ContentViewer></ContentViewer>
+          <TagsContainer>
+            <TagInput
+              value={tagInput}
+              tagArr={tagArr}
+              placeholder='e.g. (angular sql-server string)'
+              onChange={handleTagInputChange}
+              onKeyUp={handleTagInputOnKeyUp}
+              onClick={handleTagDelete}
+            />
+          </TagsContainer>
           <EditTitleText>Edit Summary</EditTitleText>
           <EditInput placeholder='briefly explain your changes (corrected spelling, fixed grammar, improved formatting)'></EditInput>
           <BtnBox>

@@ -40,8 +40,19 @@ const EditInput = styled.input`
   margin-bottom: 30px;
 `;
 
+const TagsContainer = styled.div`
+  margin-bottom: 30px;
+`;
+
 const BtnBox = styled.div`
   display: flex;
 `;
 
-export { EditContainer, EditBox, EditTitleText, EditInput, BtnBox };
+export {
+  EditContainer,
+  EditBox,
+  EditTitleText,
+  EditInput,
+  TagsContainer,
+  BtnBox,
+};
