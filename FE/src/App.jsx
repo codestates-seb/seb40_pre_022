@@ -9,6 +9,7 @@ import QuestionAsk from "./pages/QuestionAsk";
 import AllQuestion from "./pages/AllQuestion";
 import QuestionsDetail from "./pages/QuestionsDetail";
 import QuestionEdit from "./pages/QuestionEdit";
+import Logout from "./pages/Logout";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />}></Route>
             <Route path='/login' element={<Login />}></Route>
+            <Route path='/logout' element={<Logout />}></Route>
             <Route path='/join' element={<Join />}></Route>
             <Route path='/question' element={<AllQuestion />}></Route>
             <Route path='/question/ask' element={<QuestionAsk />}></Route>
