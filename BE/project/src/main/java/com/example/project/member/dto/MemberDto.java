@@ -1,33 +1,37 @@
 package com.example.project.member.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 
 public class MemberDto {
 
     @Data
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class MemberPostDto{
 
+        @NotBlank
         private String name;
         @Email
         private String email;
+        @NotBlank
         private String password;
     }
 
     @Data
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class MemberPatchDto{
         private long memberId;
+        @NotBlank
         private String name;
+        @NotBlank
         private String password;
     }
 
