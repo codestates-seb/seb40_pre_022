@@ -1,14 +1,13 @@
 import React from "react";
 import { InputWrap } from "./style";
 
-const TextInput = ({ value, ...rest }) => {
+const TextInput = ({ id, label, ...rest }) => {
   return (
     <InputWrap>
-      <label>
-        <input type='text' value={value} {...rest} />
-      </label>
+        <label htmlFor={id}>{label}</label>
+        <input id={id} type='text' {...rest} />
     </InputWrap>
   );
 };
 
-export default index;
+export default TextInput

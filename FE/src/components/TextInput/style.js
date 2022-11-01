@@ -1,4 +1,3 @@
-import styled from styled-component
+import styled from "styled-components";
 
-export const InputWrap = styled.div`
-`
+export const InputWrap = styled.div``;

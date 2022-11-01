@@ -58,7 +58,7 @@ export const Container = styled.div`
     display: block;
     width: 150px;
     height: 30px;
-    background-image: url(../../../public/sprites.svg);
+    background-image: url(/sprites.svg);
     background-size: cover;
     background-position-y: -7px;
     font-size: 0;
