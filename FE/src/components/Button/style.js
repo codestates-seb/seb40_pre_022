@@ -10,7 +10,7 @@ const Btn = styled.button`
   border: none;
   cursor: pointer;
 
-  &.secondary {
+  &.Normalbutton {
     background-color: hsl(206deg 100% 52%);
     color: hsl(0deg 0% 100%);
     box-shadow: inset 0 1px 0 0 hsl(0deg 0% 100% / 40%);
@@ -58,6 +58,7 @@ const Btn = styled.button`
 
   &.Middle {
     border-radius: 0px;
+    border-left: none;
   }
 
   &.Left {
@@ -67,6 +68,7 @@ const Btn = styled.button`
   &.Right {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+    border-left: none;
   }
 
   &.Choosed {
@@ -76,6 +78,7 @@ const Btn = styled.button`
   }
 
   &.Tagged {
+    height: 24px;
     color: hsl(205, 47%, 42%);
     background-color: hsl(205, 46%, 92%);
     border-color: transparent;
@@ -83,7 +86,32 @@ const Btn = styled.button`
     display: inline-block;
     line-height: 1;
     white-space: nowrap;
-    margin: 2 2 2 0;
+    margin: 0px 5px 0px 0px;
+  }
+
+  &.Mypagebutton {
+    height: 31px;
+    font-size: 13px;
+    align-items: center;
+    padding: 6px 12px;
+    position: relative;
+    cursor: pointer;
+    border-radius: 1000px;
+    margin: 2px;
+    white-space: nowrap;
+    color: hsl(210, 8%, 35%);
+    background-color: white;
+    &:hover {
+      background-color: hsl(210, 10%, 85%);
+    }
+  }
+
+  &.Selected {
+    color: white;
+    background-color: hsl(27, 90%, 55%);
+    &:hover {
+      background-color: hsl(18, 65%, 55%);
+    }
   }
 `;
 

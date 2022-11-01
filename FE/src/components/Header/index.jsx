@@ -16,7 +16,7 @@ const Header = () => {
         </Link>
         <Link className='logo' to='/'><span>stack overflow</span></Link>
         <ProductsBox>
-          <Button primary label='Products'>Products</Button>
+          <Button primary='Linkbutton' label='Products'>Products</Button>
           <ProductsDropBox>
             {
             HEADER_PRODUCTS.map((product, i)=>{

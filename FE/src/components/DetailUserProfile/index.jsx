@@ -10,7 +10,7 @@ const DetailUserProfile = () => {
       <InfoContainer>
         <Link to='/mypage'>
           <UserInfoItem>
-            <img src={ "../../../public/initialProfile.png"} className='img' />
+            <img src='/initialProfile.png' className='img' />
           </UserInfoItem>
         </Link>
         <Link to='/mypage'>

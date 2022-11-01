@@ -9,6 +9,9 @@ import com.example.project.question.entity.Question;
 import com.example.project.question.service.QuestionService;
 import com.example.project.vote.Vote;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,30 +56,50 @@ public class AnswerService {
         return answerRepository.save(findAnswer);
     }
     // 3-1. Answer 추천 로직
-    public Answer answerVoteUp(AnswerDto.AnswerVotePatch dto) {
+    public Answer answerVoteUp(Answer answer) {
 
         // dto의 answerId를 통해 answer를 받아온다.
-        Answer answer = findVerifiedAnswer(dto.getAnswerId());
-        voteUpCase(answer, dto.getMemberId());
+        Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
+        voteUpCase(findAnswer, answer.getMember().getMemberId());
 
-        return answerRepository.save(answer);
+        return answerRepository.save(findAnswer);
 
     }
 
     // 3-2. Answer 비추천 로직
-    public Answer answerVoteDown(AnswerDto.AnswerVotePatch dto) {
+    public Answer answerVoteDown(Answer answer) {
 
         // dto의 answerId를 통해 answer를 받아온다.
-        Answer answer = findVerifiedAnswer(dto.getAnswerId());
-        voteDownCase(answer, dto.getMemberId());
+        Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
+        voteDownCase(findAnswer, answer.getMember().getMemberId());
 
-        return answerRepository.save(answer);
+        return answerRepository.save(findAnswer);
     }
 
     // 4. Answer 채택 로직
-    public void acceptAnswer(long memberId, long questionId, long answerId) {
+    public Answer acceptAnswer(Answer answer) {
+        // answer에는 지금 member, question, answer 각각의 Id값만 가지고 있는 객체들이 저장되어 있음.
+        Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
+        Question findQuestion = questionService.findVerifiedQuestion(answer.getQuestion().getQuestionId());
 
+        // todo : 메서드 묶을 수 있나 고민...
+        // 1. 해당 question의 member가 지금 요청하는 member와 같은지 확인.
+        if (findQuestion.getMember().getMemberId() != answer.getMember().getMemberId())
+            throw new RuntimeException();
+
+        // 2. 채택된 answerId(isAccepted==1 인 경우)를 또 채택하려하면 , 채택을 취소 (0)으로 처리 후, 저장 하고 return.
+        if(findAnswer.getIsAccepted()==1){
+            findAnswer.setIsAccepted(0);
+            return answerRepository.save(findAnswer);
+        }
+        // 채택된 answer가 아니라면, 채택된 답변이 있는지 확인하고, 없다면 채택 1
+        else{
+            acceptAnswerCheck(findQuestion);    // 해당 질문의 Answer 리스트들을 확인하여 채택된 답변 있는지 확인.
+            findAnswer.setIsAccepted(1);
+            return answerRepository.save(findAnswer);
+        }
     }
+
     // 5. Answer 삭제 로직
     public void deleteAnswer(long answerId) {
         Answer findAnswer = findVerifiedAnswer(answerId);
@@ -101,6 +124,14 @@ public class AnswerService {
     // get 테스트용. 구현대상 X
     public Answer findAnswer(long answerId) {
         return findVerifiedAnswer(answerId);
+    }
+
+
+    // 채택된 답변 있는지 확인하는 로직.
+    private void acceptAnswerCheck(Question question){
+        for (Answer answer1 : question.getAnswers()) {
+            if(answer1.getIsAccepted() == 1)  throw new RuntimeException();    // 채택된 답변이 이미 있으면, 에러 처리.
+        }
     }
 
 
@@ -160,6 +191,11 @@ public class AnswerService {
         }
 
         answer.getVote().setVoteCheck(voteMap.get(memberId));     // voteCheck 상태 저장.
+    }
+
+    //answer pagination하는 로직
+    public Page<Answer> findAnswers(int page, int size){
+        return answerRepository.findAll(PageRequest.of(page, size, Sort.by("questionId").descending()));
     }
 
 }
