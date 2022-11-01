@@ -23,7 +23,9 @@ export const FormWrap = styled.div`
   padding: 24px;
   border-radius: 5px;
   background: #fff;
-  border: 1px solid var(--lightgray);
+  border: 1px solid #ddd;
+  box-shadow: 0 10px 24px hsla(0, 0%, 0%, 0.05),
+    0 20px 48px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.1);
   button {
     width: 100%;
   }

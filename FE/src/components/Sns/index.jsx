@@ -4,12 +4,12 @@ import { faGoogle, faGithub, faSquareFacebook } from '@fortawesome/free-brands-s
 
 import { Wrapper, Button } from './style'
 
-const Sns = () => {
+const Sns = ({ value='Log in' }) => {
   return (
     <Wrapper>
-        <Button><FontAwesomeIcon className='icon' icon={faGoogle} />Log in with Google</Button>
-        <Button><FontAwesomeIcon className='icon' icon={faGithub} />Log in with GitHub</Button>
-        <Button><FontAwesomeIcon className='icon' icon={faSquareFacebook} />Log in with Facebook</Button>
+        <Button><FontAwesomeIcon className='icon' icon={faGoogle} />{value} with Google</Button>
+        <Button><FontAwesomeIcon className='icon' icon={faGithub} />{value} with GitHub</Button>
+        <Button><FontAwesomeIcon className='icon' icon={faSquareFacebook} />{value} with Facebook</Button>
     </Wrapper>
   )
 }
