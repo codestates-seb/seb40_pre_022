@@ -22,7 +22,6 @@ public class MemberService {
 
     // 1. 회원가입 - checked v
     public Member createMember(Member member){
-
         verifyExistMember(member.getEmail());
         //2. 비밀번호 암호화
         String encyptedPassword = passwordEncoder.encode(member.getPassword());

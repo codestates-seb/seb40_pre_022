@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/questions")    // fixme : / 로 할지, /questions로 할지.
+@RequestMapping("/questions")
 @Validated
 @RequiredArgsConstructor
 public class AnswerController {
@@ -69,10 +69,7 @@ public class AnswerController {
     public ResponseEntity patchAnswerVoteUp(@PathVariable long questionId,
                                           @PathVariable long answerId,
                                           @Valid @RequestBody AnswerDto.AnswerVotePatch requestBody){
-//        // Dto에 answerId를 담음.
-//        requestBody.setAnswerId(answerId);
-//        // Dto를 그대로 넘겨서 Service에서 가공함.
-//        Answer answer = answerService.answerVoteUp(requestBody);
+
         Answer answer = answerService.answerVoteUp(mapper.answerVoteDtoToAnswer(requestBody));
 
         return new ResponseEntity<>(
@@ -85,10 +82,7 @@ public class AnswerController {
     public ResponseEntity patchAnswerVoteDown(@PathVariable long questionId,
                                             @PathVariable long answerId,
                                             @Valid @RequestBody AnswerDto.AnswerVotePatch requestBody){
-//        // Dto에 answerId를 담음.
-//        requestBody.setAnswerId(answerId);
-//        // Dto를 그대로 넘겨서 Service에서 가공함.
-//        Answer answer = answerService.answerVoteDown(requestBody);
+
         Answer answer = answerService.answerVoteDown(mapper.answerVoteDtoToAnswer(requestBody));
 
         return new ResponseEntity<>(
@@ -98,21 +92,19 @@ public class AnswerController {
 
 
     // 5. 답변 채택
-    // (ㄱ) 채택하려는 member,
-    // (ㄴ) 답변의 member,
-    // (ㄷ) 질문의 member.
-    // 우리가 검증해야 하는 것은, ㄱ과 ㄷ이 같냐?
-    // 그냥 전체 다 service로 넘겨서 로직을 처리해도 되는것인가?
-    @PatchMapping("/{questionId}/answers/check/{answerId}")
+    @PatchMapping("/{questionId}/answers/accept/{answerId}")
     public ResponseEntity patchAnswerAccept(@PathVariable long questionId,
                                            @PathVariable long answerId,
                                            @Valid @RequestBody AnswerDto.AcceptPatch requestBody){
 
-        answerService.acceptAnswer(requestBody.getMemberId(), questionId, answerId);
+        requestBody.setAnswerId(answerId);
+        requestBody.setQuestionId(questionId);
 
-        // 추가 구현
+        Answer answer = answerService.acceptAnswer(mapper.answerAcceptToAnswer(requestBody));
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.answerToAcceptResponse(answer)), HttpStatus.OK
+        );
     }
 
     // 6. 답변 삭제

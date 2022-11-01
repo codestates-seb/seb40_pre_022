@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -68,7 +69,7 @@ public class QuestionController {
 
     //4. question 상세 페이지
     @GetMapping("/questions/{question_Id}")
-    public ResponseEntity getQuestion(@PathVariable("question_Id") long questionId){
+    public ResponseEntity getQuestion(@PathVariable("question_Id") @Positive long questionId){
 
         Question result = questionService.findQuestion(questionId);
 
@@ -88,6 +89,7 @@ public class QuestionController {
 
     //6. question 수정
     @PatchMapping("/questions/{question_Id}")
+
     public ResponseEntity patchQuestion(HttpServletRequest request,
                                         @PathVariable("question_Id") long questionId,
                                         @RequestBody QuestionDto.Patch questionPatchDto){
@@ -126,6 +128,7 @@ public class QuestionController {
 
     //9. question 작성 요청
     @PostMapping("/questions/ask/submit")
+
     public ResponseEntity postQuestion(HttpServletRequest request,
                                        @RequestBody QuestionDto.Post questionPostDto){
 

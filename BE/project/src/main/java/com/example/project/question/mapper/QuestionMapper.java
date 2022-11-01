@@ -149,7 +149,6 @@ public interface QuestionMapper {
     // vote Response용 Dto mapper
     default QuestionDto.QuestionVoteResponse questionToVoteResponse(Question question){
         QuestionDto.QuestionVoteResponse response = new QuestionDto.QuestionVoteResponse();
-
         response.setVoteCheck(question.getVote().getVoteCheck());
         response.setVoteCount(question.getVote().getVoteCount());
 

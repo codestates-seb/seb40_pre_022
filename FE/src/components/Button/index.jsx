@@ -11,18 +11,19 @@ export const Button = ({
   backgroundColor,
   size,
   label,
+  Selected,
   ...props
 }) => {
-  const mode = primary ? "Linkbutton" : "secondary";
   return (
     <Btn
       type='button'
       className={[
+        `${primary}`,
         `${size}`,
         `${Position}`,
         `${Choosed}`,
         `${Tagged}`,
-        mode,
+        `${Selected}`,
       ].join(" ")}
       style={backgroundColor && { backgroundColor }}
       {...props}>
@@ -32,7 +33,7 @@ export const Button = ({
 };
 
 Button.propTypes = {
-  primary: PropTypes.bool,
+  primary: PropTypes.oneOf(["Normalbutton", "Linkbutton", "Mypagebutton"]),
   backgroundColor: PropTypes.string,
   size: PropTypes.oneOf(["small", "medium", "large", "header-size"]),
   label: PropTypes.string.isRequired,
@@ -40,10 +41,11 @@ Button.propTypes = {
   Position: PropTypes.oneOf(["Middle", "Left", "Right"]),
   Choosed: PropTypes.oneOf(["Choosed"]),
   Tagged: PropTypes.oneOf(["Tagged"]),
+  Selected: PropTypes.oneOf(["Selected"]),
 };
 
 Button.defaultProps = {
-  primary: false,
+  primary: "Normalbutton",
   backgroundColor: null,
   size: "medium",
   onClick: undefined,
