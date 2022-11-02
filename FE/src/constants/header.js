@@ -1,3 +1,10 @@
+import {
+  faInbox,
+  faTrophy,
+  faCircleQuestion,
+  faLayerGroup,
+} from "@fortawesome/free-solid-svg-icons";
+
 export const HEADER_PRODUCTS = [
   { title: "Stack Overflow", detail: "Public questions & answers" },
   {
@@ -24,11 +31,11 @@ export const SEARCH_TOOLTIPS = [
 ];
 
 export const HEADER_ICONS = [
-  { title: "Recent inbox messages", icon: "1" },
+  { title: "Recent inbox messages", icon: faInbox },
   {
     title: "Recent achievements: reputation, badges, and privileges earned",
-    icon: "2",
+    icon: faTrophy,
   },
-  { title: "Help Center and other resources", icon: "3" },
-  { title: "A list of all 182 Stack Exchange sites", icon: "4" },
+  { title: "Help Center and other resources", icon: faCircleQuestion },
+  { title: "A list of all 182 Stack Exchange sites", icon: faLayerGroup },
 ];

@@ -1,6 +1,8 @@
 import React from 'react' 
+import { Link } from 'react-router-dom';
 import { Wrapper, Container, InnerBox, ListWrap, List } from './style'
 import { FOOTER_LIST, SNS_LIST } from '../../constants/footer';
+
 
 const { STACK_OVERFLOW, PRODUCTS, COMPANY, STACK_EXCHANGE_NETWORK } = FOOTER_LIST
 
@@ -9,7 +11,7 @@ const Footer = () => {
     <Wrapper>
        <Container>
           <InnerBox className='logo'>
-            Logo
+            <Link className='logo' to='/'><span>stack overflow</span></Link>
           </InnerBox>
           <InnerBox className='sitemap'>
             {[STACK_OVERFLOW, PRODUCTS, COMPANY, STACK_EXCHANGE_NETWORK].map((list, i)=>{

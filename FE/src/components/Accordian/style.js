@@ -1,8 +1,18 @@
 import styled from "styled-components";
 
-const AskRight = styled.div`
+const AskRightAside = styled.aside`
   display: flex;
-  flex-direction: column;
+  flex-flow: column nowrap;
+  row-gap: 30px;
+  max-height: 80vh;
+`;
+
+const AskStep = styled.div`
+  display: flex;
+  flex-flow: column wrap;
+  background-color: white;
+  box-shadow: grey 0px 0px 3px;
+  border-radius: 3px;
 `;
 
 const RoleContainer = styled.div`
@@ -12,8 +22,6 @@ const RoleContainer = styled.div`
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   width: 314px;
   height: 100%;
-  margin-left: 24px;
-  cursor: pointer;
 `;
 
 const Title = styled.div`
@@ -42,7 +50,9 @@ const Ol = styled.ol`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 10px;
+    border-bottom: 1px solid black;
+    padding-bottom: 15px;
+    cursor: pointer;
   }
 `;
 
@@ -51,9 +61,9 @@ const Ul = styled.ul`
 
   li {
     font-weight: normal;
-    padding: 3px 0;
+    padding: 15px 0;
     display: ${(props) => props.display || "none"};
   }
 `;
 
-export { AskRight, RoleContainer, Title, Content, Ol, Ul };
+export { AskRightAside, AskStep, RoleContainer, Title, Content, Ol, Ul };

@@ -32,6 +32,7 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     line-height: 1;
+    background-color: rgb(241, 242, 243)
   }
   menu, ol, ul, li {
     list-style: none;
@@ -63,7 +64,11 @@ const GlobalStyle = createGlobalStyle`
     --hoverColor: #efefef; 
     --footer-background-color: hsl(210,8%,15%);
     --orange: hsl(27,90%,55%);
+    --lightblue:hsl(205, 46%, 92%);
+    --darkblue: hsl(205, 47%, 42%);
     --blue: hsl(206,90%,69.5%);
+    --gray: hsl(210,8%,45%);
+    --lightgray: hsl(210,8%,75%);
     background-color: var(--bg);
     a, a.logo {
       color: hsl(210deg 8% 35%);

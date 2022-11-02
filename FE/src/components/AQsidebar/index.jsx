@@ -19,11 +19,11 @@ const AQRightsidebar = () => {
         <Yellowidget>
           {YellowList.map((list, i) => {
             return (
-              <YWList key={i}>
-                <YWListtitle> {list.title} </YWListtitle>
-                {list.sentence.map((item, i) => {
-                  return <YWListitem key={i}>{item}</YWListitem>;
-                })}
+              <YWList>
+                <YWListtitle key={i}>{list.title}</YWListtitle>
+                {list.sentence.map((item, i) => (
+                  <YWListitem key={i}>{item}</YWListitem>
+                ))}
               </YWList>
             );
           })}

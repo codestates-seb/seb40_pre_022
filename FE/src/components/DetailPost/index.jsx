@@ -10,6 +10,7 @@ import {
   UserInfo,
   UserInfoText,
   TagContainer,
+  TagContainer,
 } from "./style";
 import VoteBtn from "../VoteBtn";
 import ContentViewer from "../ContentViewer";
@@ -19,13 +20,20 @@ import { TagWrapper } from "../CreateAnswer/style";
 import { Link } from "react-router-dom";
 import { data } from "../../db/data.json";
 
-const DetailPost = ({ answer, answerer, createdAt, updatedAt, profile }) => {
+const DetailPost = ({
+  answer,
+  answerer,
+  createdAt,
+  updatedAt,
+  profile,
+  bestAnswer,
+}) => {
   let question = data[0];
   console.log(question.answers.questionTags);
   return (
     <PostLayout className={answer ? "answer" : null}>
       <LayoutLeft>
-        <VoteBtn answer={answer} />
+        <VoteBtn answer={answer} bestAnswer={bestAnswer} />
       </LayoutLeft>
       <LayoutRight>
         <PostBody>

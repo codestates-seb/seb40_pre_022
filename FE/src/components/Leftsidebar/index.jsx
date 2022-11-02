@@ -5,20 +5,21 @@ import {
   TabList,
   TabItem,
   ItemContainer,
+  TabItemText,
 } from "./style";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { SIDEBAR_ITEMS, SIDEBAR_SENTENCES } from "../../constants";
 
-const Leftsidebar = () => {
+const Leftsidebar = ({display}) => {
   let { pathname } = useLocation();
   let path = pathname.split("/")[1];
   if (window.location.pathname === "/question/ask") return null;
 
   return (
     <>
-      <SidebarContainer>
+      {display && <SidebarContainer>
         <TabList>
           <TabItem className={pathname === "/" ? "active" : null}>
             <Link to='/' className='link'>
@@ -37,8 +38,12 @@ const Leftsidebar = () => {
                 </Link>
               </TabItem>
               {SIDEBAR_ITEMS.map((item) => (
-                <TabItem className='tab' key={item}>
-                  {item}
+                <TabItem
+                  className={
+                    path === "mypage" && item === "Users" ? "tab active" : "tab"
+                  }
+                  key={item}>
+                  <TabItemText>{item}</TabItemText>
                 </TabItem>
               ))}
             </TabList>
@@ -47,14 +52,12 @@ const Leftsidebar = () => {
             <TabItem key={item.title}>
               <Tabtitle>{item.title}</Tabtitle>
               <TabList>
-                <TabItem size='small' className='tab'>
-                  {item.sentence}
-                </TabItem>
+                <TabItem className='tab size'>{item.sentence}</TabItem>
               </TabList>
             </TabItem>
           ))}
         </TabList>
-      </SidebarContainer>
+      </SidebarContainer>}
     </>
   );
 };

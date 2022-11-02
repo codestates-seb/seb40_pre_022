@@ -38,6 +38,7 @@ const DetailAnswer = () => {
               createdAt={calculateTime(answer.createdAt)}
               updatedAt={calculateTime(answer.updatedAt)}
               profile={answer.author.image}
+              bestAnswer={answer.isChecked}
             />
           ))
         : null}
