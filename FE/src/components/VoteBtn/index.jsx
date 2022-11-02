@@ -15,11 +15,14 @@ const VoteBtn = ({ answer }) => {
     if (status === "up") {
       setIsVotedUp(true);
       setIsVotedDown(false);
-      setCount(count + 1);
-    } else if (status === "down") {
+      setCount((prev) => prev + 1);
+    } else if (
+      status === "down" &&
+      (count === initialCount || count === initialCount + 1)
+    ) {
       setIsVotedDown(true);
       setIsVotedUp(false);
-      setCount(count - 1);
+      setCount((prev) => prev - 1);
     }
   };
 

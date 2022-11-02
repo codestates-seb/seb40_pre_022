@@ -19,7 +19,10 @@ const DetailUserProfile = ({ answerer, createdAt, profile }) => {
       <InfoContainer>
         <Link to='/mypage'>
           <UserInfoItem>
-            <img src='/initialProfile.png' className='img' />
+            <img
+              src={answerer ? profile : "/public/initialProfile.png"}
+              className='img'
+            />
           </UserInfoItem>
         </Link>
         <Link to='/mypage'>

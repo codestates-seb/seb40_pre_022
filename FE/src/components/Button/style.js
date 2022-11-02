@@ -86,7 +86,12 @@ const Btn = styled.button`
     display: inline-block;
     line-height: 1;
     white-space: nowrap;
-    margin: 0px 5px 0px 0px;
+    margin: 2 2 2 0;
+    &:hover {
+      background-color: hsl(205deg 53% 88%);
+      color: hsl(206deg 100% 52%);
+      margin: 0px 5px 0px 0px;
+    }
   }
 
   &.Mypagebutton {

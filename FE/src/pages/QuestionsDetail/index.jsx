@@ -5,6 +5,7 @@ import DetailHeader from "../../components/DetailHeader";
 import Layout from "../../components/Layout";
 import CreateAnswer from "../../components/CreateAnswer";
 import DetailAnswer from "../../components/DetailAnswer";
+import AQRightsidebar from "../../components/AQsidebar";
 
 const QuestionsDetail = () => {
   return (
@@ -16,6 +17,7 @@ const QuestionsDetail = () => {
           <DetailAnswer />
           <CreateAnswer />
         </PostContainer>
+        <AQRightsidebar />
       </Layout>
     </>
   );

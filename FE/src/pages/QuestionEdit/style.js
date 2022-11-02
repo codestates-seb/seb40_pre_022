@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Button } from "@components/Button";
 
 const EditContainer = styled.div`
   width: 100vw;
@@ -31,17 +32,44 @@ const EditTitleText = styled.div`
 
 const EditInput = styled.input`
   padding: 8px 10px;
-  margin-bottom: 10px;
   width: 100%;
   height: 35px;
   border: 1px solid rgb(186, 191, 196);
   border-radius: 3px;
-  color: rgb(186 191 196);
+  color: #0c0d0e;
   margin-bottom: 30px;
+`;
+
+const TagsContainer = styled.div`
+  margin-bottom: 30px;
+`;
+
+const TagTitle = styled.div`
+  display: block;
+  margin-top: 30px;
+  font-weight: 600;
 `;
 
 const BtnBox = styled.div`
   display: flex;
+  gap: 5px;
+  button:last-child {
+    color: hsl(206deg 100% 52%);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    &:hover {
+      background-color: hsl(206deg 93% 84%);
+    }
+  }
 `;
 
-export { EditContainer, EditBox, EditTitleText, EditInput, BtnBox };
+export {
+  EditContainer,
+  EditBox,
+  EditTitleText,
+  EditInput,
+  TagsContainer,
+  TagTitle,
+  BtnBox,
+};

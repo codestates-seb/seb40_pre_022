@@ -16,6 +16,16 @@ export const Container = styled.div`
 export const InnerBox = styled.div`
   display: flex;
   flex-direction: ${(props) => props.direction};
+  .logo span {
+    display: block;
+    width: 28px;
+    height: 30px;
+    background-image: url(/sprites.svg);
+    background-size: auto;
+    background-position-y: bottom;
+    font-size: 0;
+    text-indent: -9999px;
+  }
   &.logo {
     flex: 0 0 64px;
     @media ${(props) => props.theme.mobile} {
@@ -24,6 +34,7 @@ export const InnerBox = styled.div`
   }
   &.sitemap {
     flex: 2 1 auto;
+    min-width: 600px;
     @media ${(props) => props.theme.mobile} {
       flex-direction: column;
     }
