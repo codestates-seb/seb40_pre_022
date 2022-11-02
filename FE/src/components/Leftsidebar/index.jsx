@@ -27,7 +27,6 @@ const Leftsidebar = () => {
           </TabItem>
           <TabItem>
             <Tabtitle>PUBLIC</Tabtitle>
-
             <TabList>
               <TabItem className={path === "question" ? "active" : null}>
                 <Link to='/question'>
@@ -44,7 +43,6 @@ const Leftsidebar = () => {
               ))}
             </TabList>
           </TabItem>
-
           {SIDEBAR_SENTENCES.map((item) => (
             <TabItem key={item.title}>
               <Tabtitle>{item.title}</Tabtitle>

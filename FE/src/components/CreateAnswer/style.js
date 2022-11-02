@@ -17,6 +17,10 @@ const BtnContainer = styled.div`
   padding: 30px 0 15px 0;
 `;
 
+const TagWrapper = styled.span`
+  margin: 0 0.3em;
+`;
+
 const AnswerText = styled.div`
   margin-top: 15px;
   margin-bottom: 17px;
@@ -33,5 +37,6 @@ export {
   AnswerMainTitle,
   AnswerForm,
   BtnContainer,
+  TagWrapper,
   AnswerText,
 };

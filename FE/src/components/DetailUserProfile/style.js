@@ -10,7 +10,7 @@ const UserInfoItem = styled.span`
     &:hover {
       color: hsl(206deg 100% 52%);
     }
-    @media screen and (max-width: 781px) {
+    @media ${(props) => props.theme.mobile} {
       font-size: 0.8em;
     }
   }
