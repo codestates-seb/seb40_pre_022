@@ -303,7 +303,6 @@ export const IconUl = styled.ul`
 
 export const ButtonWrap = styled.ul`
   ${flexCenter}
-  width: 100%;
   min-width: 200px;
   justify-content: flex-end;
   a {
@@ -317,9 +316,13 @@ export const ButtonWrap = styled.ul`
   li:first-child {
     font-size: 1.1rem;
     padding: 14px 10px;
+    display: none;
     :hover {
       background-color: hsl(210, 8%, 90%);
       cursor: pointer;
+    }
+    @media ${(props) => props.theme.mobile} {
+      display: block;
     }
   }
   li:last-child a {

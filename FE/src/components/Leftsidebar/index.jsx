@@ -1,4 +1,4 @@
-import { React } from "react";
+import React from "react";
 import { useRecoilValue } from 'recoil';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
@@ -16,16 +16,16 @@ import {
   TabItemText,
 } from "./style";
 
-const Leftsidebar = () => {
+const Leftsidebar = ({ isLeftSidebar }) => {
   let { pathname } = useLocation();
   let path = pathname.split("/")[1];
   if (window.location.pathname === "/question/ask") return null;
 
   const isAside = useRecoilValue(asideState);
-  console.log('isAside',isAside)
+
   return (
     <>
-      {<SidebarContainer className={ isAside ? 'active':'' }>
+      <SidebarContainer isShow={isLeftSidebar} className={ isAside ? 'active':'' }>
         <TabList>
           <TabItem className={pathname === "/" ? "active" : null}>
             <Link to='/' className='link'>
@@ -63,7 +63,7 @@ const Leftsidebar = () => {
             </TabItem>
           ))}
         </TabList>
-      </SidebarContainer>}
+      </SidebarContainer>
     </>
   );
 };

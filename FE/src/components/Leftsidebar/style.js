@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const SidebarContainer = styled.aside`
+  display: ${(props) => !props.isShow && "none"};
   width: 164px;
   height: 100vh;
   padding-top: 24px;

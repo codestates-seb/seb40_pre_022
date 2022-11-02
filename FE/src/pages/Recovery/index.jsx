@@ -29,7 +29,7 @@ const Recovery = () => {
   })
 
   return (
-    <Layout isAside={false}>
+    <Layout isLeftSidebar={false}>
       <Wrapper>
           <FormWrap>
             <form>
