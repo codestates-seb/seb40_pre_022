@@ -10,7 +10,6 @@ import {
   UserInfo,
   UserInfoText,
   TagContainer,
-  TagContainer,
 } from "./style";
 import VoteBtn from "../VoteBtn";
 import ContentViewer from "../ContentViewer";
@@ -29,7 +28,7 @@ const DetailPost = ({
   bestAnswer,
 }) => {
   let question = data[0];
-  console.log(question.answers.questionTags);
+  console.log(question.questionTags);
   return (
     <PostLayout className={answer ? "answer" : null}>
       <LayoutLeft>
@@ -42,7 +41,7 @@ const DetailPost = ({
         <TagContainer>
           {answer
             ? null
-            : question.answers.questionTags.map((el) => (
+            : question.questionTags.map((el) => (
                 <TagWrapper>
                   <Button primary={false} label={el.tagName} Tagged='Tagged' />
                 </TagWrapper>

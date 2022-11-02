@@ -1,4 +1,4 @@
-export const YellowList = [
+export const YELLOWLIST = [
   {
     title: "The Overflow Blog",
     sentence: [
@@ -24,7 +24,7 @@ export const YellowList = [
   },
 ];
 
-export const tagList = [
+export const TAGLIST = [
   "javascript",
   "python",
   "java",

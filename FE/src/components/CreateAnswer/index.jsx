@@ -10,7 +10,7 @@ import {
   TagWrapper,
 } from "./style";
 import ContentEditor from "../ContentEditor";
-import AnswerEditData from "../../states/AnswerEditData";
+import AnswerEditData from "../../store/AnswerEditData";
 import { data } from "../../db/data.json";
 import { useRecoilValue } from "recoil";
 

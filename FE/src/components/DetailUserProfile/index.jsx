@@ -20,7 +20,7 @@ const DetailUserProfile = ({ answerer, createdAt, profile }) => {
         <Link to='/mypage'>
           <UserInfoItem>
             <img
-              src={answerer ? profile : "/public/initialProfile.png"}
+              src={answerer ? profile : "/initialProfile.png"}
               className='img'
             />
           </UserInfoItem>
