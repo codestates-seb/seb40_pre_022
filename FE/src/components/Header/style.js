@@ -302,3 +302,30 @@ export const IconUl = styled.ul`
     }
   }
 `;
+
+export const ButtonWrap = styled.ul`
+  ${flexCenter}
+  width: 100%;
+  justify-content: flex-end;
+  a {
+    border: 1px solid hsl(206deg 100% 52%);
+    background: hsl(205deg 100% 95%);
+    border-radius: 3px;
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    color: hsl(205, 47%, 42%);
+  }
+  li:first-child {
+    font-size: 1.1rem;
+    padding: 14px 10px;
+    :hover {
+      background-color: hsl(210, 8%, 90%);
+      cursor: pointer;
+    }
+  }
+  li:last-child a {
+    background: hsl(206deg 100% 52%);
+    margin-left: 5px;
+    color: #fff;
+  }
+`;

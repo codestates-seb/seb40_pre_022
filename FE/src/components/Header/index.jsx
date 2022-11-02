@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
-import { Wrapper, Container, ProductsBox, ProductsDropBox, SearchBox, SearchInnerBox, SearchDropBox, IconUl } from './style'
+import { Wrapper, Container, ProductsBox, ProductsDropBox, SearchBox, SearchInnerBox, SearchDropBox, IconUl, ButtonWrap } from './style'
 import { HEADER_PRODUCTS , HEADER_ICONS, SEARCH_TOOLTIPS } from '../../constants/header';
 import { Button } from '@components/Button';
 
@@ -11,6 +11,9 @@ const Header = () => {
   const [isTooltip, setIsTooltip] = useState(false)
   const [isSearchBox, setIsSearchBox] = useState(false)
   const productsTooltip = useRef()
+
+  const isLogin = localStorage.getItem("isLogin");
+  console.log(isLogin)
 
   useEffect(()=>{
     document.addEventListener('mousedown', handleClickOutside);
@@ -76,24 +79,32 @@ const Header = () => {
               </SearchDropBox>
           </SearchInnerBox>
         </SearchBox>
+
+        { isLogin ? 
         <IconUl>
+            <li><FontAwesomeIcon className='icon' icon={faMagnifyingGlass} onClick={()=>handleToggle('search')} /></li>
+            <li>
+              <Link className='profile' to='/mypage'>
+                <img src="/initialProfile.png" alt='profile' />
+                <span>1</span>
+              </Link>
+            </li>
+            {
+            HEADER_ICONS.map((icons, i)=>{
+              const { title, icon } = icons
+              return (
+                <li key={i}>
+                  <FontAwesomeIcon className='icon' role="menuitem" title={title} icon={icon} />
+                </li>
+              )
+            })} 
+        </IconUl> :
+        <ButtonWrap>
           <li><FontAwesomeIcon className='icon' icon={faMagnifyingGlass} onClick={()=>handleToggle('search')} /></li>
-          <li>
-            <Link className='profile' to='/mypage'>
-              <img src="/initialProfile.png" alt='profile' />
-              <span>1</span>
-            </Link>
-          </li>
-          {
-          HEADER_ICONS.map((icons, i)=>{
-            const { title, icon } = icons
-            return (
-              <li key={i}>
-                <FontAwesomeIcon className='icon' role="menuitem" title={title} icon={icon} />
-              </li>
-            )
-          })}
-        </IconUl>
+          <li><Link to='/login'>Log in</Link></li>
+          <li><Link to='/join'>Sign up</Link></li>
+        </ButtonWrap>
+        }
       </Container>
     </Wrapper>
   )
