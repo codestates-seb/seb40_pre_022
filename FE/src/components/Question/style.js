@@ -12,9 +12,10 @@ const QuestionContainer = styled.div`
 
 const Questioncontent = styled.div`
   display: block;
+  flex: 1 1 auto;
 `;
 
-const Questiontitle = styled.div`
+const Questiontitle = styled.h3`
   font-size: 1.17em;
   margin-top: -2px;
   margin-bottom: 5px;
@@ -34,7 +35,17 @@ const Questionbody = styled.div`
   hyphens: auto !important;
 `;
 
-const Questionuser = styled.div``;
+const Questionuser = styled.div`
+  display: flex;
+  text-align: center;
+
+  .img {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    margin-right: 5px;
+  }
+`;
 
 const Questionsummary = styled.div`
   gap: 6px;
@@ -58,6 +69,7 @@ const Questionfooter = styled.div`
 
 const Questiontags = styled.div`
   margin-right: 4px;
+  justify-content: start;
 `;
 
 export {
