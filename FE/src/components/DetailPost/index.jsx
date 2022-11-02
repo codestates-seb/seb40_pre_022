@@ -10,7 +10,6 @@ import {
   UserInfo,
   UserInfoText,
   TagContainer,
-  TagContainer,
 } from "./style";
 import VoteBtn from "../VoteBtn";
 import ContentViewer from "../ContentViewer";
