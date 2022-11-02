@@ -1,6 +1,5 @@
 package com.example.project.question.service;
 
-import com.example.project.answer.entity.Answer;
 import com.example.project.exception.BusinessLogicException;
 import com.example.project.exception.ExceptionCode;
 import com.example.project.member.entity.Member;
@@ -10,18 +9,17 @@ import com.example.project.question.entity.Question;
 import com.example.project.question.entity.QuestionTag;
 import com.example.project.question.repository.QuestionRepository;
 import com.example.project.vote.Vote;
-import org.hibernate.query.criteria.internal.BasicPathUsageException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
@@ -44,7 +42,7 @@ public class QuestionService {
         return questionRepository.findAll(PageRequest.of(page, size, Sort.by("questionId").descending()));
     }
 
-    //3 키워드별 question 조회 + 추후 추가
+    //todo 3. 키워드별 question 조회 + 추후 추가
     public Page<Question> findQuestionByKeyword(String keyword, int page, int size){
         // 1. keyword로 레포지터리에서 검색한다.
 
@@ -64,27 +62,28 @@ public class QuestionService {
     }
 
     //5 수정 위해 question 불러올때
-    public Question findQuestionForUpdate(long questionId){
+    public Question findQuestionForUpdate(long questionId, String memberEmail){
 
-        //1. 현재 로그인 한 멤버 확인
+        //1. 현재 로그인 한 멤버 확인 - 토큰에서 담아왔고, 거기서 추출한 메일로 이 글의 멤버와 비교한다.
+        if(!memberEmail.equals(findVerifiedQuestion(questionId).getMember().getEmail())) {
+            throw new RuntimeException();
+        }
 
-        //2. 이 글의 주인인지 확인
-
-        //3. 수정 대상 question을 가져온다.
+        //2. 수정 대상 question을 가져온다.
         Question question = findQuestion(questionId);
 
         return question;
     }
 
     //6 수정
-    public Question updateQuestion(Question question){
+    public Question updateQuestion(Question question, String memberEmail){
 
-        // 사실 로직적으로 5번이 먼저 일어나기때문에 여기서 또 체크하는 것이 비용낭비인가 싶기도 하다.
-        //1. 현재 로그인 한 멤버 확인
+        //1. 로그인 한 멤버가 이 글의 주인인지 확인
+        if(!memberEmail.equals(findVerifiedQuestion(question.getQuestionId()).getMember().getEmail())) {
+            throw new RuntimeException();
+        }
 
-        //2. 이 글의 주인인지 확인
-
-        //3 수정하기
+        //2 수정하기
         Question findQuestion = findVerifiedQuestion(question.getQuestionId());
 
         Optional.ofNullable(question.getTitle())
@@ -96,55 +95,62 @@ public class QuestionService {
     }
 
     //7,8 질문 추천 올리기 내리기 + 추후 작성
+    public Question questionVoteUp(Question question, String memberEmail){
 
-    public Question questionVoteUp(Question question){
+        //1. 로그인한 사람이 존재하는지 확인 - 당연히 존재하겠지만 로직적으로 접근
+        memberService.DoesMemberExist(memberEmail);
 
-        //1. 현재 로그인 한 사람의 정보 - 로그인 구현시 수정 필**
-        //2. 존재하는 멤버인지 확인하기 - 현재는 dto에 memberId 담아옴
-        //3. 질문존재 확인 후 가져오기
+        //2. 질문존재 확인 후 가져오기
         Question findQuestion = findVerifiedQuestion(question.getQuestionId());
 
-        //4. 로그인한 사람의 정보와 대조해서 count 계산
-        voteUpCase(findQuestion, question.getMember().getMemberId());
+        //3. 로그인한 사람의 정보와 대조해서 count 계산
+        voteUpCase(findQuestion, memberService.findExistMemberByEmail(memberEmail).getMemberId());
 
-        //5. votemap 최신화를 위한 저장 - 이래야 값들이 저장됨
+        //4. votemap 최신화를 위한 저장 - 이래야 값들이 저장됨
         return questionRepository.save(findQuestion);
     }
 
-    public Question questionVoteDown(Question question){
+    public Question questionVoteDown(Question question, String memberEmail){
 
-        //1. 현재 로그인 한 사람의 정보 - 로그인 구현시 수정 필**    => dto에 memberId 포함시켜두긴 했는데..
-        //2. 존재하는 멤버인지 확인하기 - 현재는 스텁 데이터 이용 중
-        //3. 질문존재 확인 후 가져오기
+        //1. 로그인한 사람이 존재하는지 확인 - 당연히 존재하겠지만 로직적으로 접근
+        memberService.DoesMemberExist(memberEmail);
 
+
+        //2. 질문존재 확인 후 가져오기
         Question findQuestion = findVerifiedQuestion(question.getQuestionId());
 
-        //4. 로그인한 사람의 정보와 대조해서 count 계산
-        voteDownCase(findQuestion, question.getMember().getMemberId());
+        //3. 로그인한 사람의 정보와 대조해서 count 계산
+        voteDownCase(findQuestion, memberService.findExistMemberByEmail(memberEmail).getMemberId());
 
-        //5. votemap 최신화를 위한 저장 - 이래야 값들이 저장된다.
+        //4. votemap 최신화를 위한 저장 - 이래야 값들이 저장된다.
         return questionRepository.save(findQuestion); // 저장한다.
     }
 
     //9 question 생성
-    public Question createQuestion(Question question){
-        //4. 1,2번 통해 확인한 멤버 정보 생성 후 연결
-        Member member = new Member("누구", "무엇", "무엇"); // 기능 구현 후 로그인정보에서 가져올것
-        member.addQuestion(question);
-        question.setMember(member);
+    public Question createQuestion(Question question, String memberEmail){
 
-        //4. vote 객체 생성 후 연결 - 해당 question을 위한 vote객체 ->  // cascade이용 db자동등록
+        // 현재 로그인 한 사람 확인 후 질문과 연결
+        Member member = memberService.findExistMemberByEmail(memberEmail);
+        question.setMember(member);
+        member.addQuestion(question);
+
+        // vote 객체 생성 후 연결 - 해당 question을 위한 vote객체 ->  // cascade이용 db자동등록
         Vote vote = new Vote();
         vote.setQuestion(question);
         question.setVote(vote);
 
-        //5. questionTag 객체 생성 후 연결 --> mapper에서 default로 이미 question에 넣어주었는데..
+        //todo. 5. questionTag 객체 생성 후 연결 --> mapper에서 default로 이미 question에 넣어주었는데..
 
         return questionRepository.save(question);
     }
 
     //10 question 제거 - checked v / ** 추후 question status 사용 유무 이야기
-    public void deleteQuestion(long questionId){
+    public void deleteQuestion(long questionId, String memberEmail){
+
+        //로그인 한 사람이 이 글의 주인인지.
+        if(!memberEmail.equals(findVerifiedQuestion(questionId).getMember().getEmail())) {
+            throw new RuntimeException();
+        }
         Question question = findQuestion(questionId);
         questionRepository.delete(question);
     }
@@ -163,7 +169,7 @@ public class QuestionService {
             throw new BusinessLogicException(ExceptionCode.QUESTION_EXISTS);
     }
 
-    // voteUp계산
+    // 추천 로직
     public void voteUpCase(Question question, long memberId){ // checked v
 
 
@@ -193,6 +199,7 @@ public class QuestionService {
         question.getVote().setVoteCheck(voteMap.get(memberId));     // voteCheck 상태 저장.
     }
 
+    // 비추천 로직
     public void voteDownCase(Question question, long memberId){ // checked v
 
         Map<Long, Integer> voteMap = question.getVote().getMemberVoteMap();  // 해당 question의 votemap을 가져온다.

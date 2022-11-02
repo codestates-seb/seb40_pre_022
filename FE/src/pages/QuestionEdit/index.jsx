@@ -54,8 +54,8 @@ const QuestionEdit = () => {
           <EditTitleText>Title</EditTitleText>
           <EditInput placeholder='e.g. Is there an R function for finding the index of an element in a vector?'></EditInput>
           <EditTitleText>Body</EditTitleText>
-          <ContentEditor></ContentEditor>
-          <ContentViewer></ContentViewer>
+          <ContentEditor />
+          <ContentViewer />
           <TagsContainer>
             <TagTitle>Tags</TagTitle>
             <TagInput

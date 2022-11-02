@@ -10,52 +10,44 @@ import java.time.LocalDateTime;
 public class AnswerDto {
 
 
-    @Getter
+
     @Builder
-    @Setter
+    @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Post{
-        private long memberId;
 
         @NotBlank
         private String body;
 
-        private long questionId;
-
-        public Member getMember(){
-            Member member = new Member();
-            member.setMemberId(memberId);
-            return member;
-        }
     }
 
     //답변 수정을 위한 requestBody
-    @Getter
+
     @Builder
-    @Setter
+    @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Patch{
 
-        private long memberId;      // 수정하려는 사용자 ** 추후 보안시 변경 가능사항
         private long answerId;
-        @NotBlank
-        private long questionId;
-
         private String body;
+
     }
 
     //답변 추천수 변경을 위한 requestBody
-    @Getter
-    @Setter
+    @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class AnswerVotePatch {
-        private long memberId;
+
         private long answerId;      // answerId를 통해 연결된 Vote를 가져오기 위해 사용.
+
     }
 
-    @Getter
-    @Setter
+    @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class AcceptPatch{
         private long memberId;
         private long questionId;
@@ -63,8 +55,7 @@ public class AnswerDto {
     }
 
     //답변 응답을 위한 responseBody
-    @Getter
-    @Setter
+    @Data
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Response{
@@ -78,8 +69,7 @@ public class AnswerDto {
     }
 
     //답변 추천수 변경을 위한 responseBody
-    @Getter
-    @Setter
+    @Data
     @AllArgsConstructor
     @NoArgsConstructor
     public static class VoteResponse{
@@ -88,8 +78,7 @@ public class AnswerDto {
     }
 
     //답변 응답에 Member의 필요응답 필드만 돌려주기 위함
-    @Getter
-    @Setter
+    @Data
     @AllArgsConstructor
     @NoArgsConstructor
     public static class AnswerMemberResponse{

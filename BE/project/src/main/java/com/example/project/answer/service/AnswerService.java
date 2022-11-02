@@ -3,6 +3,8 @@ package com.example.project.answer.service;
 import com.example.project.answer.dto.AnswerDto;
 import com.example.project.answer.entity.Answer;
 import com.example.project.answer.repository.AnswerRepository;
+import com.example.project.exception.BusinessLogicException;
+import com.example.project.exception.ExceptionCode;
 import com.example.project.member.entity.Member;
 import com.example.project.member.service.MemberService;
 import com.example.project.question.entity.Question;
@@ -27,13 +29,15 @@ public class AnswerService {
     private final MemberService memberService;
 
     // 1. Answer 등록 로직
-    public Answer createAnswer(Answer answer){
-        Question question = questionService.findVerifiedQuestion(answer.getQuestion().getQuestionId());
-        Member member = memberService.findExistMember(answer.getMember().getMemberId());
+    public Answer createAnswer(Answer answer, long questionId, String memberEmail){
 
+        Question question = questionService.findVerifiedQuestion(questionId);
+        Member member = memberService.findExistMemberByEmail(memberEmail);
 
         answer.setMember(member);
-        answer.setQuestion(question);       // 이건 여기서 해야하나 말아야하나?? mapper에서 그냥 id만 받아서 쓰나?
+        answer.setQuestion(question);
+        member.addAnswer(answer);
+        question.addAnswer(answer);
 
         Vote vote = new Vote();
         vote.setAnswer(answer);
@@ -43,35 +47,41 @@ public class AnswerService {
     }
 
     // 2. Answer 수정 로직
-    public Answer updateAnswer(Answer answer, long memberId){
+    public Answer updateAnswer(Answer answer, String memberEmail){
+
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
 
-        // memberId와 AnswerId가 다르면 오류 발생.
-        if(memberId!=findAnswer.getMember().getMemberId())
-            throw new RuntimeException();       // fixme ErrorCODE 수정할 것.
+        if(!memberEmail.equals(findAnswer.getMember().getEmail())) {
+            throw new BusinessLogicException(ExceptionCode.CANNOT_CHANGE_ANSWER);
+        }
 
         Optional.ofNullable(answer.getBody())
                 .ifPresent(findAnswer::setBody);
 
         return answerRepository.save(findAnswer);
     }
-    // 3-1. Answer 추천 로직
-    public Answer answerVoteUp(Answer answer) {
 
-        // dto의 answerId를 통해 answer를 받아온다.
+    // 3-1. Answer 추천 로직
+    public Answer answerVoteUp(Answer answer, String memberEmail) {
+
+        memberService.DoesMemberExist(memberEmail);
+
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
-        voteUpCase(findAnswer, answer.getMember().getMemberId());
+
+        voteUpCase(findAnswer, memberService.findExistMemberByEmail(memberEmail).getMemberId());
 
         return answerRepository.save(findAnswer);
 
     }
 
     // 3-2. Answer 비추천 로직
-    public Answer answerVoteDown(Answer answer) {
+    public Answer answerVoteDown(Answer answer, String memberEmail) {
 
-        // dto의 answerId를 통해 answer를 받아온다.
+        memberService.DoesMemberExist(memberEmail);
+
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
-        voteDownCase(findAnswer, answer.getMember().getMemberId());
+
+        voteDownCase(findAnswer, memberService.findExistMemberByEmail(memberEmail).getMemberId());
 
         return answerRepository.save(findAnswer);
     }
@@ -82,11 +92,10 @@ public class AnswerService {
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
         Question findQuestion = questionService.findVerifiedQuestion(answer.getQuestion().getQuestionId());
 
-        // todo : 메서드 묶을 수 있나 고민...
         // 1. 해당 question의 member가 지금 요청하는 member와 같은지 확인.
         if (findQuestion.getMember().getMemberId() != answer.getMember().getMemberId())
-            throw new RuntimeException();
-
+            throw new BusinessLogicException(ExceptionCode.CANNOT_CHANGE_ANSWER);
+            
         // 2. 채택된 answerId(isAccepted==1 인 경우)를 또 채택하려하면 , 채택을 취소 (0)으로 처리 후, 저장 하고 return.
         if(findAnswer.getIsAccepted()==1){
             findAnswer.setIsAccepted(0);
@@ -101,17 +110,23 @@ public class AnswerService {
     }
 
     // 5. Answer 삭제 로직
-    public void deleteAnswer(long answerId) {
+    public void deleteAnswer(long answerId, String memberEmail) {
+
         Answer findAnswer = findVerifiedAnswer(answerId);
+
+        if(!memberEmail.equals(findAnswer.getMember().getEmail())) {
+            throw new BusinessLogicException(ExceptionCode.CANNOT_CHANGE_ANSWER);
+        }
 
         answerRepository.delete(findAnswer);
     }
 
     // 6. Answer이 실제 DB에 존재하는지 검증
+    @Transactional(readOnly = true)
     public Answer findVerifiedAnswer(long answerId){
         Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
         Answer findAnswer = optionalAnswer.orElseThrow(()->
-                new RuntimeException());     // todo Error: ANSWER_NOT_FOUND 답변이 없는경우에는 수정이 불가능하다.
+                new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));
         return findAnswer;
     }
 
@@ -121,16 +136,10 @@ public class AnswerService {
 
     }
 
-    // get 테스트용. 구현대상 X
-    public Answer findAnswer(long answerId) {
-        return findVerifiedAnswer(answerId);
-    }
-
-
     // 채택된 답변 있는지 확인하는 로직.
     private void acceptAnswerCheck(Question question){
         for (Answer answer1 : question.getAnswers()) {
-            if(answer1.getIsAccepted() == 1)  throw new RuntimeException();    // 채택된 답변이 이미 있으면, 에러 처리.
+            if(answer1.getIsAccepted() == 1)  throw new BusinessLogicException(ExceptionCode.ACCEPT_ANSWER_EXISTS);    // 채택된 답변이 이미 있으면, 에러 처리.
         }
     }
 

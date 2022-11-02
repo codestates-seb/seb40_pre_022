@@ -1,6 +1,6 @@
-package com.example.project.security.auth;
+package com.example.project.security.filter;
 
-import com.example.project.security.utils.JwtTokenizer;
+import com.example.project.security.jwt.JwtTokenizer;
 import com.example.project.security.utils.MemberAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

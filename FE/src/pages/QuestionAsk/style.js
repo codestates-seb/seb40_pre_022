@@ -1,5 +1,10 @@
 import styled from "styled-components";
-import { within } from "@storybook/testing-library";
+
+const AskContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: #f8f9f9;
+`;
 
 const AskTitleHeader = styled.header`
   display: flex;
@@ -16,10 +21,6 @@ const AskTitleH1 = styled.h1`
   font-size: 2rem;
   padding: 40px 10px 40px 30px;
   margin-right: auto;
-`;
-
-const AskContainer = styled.div`
-  background-color: #f8f9f9;
 `;
 
 const AskBox = styled.div`

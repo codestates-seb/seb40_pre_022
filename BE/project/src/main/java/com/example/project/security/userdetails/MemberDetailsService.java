@@ -1,9 +1,10 @@
-package com.example.project.security.utils;
+package com.example.project.security.userdetails;
 
 import com.example.project.exception.BusinessLogicException;
 import com.example.project.exception.ExceptionCode;
 import com.example.project.member.entity.Member;
 import com.example.project.member.repository.MemberRepository;
+import com.example.project.security.utils.MemberAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
