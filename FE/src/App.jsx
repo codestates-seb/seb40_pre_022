@@ -5,7 +5,7 @@ import { RecoilRoot } from "recoil";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Join from "./pages/Join";
-import MyPage from "./pages/MyPage";
+import MyPage from "./pages/Mypage";
 import QuestionAsk from "./pages/QuestionAsk";
 import AllQuestion from "./pages/AllQuestion";
 import QuestionsDetail from "./pages/QuestionsDetail";

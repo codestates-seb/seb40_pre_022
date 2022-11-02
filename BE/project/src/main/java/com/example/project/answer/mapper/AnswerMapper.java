@@ -46,11 +46,45 @@ public interface AnswerMapper {
         response.setMember(answerMemberResponse);
         response.setBody(answer.getBody());
         response.setVoteCount(answer.getVote().getVoteCount());
+        response.setIsAccepted(answer.getIsAccepted());
         response.setCreatedAt(answer.getCreatedAt());
-        response.setModifiedAt(answer.getModifiedAt());
+        response.setUpdatedAt(answer.getModifiedAt());
 
         return response;
     }
 
+    // 답변 채택 Dto
+    default Answer answerAcceptToAnswer(AnswerDto.AcceptPatch acceptPatch) {
+        Answer answer = new Answer();
+        Member member = new Member();
+        Question question = new Question();
+
+        // member, question 에 먼저 Id값을 입력하고,
+        question.setQuestionId(acceptPatch.getQuestionId());
+        member.setMemberId(acceptPatch.getMemberId());
+
+        // answer에 그 값들을 각각 저장해준다.
+        answer.setAnswerId(acceptPatch.getAnswerId());
+        answer.setQuestion(question);
+        answer.setMember(member);
+
+        return answer;
+    }
+
+    //여기서 필요 정보를 가공해서 answer로 넘기면 dto를 서비스단까지 옮길 필요가 없습니다.
+    default Answer answerVoteDtoToAnswer(AnswerDto.AnswerVotePatch answerVotePatch){
+        Answer answer = new Answer();
+        Member member = new Member();
+
+        member.setMemberId(answerVotePatch.getMemberId());
+        answer.setAnswerId(answerVotePatch.getAnswerId());
+
+        answer.setMember(member);
+
+        return answer;
+    }
+
+    // AcceptResponse로 변환. (default 정의 필요 없을듯)
+    AnswerDto.AcceptResponse answerToAcceptResponse(Answer answer);
 
 }

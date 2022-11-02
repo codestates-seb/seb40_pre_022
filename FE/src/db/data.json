@@ -34,6 +34,8 @@
               "image": "https://mblogthumb-phinf.pstatic.net/MjAyMDA2MTBfMTY1/MDAxNTkxNzQ2ODcyOTI2.Yw5WjjU3IuItPtqbegrIBJr3TSDMd_OPhQ2Nw-0-0ksg.8WgVjtB0fy0RCv0XhhUOOWt90Kz_394Zzb6xPjG6I8gg.PNG.lamute/user.png?type=w800"
             },
             "body": "** 두번째 테스트입니다**\n| a |b  |\n| --- | --- |\n|  1| 2 |\n> 인용문",
+            "vote": 3,
+            "isChecked": false,
             "createdAt": "2022-11-01T10:37:23.156Z",
             "updatedAt": "2022-11-01T10:37:23.156Z"
           },
@@ -43,6 +45,8 @@
               "image": "https://mblogthumb-phinf.pstatic.net/MjAyMDA2MTBfMTY1/MDAxNTkxNzQ2ODcyOTI2.Yw5WjjU3IuItPtqbegrIBJr3TSDMd_OPhQ2Nw-0-0ksg.8WgVjtB0fy0RCv0XhhUOOWt90Kz_394Zzb6xPjG6I8gg.PNG.lamute/user.png?type=w800"
             },
             "body": "# 세번째 테스트입니다\n* [x] 할일1\n* [ ] 할일2\n\n`javascript`",
+            "vote": 4,
+            "isChecked": false,
             "createdAt": "2022-11-01T10:45:05.141Z",
             "updatedAt": "2022-11-01T10:45:05.141Z"
           },
@@ -52,6 +56,8 @@
               "image": "https://mblogthumb-phinf.pstatic.net/MjAyMDA2MTBfMTY1/MDAxNTkxNzQ2ODcyOTI2.Yw5WjjU3IuItPtqbegrIBJr3TSDMd_OPhQ2Nw-0-0ksg.8WgVjtB0fy0RCv0XhhUOOWt90Kz_394Zzb6xPjG6I8gg.PNG.lamute/user.png?type=w800"
             },
             "body": "네번째 테스트입니다! \n```\n코드블럭\n```",
+            "isChecked": false,
+            "vote": 5,
             "createdAt": "2022-11-01T10:49:19.415Z",
             "updatedAt": "2022-11-01T10:49:19.415Z"
           }
