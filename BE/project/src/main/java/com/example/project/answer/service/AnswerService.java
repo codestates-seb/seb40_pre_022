@@ -29,13 +29,15 @@ public class AnswerService {
     private final MemberService memberService;
 
     // 1. Answer 등록 로직
-    public Answer createAnswer(Answer answer){
-        Question question = questionService.findVerifiedQuestion(answer.getQuestion().getQuestionId());
-        Member member = memberService.findExistMember(answer.getMember().getMemberId());
+    public Answer createAnswer(Answer answer, long questionId, String memberEmail){
 
+        Question question = questionService.findVerifiedQuestion(questionId);
+        Member member = memberService.findExistMemberByEmail(memberEmail);
 
         answer.setMember(member);
-        answer.setQuestion(question);       // 이건 여기서 해야하나 말아야하나?? mapper에서 그냥 id만 받아서 쓰나?
+        answer.setQuestion(question);
+        member.addAnswer(answer);
+        question.addAnswer(answer);
 
         Vote vote = new Vote();
         vote.setAnswer(answer);
@@ -45,35 +47,41 @@ public class AnswerService {
     }
 
     // 2. Answer 수정 로직
-    public Answer updateAnswer(Answer answer, long memberId){
+    public Answer updateAnswer(Answer answer, String memberEmail){
+
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
 
-        // memberId와 AnswerId가 다르면 오류 발생.
-        if(memberId!=findAnswer.getMember().getMemberId())
+        if(!memberEmail.equals(findAnswer.getMember().getEmail())) {
             throw new BusinessLogicException(ExceptionCode.CANNOT_CHANGE_ANSWER);
+        }
 
         Optional.ofNullable(answer.getBody())
                 .ifPresent(findAnswer::setBody);
 
         return answerRepository.save(findAnswer);
     }
-    // 3-1. Answer 추천 로직
-    public Answer answerVoteUp(Answer answer) {
 
-        // dto의 answerId를 통해 answer를 받아온다.
+    // 3-1. Answer 추천 로직
+    public Answer answerVoteUp(Answer answer, String memberEmail) {
+
+        memberService.DoesMemberExist(memberEmail);
+
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
-        voteUpCase(findAnswer, answer.getMember().getMemberId());
+
+        voteUpCase(findAnswer, memberService.findExistMemberByEmail(memberEmail).getMemberId());
 
         return answerRepository.save(findAnswer);
 
     }
 
     // 3-2. Answer 비추천 로직
-    public Answer answerVoteDown(Answer answer) {
+    public Answer answerVoteDown(Answer answer, String memberEmail) {
 
-        // dto의 answerId를 통해 answer를 받아온다.
+        memberService.DoesMemberExist(memberEmail);
+
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
-        voteDownCase(findAnswer, answer.getMember().getMemberId());
+
+        voteDownCase(findAnswer, memberService.findExistMemberByEmail(memberEmail).getMemberId());
 
         return answerRepository.save(findAnswer);
     }
@@ -102,8 +110,13 @@ public class AnswerService {
     }
 
     // 5. Answer 삭제 로직
-    public void deleteAnswer(long answerId) {
+    public void deleteAnswer(long answerId, String memberEmail) {
+
         Answer findAnswer = findVerifiedAnswer(answerId);
+
+        if(!memberEmail.equals(findAnswer.getMember().getEmail())) {
+            throw new BusinessLogicException(ExceptionCode.CANNOT_CHANGE_ANSWER);
+        }
 
         answerRepository.delete(findAnswer);
     }

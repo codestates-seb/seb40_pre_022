@@ -2,7 +2,7 @@ import { React, useRef, useState } from "react";
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { useRecoilState } from "recoil";
-import AnswerEditData from "../../states/AnswerEditData";
+import AnswerEditData from "../../store/AnswerEditData";
 
 const ContentEditor = () => {
   const [answerData, setAnswerData] = useRecoilState(AnswerEditData);

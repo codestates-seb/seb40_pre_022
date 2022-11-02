@@ -12,14 +12,14 @@ import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { SIDEBAR_ITEMS, SIDEBAR_SENTENCES } from "../../constants";
 
-const Leftsidebar = () => {
+const Leftsidebar = ({display}) => {
   let { pathname } = useLocation();
   let path = pathname.split("/")[1];
   if (window.location.pathname === "/question/ask") return null;
 
   return (
     <>
-      <SidebarContainer>
+      {display && <SidebarContainer>
         <TabList>
           <TabItem className={pathname === "/" ? "active" : null}>
             <Link to='/' className='link'>
@@ -57,7 +57,7 @@ const Leftsidebar = () => {
             </TabItem>
           ))}
         </TabList>
-      </SidebarContainer>
+      </SidebarContainer>}
     </>
   );
 };
