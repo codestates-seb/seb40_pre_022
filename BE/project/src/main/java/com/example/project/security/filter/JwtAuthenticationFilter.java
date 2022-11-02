@@ -7,14 +7,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +36,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         ObjectMapper objectMapper = new ObjectMapper();
         LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class); // 역직렬화
 
-
         // 인증 단계에 돌입하기 전 토큰
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
@@ -43,6 +45,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     // 성공시 authentication의 principal field에 Member객체가 할당됨. 그 이후 처리
+    @SneakyThrows
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
@@ -53,9 +56,23 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String accessToken = delegateAccessToken(member);
         String refreshToken = delegateRefreshToken(member);
 
-        response.setHeader("Authorization", "Bearer " + accessToken);
-        response.setHeader("Refresh", refreshToken);
+        Member findMember = jwtTokenizer.findMember(member.getEmail());
+        jwtTokenizer.saveRefreshToken(refreshToken, findMember.getEmail(), findMember.getMemberId()); // 리프레시 토큰 저장
 
+        String encodedRefreshToken = URLEncoder.encode(refreshToken, "UTF-8");
+        Cookie cookie = new Cookie("RefreshToken", encodedRefreshToken);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+
+        Cookie mbCookie = new Cookie("MemberId", String.valueOf(findMember.getMemberId()));
+        mbCookie.setPath("/");
+        mbCookie.setHttpOnly(true);
+
+        response.addCookie(cookie);
+        response.addCookie(mbCookie);
+
+        response.setHeader("Authorization", "Bearer " + accessToken);
+//        response.setHeader("Refresh", refreshToken);
 //        this.getSuccessHandler().onAuthenticationSuccess(request,response,authResult); - 오류 잡기
     }
 

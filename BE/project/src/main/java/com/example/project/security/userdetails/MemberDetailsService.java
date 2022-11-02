@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 //db에서 크레덴셜 조회, 권한정보 더해서 MemberDetail생성 (repository에서 정보, authorityutil을 통해 권한정보)

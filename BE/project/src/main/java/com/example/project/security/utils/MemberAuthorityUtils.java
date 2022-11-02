@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Component
 public class MemberAuthorityUtils {
 
-    @Value("${mail.address.admin")
+    @Value("${mail.address.admin}")
     private String adminMailAddress;
 
     // 테이블을 위한 관리자 권한 목록

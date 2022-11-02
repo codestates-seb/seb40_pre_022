@@ -15,6 +15,9 @@ spring:
     properties:
       hibernate:
         format_sql: true  # (3) SQL pretty print
+  mvc:
+    servlet:
+      path: /
 
 mail:
   address:
