@@ -8,27 +8,29 @@ import com.example.project.question.dto.QuestionDto;
 import com.example.project.question.entity.Question;
 import com.example.project.question.entity.QuestionTag;
 import com.example.project.question.repository.QuestionRepository;
+import com.example.project.tag.Tag;
+import com.example.project.tag.TagRepository;
 import com.example.project.vote.Vote;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final MemberService memberService;
+    private final TagRepository tagRepository;
 
-    public QuestionService(QuestionRepository questionRepository, MemberService memberService) {
-        this.questionRepository = questionRepository;
-        this.memberService = memberService;
-    }
 
     //1 메인페이지 위함 - checked. v
     public Page<Question> findQuestionsByViewCount(int page, int size){
@@ -139,7 +141,23 @@ public class QuestionService {
         vote.setQuestion(question);
         question.setVote(vote);
 
-        //todo. 5. questionTag 객체 생성 후 연결 --> mapper에서 default로 이미 question에 넣어주었는데..
+        //todo. 5. questionTag 객체 생성 후 연결 -->
+        List<QuestionTag> questionTags = question.getQuestionTags();
+        for (int i = 0; i < questionTags.size(); i++) {
+            boolean alreadyExistTag = findTag(questionTags.get(i).getQuestionTagName());
+
+            if(alreadyExistTag == true){
+                Tag tag = findTagByName(questionTags.get(i).getQuestionTagName());
+                tag.setUsageCount(tag.getUsageCount() + 1);
+//                tag.addQuestionTag(questionTags.get(i));
+                questionTags.get(i).setTag(tag);
+            }
+            else{
+                Tag tag = new Tag(questionTags.get(i).getQuestionTagName(), 1);
+                tag.addQuestionTag(questionTags.get(i));
+                questionTags.get(i).setTag(tag);
+            }
+        }
 
         return questionRepository.save(question);
     }
@@ -226,5 +244,20 @@ public class QuestionService {
             voteMap.put(memberId, -1); // -1 멤버로 새로 추가
         }
         question.getVote().setVoteCheck(voteMap.get(memberId));     // voteCheck 상태 저장.
+    }
+
+    public boolean findTag(String questionTagName){
+        Optional<Tag> optionalTag = tagRepository.findByTagName(questionTagName);
+        if(optionalTag.isPresent())
+            return true;
+        return false;
+    }
+
+
+    public Tag findTagByName(String tagName){
+        Optional<Tag> optionalTag = tagRepository.findByTagName(tagName);
+
+
+        return optionalTag.orElseThrow(() -> new RuntimeException());
     }
 }
