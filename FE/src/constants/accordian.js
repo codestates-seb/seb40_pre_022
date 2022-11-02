@@ -1,4 +1,4 @@
-export const step1_1 = [
+export const STEP1_1 = [
   {
     title: "1. Summarize the problem",
     content: [

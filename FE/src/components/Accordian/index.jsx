@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import { step1_1 } from "../../constants/accordian";
+import { STEP1_1 } from "../../constants/accordian";
 
 import {
   AskRightAside,
@@ -35,7 +35,7 @@ const Accordian = () => {
             <br />
             Avoid asking opinion-based questions. <br />
             <br />
-            {step1_1.map((el, idx) => {
+            {STEP1_1.map((el, idx) => {
               return (
                 <Ol key={idx} onClick={(e) => clicked(idx)}>
                   <li className='li-content'>

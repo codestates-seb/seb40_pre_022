@@ -10,14 +10,14 @@ import {
   Tagsitems,
 } from "./style";
 import { Button } from "../Button";
-import { YellowList, tagList } from "../../constants/AQSideBar";
+import { YELLOWLIST, TAGLIST } from "../../constants/AQSideBar";
 
 const AQRightsidebar = () => {
   return (
     <>
       <SidebarContainer>
         <Yellowidget>
-          {YellowList.map((list, i) => {
+          {YELLOWLIST.map((list, i) => {
             return (
               <YWList>
                 <YWListtitle key={i}>{list.title}</YWListtitle>
@@ -30,7 +30,7 @@ const AQRightsidebar = () => {
         </Yellowidget>
         <RelatedTags>
           <Tagstitle>Reated Tags</Tagstitle>
-          {tagList.map((list) => (
+          {TAGLIST.map((list) => (
             <Tagsitems>
               <Button primary='Linkbutton' label={list} Tagged='Tagged' />
             </Tagsitems>
