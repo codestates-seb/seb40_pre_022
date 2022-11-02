@@ -1,16 +1,47 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom';
-import { Wrapper, Container } from './style'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+
+import { Wrapper, Container, ProductsBox, ProductsDropBox, SearchBox, SearchInnerBox, SearchDropBox, IconUl } from './style'
 import { HEADER_PRODUCTS , HEADER_ICONS, SEARCH_TOOLTIPS } from '../../constants/header';
+import { Button } from '@components/Button';
 
 const Header = () => {
+  const [isTooltip, setIsTooltip] = useState(false)
+  const [isSearchBox, setIsSearchBox] = useState(false)
+  const productsTooltip = useRef()
+
+  useEffect(()=>{
+    document.addEventListener('mousedown', handleClickOutside);
+    return()=>{
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+  },[productsTooltip])
+
+  const handleClickOutside = (e) => {
+    if(productsTooltip.current && !productsTooltip.current.contains(e.target)) setIsTooltip(false)
+  }
+
+  const handleToggle = (e) => {
+    if(e ==='search'){
+      setIsSearchBox(!isSearchBox)
+    }
+    if(e === 'products'){
+      setIsTooltip(!isTooltip)
+    }
+  }
+
   return (
     <Wrapper>
       <Container>
-        <Link to='/'>stack<strong>overflow</strong></Link>
-        <div>
-          <button>Products</button>
-          <ul>
+        <Link className='menu' to='/'>
+          <FontAwesomeIcon icon={faBars} />
+        </Link>
+        <Link className='logo' to='/'><span>stack overflow</span></Link>
+        <ProductsBox>
+          <Button primary='Linkbutton' label='Products' className={isTooltip ? 'active':''} onClick={()=>handleToggle('products')}>Products</Button>
+          {isTooltip && <ProductsDropBox ref={productsTooltip}>
             {
             HEADER_PRODUCTS.map((product, i)=>{
               const { title, detail } = product
@@ -21,12 +52,14 @@ const Header = () => {
                 </li>
               )
             })}
-          </ul>
-        </div>
-        <div>
-          <div>
+            <li><Link>About the company</Link></li>
+          </ProductsDropBox>}
+        </ProductsBox>
+        <SearchBox>
+          <SearchInnerBox className={isSearchBox ? 'active' : ''}>
+              <FontAwesomeIcon className='icon' icon={faMagnifyingGlass} />
               <input type='text' placeholder='Search...' />
-              <ul>
+              <SearchDropBox>
               {SEARCH_TOOLTIPS.map((tooltip, i)=>{
                 const { title, detail } = tooltip
                   return (
@@ -37,23 +70,30 @@ const Header = () => {
                     )
               })}
               <li>
-                  <button>Ask a question</button>
+                  <Button label='Ask a question' size='small' />
                   <Link>Search help</Link>
               </li>
-              </ul>
-          </div>
-        </div>
-        <ul>
+              </SearchDropBox>
+          </SearchInnerBox>
+        </SearchBox>
+        <IconUl>
+          <li><FontAwesomeIcon className='icon' icon={faMagnifyingGlass} onClick={()=>handleToggle('search')} /></li>
+          <li>
+            <Link className='profile' to='/mypage'>
+              <img src="/initialProfile.png" alt='profile' />
+              <span>1</span>
+            </Link>
+          </li>
           {
           HEADER_ICONS.map((icons, i)=>{
             const { title, icon } = icons
             return (
               <li key={i}>
-                <span role="menuitem" title={title}>{icon}</span>
+                <FontAwesomeIcon className='icon' role="menuitem" title={title} icon={icon} />
               </li>
             )
           })}
-        </ul>
+        </IconUl>
       </Container>
     </Wrapper>
   )
