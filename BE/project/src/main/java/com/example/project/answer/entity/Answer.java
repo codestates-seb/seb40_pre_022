@@ -27,7 +27,7 @@ public class Answer extends Auditable {
     @Column(name = "ANSWER_ACCEPTED") // 채택 확인용 (1 = 채택)
     private int isAccepted;
 
-    @JsonIgnore           // 무한 참조 순환 방지 annotation
+    @JsonIgnore  // 무한 참조 순환 방지 annotation
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
