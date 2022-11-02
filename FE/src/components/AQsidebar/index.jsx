@@ -42,21 +42,13 @@ const AQRightsidebar = () => {
     <>
       <SidebarContainer>
         <Yellowidget>
-          {[YellowList].map((list) => {
+          {YellowList.map((list, i) => {
             return (
               <YWList>
-                {list.map((content, i) => {
-                  return (
-                    <>
-                      <YWListtitle key={i}> {content.title} </YWListtitle>
-                      <>
-                        {[content.sentence].map((item, i) => {
-                          return <YWListitem>{item}</YWListitem>;
-                        })}
-                      </>
-                    </>
-                  );
-                })}
+                <YWListtitle key={i}>{list.title}</YWListtitle>
+                {list.sentence.map((item, i) => (
+                  <YWListitem key={i}>{item}</YWListitem>
+                ))}
               </YWList>
             );
           })}

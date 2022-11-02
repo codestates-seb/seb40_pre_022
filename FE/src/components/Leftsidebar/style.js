@@ -6,7 +6,8 @@ const SidebarContainer = styled.aside`
   padding-top: 24px;
   position: sticky;
   top: 0;
-  @media screen and (max-width: 640px) {
+  border-right: 1px solid hsl(210deg 8% 90%);
+  @media ${(props) => props.theme.mobile} {
     display: none;
   }
 `;
@@ -43,12 +44,17 @@ const TabItem = styled.li`
   text-align: left;
   font-weight: 500;
   font-size: 0.95em;
-  font-size: ${(props) => props.size === "small" && "0.9em"};
+
   margin-top: 5px;
   width: 164px;
   cursor: pointer;
+
   &:hover {
     color: hsl(210deg 8% 15%);
+  }
+  &.size {
+    margin-left: 20px;
+    font-size: 0.9em;
   }
   .icon {
     position: absolute;
@@ -64,11 +70,17 @@ const TabItem = styled.li`
     line-height: 20px;
   }
   .tab {
-    margin-left: 30px;
     height: 34px;
-    width: 134px;
+    width: 164px;
     padding-top: 8px;
   }
+`;
+
+const TabItemText = styled.div`
+  margin-left: 30px;
+  display: flex;
+  align-items: center;
+  height: 100%;
 `;
 
 const ItemContainer = styled.div`
@@ -79,4 +91,11 @@ const ItemContainer = styled.div`
   margin-top: 10.285px;
 `;
 
-export { SidebarContainer, TabItem, Tabtitle, TabList, ItemContainer };
+export {
+  SidebarContainer,
+  TabItem,
+  Tabtitle,
+  TabList,
+  TabItemText,
+  ItemContainer,
+};
