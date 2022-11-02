@@ -12,6 +12,7 @@ export const Button = ({
   size,
   label,
   Selected,
+  color,
   ...props
 }) => {
   return (
@@ -25,7 +26,7 @@ export const Button = ({
         `${Tagged}`,
         `${Selected}`,
       ].join(" ")}
-      style={backgroundColor && { backgroundColor }}
+      style={(backgroundColor && { backgroundColor }, color && { color })}
       {...props}>
       {label}
     </Btn>
@@ -35,6 +36,7 @@ export const Button = ({
 Button.propTypes = {
   primary: PropTypes.oneOf(["Normalbutton", "Linkbutton", "Mypagebutton"]),
   backgroundColor: PropTypes.string,
+  color: PropTypes.string,
   size: PropTypes.oneOf(["small", "medium", "large", "header-size"]),
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func,
