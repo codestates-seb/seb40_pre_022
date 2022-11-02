@@ -8,7 +8,16 @@ const SidebarContainer = styled.aside`
   top: 0;
   border-right: 1px solid hsl(210deg 8% 90%);
   @media ${(props) => props.theme.mobile} {
+    position: fixed;
+    height: auto;
+    top: 51px;
+    border-bottom: 1px solid hsl(210deg 8% 90%);
+    background: #fff;
+    z-index: 1;
     display: none;
+    &.active {
+      display: block;
+    }
   }
 `;
 

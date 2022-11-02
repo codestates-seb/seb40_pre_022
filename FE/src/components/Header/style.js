@@ -183,17 +183,15 @@ export const SearchBox = styled.div`
     left: 0;
     padding: 10px;
     background-color: #ddd;
-  }
-`;
-export const SearchInnerBox = styled.div`
-  position: relative;
-  width: 100%;
-  @media ${(props) => props.theme.mobile} {
     display: none;
     &.active {
       display: block;
     }
   }
+`;
+export const SearchInnerBox = styled.div`
+  position: relative;
+  width: 100%;
   .icon {
     position: absolute;
     top: 50%;
@@ -306,6 +304,7 @@ export const IconUl = styled.ul`
 export const ButtonWrap = styled.ul`
   ${flexCenter}
   width: 100%;
+  min-width: 200px;
   justify-content: flex-end;
   a {
     border: 1px solid hsl(206deg 100% 52%);
