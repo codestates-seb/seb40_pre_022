@@ -12,7 +12,26 @@ import java.util.List;
 // 수정 - private 지정자 : ver 1.1
 public class QuestionDto {
 
-    //질문 수정시 사용될 patchDto - checked
+    /**
+     * request에서 질문 '등록'을 위한 데이터를 담아오는 DTO
+     */
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Post {
+
+        @NotBlank
+        private String title;
+        @NotBlank
+        private String body;
+        private List<QuestionTagDto> questionTags;
+
+    }
+
+    /**
+     * request에서 질문 '수정'을 위한 데이터를 담아오는 DTO
+     */
     @Data
     @Builder
     @AllArgsConstructor
@@ -28,33 +47,9 @@ public class QuestionDto {
 
     }
 
-    //질문 작성시 사용될 PostDto - checked
-    @Data
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class Post {
-
-        @NotBlank
-        private String title;
-        @NotBlank
-        private String body;
-        private List<QuestionTagDto> questionTags;
-
-    }
-
-//    //질문 추천시 사용될 patchDto - checked
-//    @Data
-//    @AllArgsConstructor
-//    @NoArgsConstructor
-//    public static class RecommendPatchDto {
-//
-//        private long questionId;
-//        private int voteCount;
-//
-//    }
-
-    //질문 개별페이지(상세페이지)에 응답할 responseDto
+    /**
+     * response에 질문 '상세페이지'를 위한 데이터를 담는 DTO
+     */
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -72,7 +67,9 @@ public class QuestionDto {
         private LocalDateTime updatedAt;
     }
 
-    //질문 목록에 응답할 responseDto
+    /**
+     * response에 질문 '리스트'를 위한 데이터를 담는 DTO
+     */
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -90,7 +87,9 @@ public class QuestionDto {
         private LocalDateTime updatedAt;
     }
 
-    // 질문 수정을 위한 responseDto - 수정창
+    /**
+     * response에 질문 '수정'를 위한 데이터를 담는 DTO
+     */
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -103,27 +102,34 @@ public class QuestionDto {
 
     }
 
-    // 질문 추천수를 변경하기위한 request용도
+    /**
+     * request에서 질문 추천, 비추천을 위한 데이터를 담아오는 DTO
+     */
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class QuestionVotePatch {  // 로그인 구현 하면 바뀔 수 있음. memberId넘길 필요가 없어서 (세션, 쿠키의 경우데 따라 다르겠지만)
-        private long memberId;
+    public static class QuestionVotePatch {
+        private long memberId; //fixme : 없어도 됨.
         private long questionId;
     }
 
-    //질문 추천 비추천 responseDto
+    /**
+     * response에 질문 '추천, 비추천'를 위한 데이터를 담는 DTO
+     * -1 , 0, 1 의 숫자가 좋아요의 상태를 표현할 것
+     */
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     public static class QuestionVoteResponse {
 
-        private int voteCheck;  // -1, 0, 1 좋아요 상태. (Front에서 추천 여부 달라고하긴했는데..)
-        private int voteCount;  // 추천 수.
+        private int voteCheck;
+        private int voteCount;
 
     }
 
-    // 질문 responseDto에 tagName만 빼서 주기 위함
+    /**
+     * response에 questionTag 객체 자체가 아닌 questionTagName만 빼서 담기 위한 DTO
+     */
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -131,7 +137,9 @@ public class QuestionDto {
         private String questionTagName;
     }
 
-    // 질문 responseDto에 member의 이름 이메일 이미지만 빼서 주기 위함
+    /**
+     * response에 필요한 member정보만 담기 위한 DTO
+     */
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
