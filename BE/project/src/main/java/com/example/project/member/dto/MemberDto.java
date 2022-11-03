@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +20,14 @@ public class MemberDto {
     @NoArgsConstructor
     public static class Post{
 
-        @NotBlank
+        @NotBlank(message = "이름은 공백이 아니여야 합니다.")
         private String name;
+
         @Email
+        @NotBlank(message = "이메일은 공백이 아니여야 합니다.")
         private String email;
-        @NotBlank
+
+        @NotBlank(message = "비밀번호는 공백이 아니여야 합니다.")
         private String password;
     }
 
@@ -35,11 +39,16 @@ public class MemberDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Patch{
+
+        @Positive
         private long memberId;
-        @NotBlank
+
+        @NotBlank(message = "이름은 공백이 아니여야 합니다.")
         private String name;
-        @NotBlank
+
+        @NotBlank(message = "비밀번호는 공백이 아니여야 합니다.")
         private String password;
+
         private String image;
     }
     /**
