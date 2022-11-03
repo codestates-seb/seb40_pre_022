@@ -1,6 +1,5 @@
 package com.example.project.question.dto;
 
-import com.example.project.answer.entity.Answer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -60,7 +59,7 @@ public class QuestionDto {
         private String body;
         private int voteCount;
         private int viewCount;
-        private QuestionMemberDto questionMemberDto;  // * 놓치지 말 것 (mapper에서 name, email, image userStatus만 담아야함 -> 생성자생성)
+        private QuestionMemberDto member;  // * 놓치지 말 것 (mapper에서 name, email, image userStatus만 담아야함 -> 생성자생성)
         private List<QuestionAnswerDto> answers;
         private List<QuestionTagDto> questionTags;  // * 놓치지 말 것 (mapper에서 tagName만 담아야함 -> 생성자 생성)
         private LocalDateTime createdAt;
@@ -80,7 +79,7 @@ public class QuestionDto {
         private String body;
         private int voteCount;
         private int viewCount;
-        private QuestionMemberDto questionMemberDto; // * mapper에서 name, email, image만 담아야 함 -> 생성자 생성)
+        private QuestionMemberDto member; // * mapper에서 name, email, image만 담아야 함 -> 생성자 생성)
         private List<QuestionTagDto> questionTags; // tagName만 가져오기
         private int answerCount;
         private LocalDateTime createdAt;
