@@ -12,6 +12,7 @@ import QuestionsDetail from "./pages/QuestionsDetail";
 import QuestionEdit from "./pages/QuestionEdit";
 import Error from "./pages/Error";
 import Logout from "./pages/Logout";
+import Recovery from "./pages/Recovery";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <Route path='/login' element={<Login />}></Route>
               <Route path='/logout' element={<Logout />}></Route>
               <Route path='/join' element={<Join />}></Route>
+              <Route path='/recovery' element={<Recovery />}></Route>
               <Route path='/question' element={<AllQuestion />}></Route>
               <Route path='/question/ask' element={<QuestionAsk />}></Route>
               <Route path='/question/edit' element={<QuestionEdit />}></Route>

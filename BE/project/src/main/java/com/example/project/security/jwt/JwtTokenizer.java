@@ -1,5 +1,11 @@
 package com.example.project.security.jwt;
 
+import com.example.project.exception.BusinessLogicException;
+import com.example.project.exception.ExceptionCode;
+import com.example.project.member.entity.Member;
+import com.example.project.member.repository.MemberRepository;
+import com.example.project.refreshtoken.RefreshToken;
+import com.example.project.refreshtoken.RefreshTokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -8,19 +14,26 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.Cookie;
 import java.beans.Encoder;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 
 // 인증 성공 후 JWT발급, 발급 후 요청마다 검증
 @Component
+@RequiredArgsConstructor
 public class JwtTokenizer {
+
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final MemberRepository memberRepository;
 
     @Getter
     @Value("${JWT_SECRET_KEY}")
@@ -34,12 +47,16 @@ public class JwtTokenizer {
     @Value("${jwt.refresh-token-expiration-minutes}")
     private int refreshTokenExpirationMinutes;
 
-    // plain text를 암호화
+    /**
+     * secretkey를 암호화한다.
+     */
     public String encodeBase64SecretKey(String secretKey) {
         return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    // accesstoken 생성
+    /**
+     * accesstoken을 생성한다.
+     */
     public String generateAccessToken(Map<String, Object> claims,
                                       String subject,
                                       Date expiration,
@@ -107,21 +124,29 @@ public class JwtTokenizer {
         return key;
     }
 
-    //토큰에서 값 추출
-    public String getSubject(String jws) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jws).getBody().getSubject();
+    public Member findMember(String email){
+
+        return memberRepository.findByEmail(email).orElseThrow(()->new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    }
+    public void saveRefreshToken(String refreshToken, String email, long userId){
+
+        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findById(userId);
+        optionalRefreshToken.ifPresent(refreshTokenRepository::delete);
+
+        refreshTokenRepository.save(new RefreshToken(refreshToken, email, userId));
     }
 
-    //유효한 토큰인지 확인
-    public boolean validateToken(String token) {
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            if (claims.getBody().getExpiration().before(new Date())) {
-                return false;
-            }
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
+    public String getRefreshTokenFromReq(Cookie[] cookies){
+        for (int i = 0; i < cookies.length; i++) {
+            if(cookies[i].getName().equals("RefreshToken"))
+                return cookies[i].getValue();
         }
+        throw new RuntimeException(); //cookie not found
+    }
+
+    public void verifiedRefreshToken(String refreshToken){
+        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByTokenValue(refreshToken);
+        if(!optionalRefreshToken.isPresent())
+            throw new RuntimeException(); // token not found
     }
 }

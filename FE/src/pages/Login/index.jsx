@@ -75,7 +75,7 @@ const Login = () => {
   })
 
   return (
-    <Layout isAside={false}>
+    <Layout isLeftSidebar={false}>
       <Wrapper>
           <Link className='logo' to='/'><span>stack overflow</span></Link>
           <Sns />

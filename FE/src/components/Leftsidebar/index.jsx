@@ -1,4 +1,12 @@
-import { React } from "react";
+import React from "react";
+import { useRecoilValue } from "recoil";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
+import { Link, useLocation } from "react-router-dom";
+
+import { SIDEBAR_ITEMS, SIDEBAR_SENTENCES } from "../../constants";
+import { asideState } from "../../store/user";
+
 import {
   Tabtitle,
   SidebarContainer,
@@ -7,64 +15,57 @@ import {
   ItemContainer,
   TabItemText,
 } from "./style";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
-import { Link, useLocation } from "react-router-dom";
-import { SIDEBAR_ITEMS, SIDEBAR_SENTENCES } from "../../constants";
 
-const Leftsidebar = ({ display }) => {
+const Leftsidebar = ({ isLeftSidebar }) => {
   let { pathname } = useLocation();
   let path = pathname.split("/")[1];
   if (window.location.pathname === "/question/ask") return null;
 
+  const isAside = useRecoilValue(asideState);
+
   return (
     <>
-      {display && (
-        <SidebarContainer>
-          <TabList>
-            <TabItem className={pathname === "/" ? "active" : null}>
-              <Link to='/' className='link'>
-                <Tabtitle className='home'>Home</Tabtitle>
-              </Link>
-            </TabItem>
-            <TabItem>
-              <Tabtitle>PUBLIC</Tabtitle>
-              <TabList>
+      <SidebarContainer
+        isShow={isLeftSidebar}
+        className={isAside ? "active" : ""}>
+        <TabList>
+          <TabItem className={pathname === "/" ? "active" : null}>
+            <Link to='/' className='link'>
+              <Tabtitle className='home'>Home</Tabtitle>
+            </Link>
+          </TabItem>
+          <TabItem>
+            <Tabtitle>PUBLIC</Tabtitle>
+            <TabList>
+              <TabItem className={path === "question" ? "active" : null}>
                 <Link to='/question'>
-                  <TabItem className={path === "question" ? "active" : null}>
-                    <ItemContainer>
-                      <FontAwesomeIcon
-                        icon={faEarthAmericas}
-                        className='icon'
-                      />
-                      Questions
-                    </ItemContainer>
-                  </TabItem>
+                  <ItemContainer>
+                    <FontAwesomeIcon icon={faEarthAmericas} className='icon' />
+                    Questions
+                  </ItemContainer>
                 </Link>
-                {SIDEBAR_ITEMS.map((item) => (
-                  <TabItem
-                    className={
-                      path === "mypage" && item === "Users"
-                        ? "tab active"
-                        : "tab"
-                    }
-                    key={item}>
-                    <TabItemText>{item}</TabItemText>
-                  </TabItem>
-                ))}
+              </TabItem>
+              {SIDEBAR_ITEMS.map((item) => (
+                <TabItem
+                  className={
+                    path === "mypage" && item === "Users" ? "tab active" : "tab"
+                  }
+                  key={item}>
+                  <TabItemText>{item}</TabItemText>
+                </TabItem>
+              ))}
+            </TabList>
+          </TabItem>
+          {SIDEBAR_SENTENCES.map((item) => (
+            <TabItem key={item.title}>
+              <Tabtitle>{item.title}</Tabtitle>
+              <TabList>
+                <TabItem className='tab size'>{item.sentence}</TabItem>
               </TabList>
             </TabItem>
-            {SIDEBAR_SENTENCES.map((item) => (
-              <TabItem key={item.title}>
-                <Tabtitle>{item.title}</Tabtitle>
-                <TabList>
-                  <TabItem className='tab size'>{item.sentence}</TabItem>
-                </TabList>
-              </TabItem>
-            ))}
-          </TabList>
-        </SidebarContainer>
-      )}
+          ))}
+        </TabList>
+      </SidebarContainer>
     </>
   );
 };

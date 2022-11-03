@@ -183,17 +183,15 @@ export const SearchBox = styled.div`
     left: 0;
     padding: 10px;
     background-color: #ddd;
-  }
-`;
-export const SearchInnerBox = styled.div`
-  position: relative;
-  width: 100%;
-  @media ${(props) => props.theme.mobile} {
     display: none;
     &.active {
       display: block;
     }
   }
+`;
+export const SearchInnerBox = styled.div`
+  position: relative;
+  width: 100%;
   .icon {
     position: absolute;
     top: 50%;
@@ -300,5 +298,36 @@ export const IconUl = styled.ul`
       background-color: hsl(210, 8%, 90%);
       cursor: pointer;
     }
+  }
+`;
+
+export const ButtonWrap = styled.ul`
+  ${flexCenter}
+  min-width: 200px;
+  justify-content: flex-end;
+  a {
+    border: 1px solid hsl(206deg 100% 52%);
+    background: hsl(205deg 100% 95%);
+    border-radius: 3px;
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    color: hsl(205, 47%, 42%);
+  }
+  li:first-child {
+    font-size: 1.1rem;
+    padding: 14px 10px;
+    display: none;
+    :hover {
+      background-color: hsl(210, 8%, 90%);
+      cursor: pointer;
+    }
+    @media ${(props) => props.theme.mobile} {
+      display: block;
+    }
+  }
+  li:last-child a {
+    background: hsl(206deg 100% 52%);
+    margin-left: 5px;
+    color: #fff;
   }
 `;

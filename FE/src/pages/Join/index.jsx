@@ -11,7 +11,7 @@ import { Wrapper, InnerBox, Title, FormWrap, Info } from './style';
 
 const Join = () => {
   return (
-    <Layout isAside={false}>
+    <Layout isLeftSidebar={false}>
        <Wrapper>
         <InnerBox>
           <JoinInfo />

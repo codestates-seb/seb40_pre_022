@@ -8,35 +8,43 @@ import com.example.project.question.dto.QuestionDto;
 import com.example.project.question.entity.Question;
 import com.example.project.question.entity.QuestionTag;
 import com.example.project.question.repository.QuestionRepository;
+import com.example.project.tag.Tag;
+import com.example.project.tag.TagRepository;
 import com.example.project.vote.Vote;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final MemberService memberService;
+    private final TagRepository tagRepository;
 
-    public QuestionService(QuestionRepository questionRepository, MemberService memberService) {
-        this.questionRepository = questionRepository;
-        this.memberService = memberService;
-    }
 
-    //1 메인페이지 위함 - checked. v
+    /**
+     * 필수) question 리스트 반환 비즈니스 로직
+     * -> 조회순으로 정렬하여 페이지네이션한다.
+     */
     public Page<Question> findQuestionsByViewCount(int page, int size){
 
         return questionRepository.findAll(PageRequest.of(page, size, Sort.by("viewCount").descending()));
     }
 
-    //2 question 목록 조회 - checked. v
+    /**
+     * 필수) question 리스트 반환 비즈니스 로직
+     * -> 최신순으로 정렬하여 페이지네이션한다.
+     */
     public Page<Question> findQuestions(int page, int size){
 
         return questionRepository.findAll(PageRequest.of(page, size, Sort.by("questionId").descending()));
@@ -52,7 +60,9 @@ public class QuestionService {
         return null;
     }
 
-    //4 상세페이지 가져오기 - checked v
+    /**
+     * 필수) 상세(개별)페이지 비즈니스 로직
+     */
     public Question findQuestion(long questionId){
 
         Question question = findVerifiedQuestion(questionId);
@@ -61,29 +71,34 @@ public class QuestionService {
         return questionRepository.save(question);
     }
 
-    //5 수정 위해 question 불러올때
+    /**
+     * 필수) question 수정 전 get 비즈니스 로직 - 수정하려면 그 글 자체를 먼저 불러와야함
+     * 1. 로그인 유저가 질문의 작성자인지 확인한다.
+     * 2. 질문을 DB로부터 가져온다.
+     */
     public Question findQuestionForUpdate(long questionId, String memberEmail){
 
-        //1. 현재 로그인 한 멤버 확인 - 토큰에서 담아왔고, 거기서 추출한 메일로 이 글의 멤버와 비교한다.
         if(!memberEmail.equals(findVerifiedQuestion(questionId).getMember().getEmail())) {
             throw new RuntimeException();
         }
 
-        //2. 수정 대상 question을 가져온다.
         Question question = findQuestion(questionId);
 
         return question;
     }
 
-    //6 수정
+    /**
+     * 필수) question 수정 비즈니스 로직
+     * 1. 로그인 유저가 질문의 작성자인지 확인한다.
+     * 2. DTO로부터 넘겨받은 데이터들을 엎어쓴다.
+     * 3. 저장한다.
+     */
     public Question updateQuestion(Question question, String memberEmail){
 
-        //1. 로그인 한 멤버가 이 글의 주인인지 확인
         if(!memberEmail.equals(findVerifiedQuestion(question.getQuestionId()).getMember().getEmail())) {
             throw new RuntimeException();
         }
 
-        //2 수정하기
         Question findQuestion = findVerifiedQuestion(question.getQuestionId());
 
         Optional.ofNullable(question.getTitle())
@@ -94,60 +109,89 @@ public class QuestionService {
         return questionRepository.save(findQuestion);
     }
 
-    //7,8 질문 추천 올리기 내리기 + 추후 작성
+    /**
+     * 필수) question 추천 비즈니스 로직
+     * 1. 유저의 존재여부를 DB에서 확인한다.
+     * 2. 추천하고자 하는 질문을 DB에서 확인한다.
+     * 3. voteUpCase를 통해 추천을 계산한다.
+     * 4. 저장한다.
+     */
     public Question questionVoteUp(Question question, String memberEmail){
 
-        //1. 로그인한 사람이 존재하는지 확인 - 당연히 존재하겠지만 로직적으로 접근
         memberService.DoesMemberExist(memberEmail);
 
-        //2. 질문존재 확인 후 가져오기
         Question findQuestion = findVerifiedQuestion(question.getQuestionId());
 
-        //3. 로그인한 사람의 정보와 대조해서 count 계산
         voteUpCase(findQuestion, memberService.findExistMemberByEmail(memberEmail).getMemberId());
 
-        //4. votemap 최신화를 위한 저장 - 이래야 값들이 저장됨
         return questionRepository.save(findQuestion);
     }
 
+    /**
+     * 필수) question 비추천 비즈니스 로직
+     * 1. 유저의 존재여부를 DB에서 확인한다.
+     * 2. 비추천하고자 하는 질문을 DB에서 확인한다.
+     * 3. voteDownCase를 통해 추천을 계산한다.
+     * 4. 저장한다.
+     */
     public Question questionVoteDown(Question question, String memberEmail){
 
-        //1. 로그인한 사람이 존재하는지 확인 - 당연히 존재하겠지만 로직적으로 접근
         memberService.DoesMemberExist(memberEmail);
 
-
-        //2. 질문존재 확인 후 가져오기
         Question findQuestion = findVerifiedQuestion(question.getQuestionId());
 
-        //3. 로그인한 사람의 정보와 대조해서 count 계산
         voteDownCase(findQuestion, memberService.findExistMemberByEmail(memberEmail).getMemberId());
 
-        //4. votemap 최신화를 위한 저장 - 이래야 값들이 저장된다.
-        return questionRepository.save(findQuestion); // 저장한다.
+        return questionRepository.save(findQuestion);
     }
 
-    //9 question 생성
+    /**
+     * 필수) question 생성 비즈니스 로직
+     * 1. 로그인 유저의 정보를 DB에서 가져온다.
+     * 2. 추후 추천수를 담을 vote 객체를 생성한다.
+     * 3. 유저와 vote객체를 question과 연결한다.
+     * 4. DTO로부터 받은 questionTag를 통해 Tag(분류)를 생성한다
+     * 5. 질문 - questionTag - Tag를 연결한다.
+     * 6. 저장한다.
+     */
     public Question createQuestion(Question question, String memberEmail){
 
-        // 현재 로그인 한 사람 확인 후 질문과 연결
         Member member = memberService.findExistMemberByEmail(memberEmail);
         question.setMember(member);
         member.addQuestion(question);
 
-        // vote 객체 생성 후 연결 - 해당 question을 위한 vote객체 ->  // cascade이용 db자동등록
         Vote vote = new Vote();
         vote.setQuestion(question);
         question.setVote(vote);
 
-        //todo. 5. questionTag 객체 생성 후 연결 --> mapper에서 default로 이미 question에 넣어주었는데..
+
+        List<QuestionTag> questionTags = question.getQuestionTags();
+        for (int i = 0; i < questionTags.size(); i++) {
+            boolean alreadyExistTag = findTag(questionTags.get(i).getQuestionTagName());
+
+            if(alreadyExistTag == true){
+                Tag tag = findTagByName(questionTags.get(i).getQuestionTagName());
+                tag.setUsageCount(tag.getUsageCount() + 1);
+//                tag.addQuestionTag(questionTags.get(i));
+                questionTags.get(i).setTag(tag);
+            }
+            else{
+                Tag tag = new Tag(questionTags.get(i).getQuestionTagName(), 1);
+                tag.addQuestionTag(questionTags.get(i));
+                questionTags.get(i).setTag(tag);
+            }
+        }
 
         return questionRepository.save(question);
     }
 
-    //10 question 제거 - checked v / ** 추후 question status 사용 유무 이야기
+    /**
+     * 필수) question 삭제 비즈니스 로직
+     * 1. 로그인 유저가 질문 작성자인지 확인한다.
+     * 2. 질문을 DB에서 삭제한다.
+     */
     public void deleteQuestion(long questionId, String memberEmail){
 
-        //로그인 한 사람이 이 글의 주인인지.
         if(!memberEmail.equals(findVerifiedQuestion(questionId).getMember().getEmail())) {
             throw new RuntimeException();
         }
@@ -155,40 +199,50 @@ public class QuestionService {
         questionRepository.delete(question);
     }
 
-    // question이 DB에 존재하지 않으면 에러 - checked v
+    /**
+     * 도구) question이 DB에 존재하지 않으면 오류를 발생시키는 메서드
+     * @return : Question 객체
+     */
     public Question findVerifiedQuestion(long questionId){
         Optional<Question> question = questionRepository.findById(questionId);
         Question findQuestion = question.orElseThrow(() -> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
         return findQuestion;
     }
 
-    // question이 DB에 존재하면 에러 - cheked v
+    /**
+     * 도구) question이 DB에 존재하면 오류를 발생시키는 메서드
+     */
     public void verifyExistQuestion(long questionId){
         Optional<Question> question = questionRepository.findById(questionId);
         if(question.isPresent())
             throw new BusinessLogicException(ExceptionCode.QUESTION_EXISTS);
     }
 
-    // 추천 로직
-    public void voteUpCase(Question question, long memberId){ // checked v
+    /**
+     * 도구) vote 추천의 경우를 계산하는 메서드
+     * 1. 해당 answer와 연결된 vote의 voteMap을 가져온다(유저의 과거 추천 저장)
+     * 2. key와 value값으로 계산한다.
+     * (answer의 추천과 동일로직)
+     */
+    public void voteUpCase(Question question, long memberId){
 
 
-        Map<Long, Integer> voteMap = question.getVote().getMemberVoteMap();  // 해당 question의 votemap을 가져온다.
+        Map<Long, Integer> voteMap = question.getVote().getMemberVoteMap();
 
-        if(voteMap.containsKey(memberId)){    // votemap에 해당 멤버가 있으면
-            int value = voteMap.get(memberId);  // 스위치문을 위해 value를 int값으로 가져온다.
+        if(voteMap.containsKey(memberId)){
+            int value = voteMap.get(memberId);
             switch(value){
-                case 1:    // 이미 업을 누른상황
-                    question.getVote().setVoteCount(question.getVote().getVoteCount()-1); // 카운트 다운
-                    voteMap.put(memberId, 0); // 1 -> 0값으로 넣어줌
+                case 1:
+                    question.getVote().setVoteCount(question.getVote().getVoteCount()-1);
+                    voteMap.put(memberId, 0);
                     break;
-                case 0: // 0으로 바꾼상황
-                    question.getVote().setVoteCount(question.getVote().getVoteCount()+1); // 카운트 업
-                    voteMap.put(memberId, 1); // 0 -> 1 넣어줌
+                case 0:
+                    question.getVote().setVoteCount(question.getVote().getVoteCount()+1);
+                    voteMap.put(memberId, 1);
                     break;
-                case -1: // 이미 다운을 누른 상황
-                    question.getVote().setVoteCount(question.getVote().getVoteCount()+1); // 카운트 업
-                    voteMap.put(memberId, 0); // -1 -> 0
+                case -1:
+                    question.getVote().setVoteCount(question.getVote().getVoteCount()+1);
+                    voteMap.put(memberId, 0);
                     break;
             }
         }
@@ -196,35 +250,61 @@ public class QuestionService {
             question.getVote().setVoteCount(question.getVote().getVoteCount()+1);
             voteMap.put(memberId, 1);
         }
-        question.getVote().setVoteCheck(voteMap.get(memberId));     // voteCheck 상태 저장.
+        question.getVote().setVoteCheck(voteMap.get(memberId));
     }
 
-    // 비추천 로직
-    public void voteDownCase(Question question, long memberId){ // checked v
+    /**
+     * 도구) vote 비추천의 경우를 계산하는 메서드
+     * 1. 해당 answer와 연결된 vote의 voteMap을 가져온다(유저의 과거 추천 저장)
+     * 2. key와 value값으로 계산한다.
+     * (answer의 비추천과 동일로직)
+     */
+    public void voteDownCase(Question question, long memberId){
 
-        Map<Long, Integer> voteMap = question.getVote().getMemberVoteMap();  // 해당 question의 votemap을 가져온다.
+        Map<Long, Integer> voteMap = question.getVote().getMemberVoteMap();
 
-        if(voteMap.containsKey(memberId)){    // votemap에 해당 멤버가 있으면
-            int value = voteMap.get(memberId);  // 스위치문을 위해 value를 int값으로 가져온다.
+        if(voteMap.containsKey(memberId)){
+            int value = voteMap.get(memberId);
             switch(value){
-                case 1:    // 업이면
-                    question.getVote().setVoteCount(question.getVote().getVoteCount()-1); // 카운트 다운
-                    voteMap.put(memberId, 0); // 1 -> 0
+                case 1:
+                    question.getVote().setVoteCount(question.getVote().getVoteCount()-1);
+                    voteMap.put(memberId, 0);
                     break;
                 case 0:
-                    question.getVote().setVoteCount(question.getVote().getVoteCount()-1); // 카운트 다운
-                    voteMap.put(memberId, -1); // 0 -> -1
+                    question.getVote().setVoteCount(question.getVote().getVoteCount()-1);
+                    voteMap.put(memberId, -1);
                     break;
                 case -1:
-                    question.getVote().setVoteCount(question.getVote().getVoteCount()+1); // 카운트 업
-                    voteMap.put(memberId, 0); // -1 -> 0
+                    question.getVote().setVoteCount(question.getVote().getVoteCount()+1);
+                    voteMap.put(memberId, 0);
                     break;
             }
         }
         else{
-            question.getVote().setVoteCount(question.getVote().getVoteCount()-1); // -1 해주면서
-            voteMap.put(memberId, -1); // -1 멤버로 새로 추가
+            question.getVote().setVoteCount(question.getVote().getVoteCount()-1); //
+            voteMap.put(memberId, -1);
         }
-        question.getVote().setVoteCheck(voteMap.get(memberId));     // voteCheck 상태 저장.
+        question.getVote().setVoteCheck(voteMap.get(memberId));
+    }
+
+    /**
+     * 도구) Tag가 DB에 존재하는지 여부를 boolean값으로 확인
+     * @return : boolean
+     */
+    public boolean findTag(String questionTagName){
+        Optional<Tag> optionalTag = tagRepository.findByTagName(questionTagName);
+        if(optionalTag.isPresent())
+            return true;
+        return false;
+    }
+
+    /**
+     * 도구) Tag가 DB에 존재하는지 여부를 확인하는 메서드
+     * @return : 존재한다면 Tag
+     */
+    public Tag findTagByName(String tagName){
+        Optional<Tag> optionalTag = tagRepository.findByTagName(tagName);
+
+        return optionalTag.orElseThrow(() -> new RuntimeException()); // fixme : exceptionCode설정
     }
 }

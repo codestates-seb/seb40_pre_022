@@ -28,11 +28,16 @@ public class Tag extends Auditable {
     private int usageCount;
 
     //태그 분류별로 사용된 태그의 리스트를 저장한다.
-    @OneToMany(mappedBy = "tag")
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     private List<QuestionTag> questionTags = new ArrayList<>();
 
     //사용된 태그를 리스트에 넣기 위한 메서드
     public void addQuestionTag(QuestionTag questionTag){
         questionTags.add(questionTag);
+    }
+
+    public Tag(String tagName, int usageCount) {
+        this.tagName = tagName;
+        this.usageCount = usageCount;
     }
 }
