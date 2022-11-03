@@ -4,7 +4,7 @@ const SidebarContainer = styled.div`
   float: right;
   display: block;
   justify-content: center;
-  width: 300px;
+  flex: 1;
   padding-left: 50px;
   @media screen and (max-width: 1000px) {
     display: none;

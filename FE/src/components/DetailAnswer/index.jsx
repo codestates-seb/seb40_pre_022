@@ -1,7 +1,7 @@
 import React from "react";
+import { useRecoilValue } from "recoil";
 import { calculateTime } from "../../utils/calculateTime";
 import DetailPost from "../DetailPost";
-import { data } from "../../db/data.json";
 import {
   AnswerCount,
   AnswerHeader,
@@ -10,10 +10,15 @@ import {
   SortSelect,
   SortText,
 } from "./style";
+import { DetailQData } from "../../store/DetailQData";
+import { sortDate } from "../../utils/sortDate";
 
 const DetailAnswer = () => {
-  const answer = data[0].answers.data;
-
+  const answer = useRecoilValue(DetailQData).answers.data;
+  const date = answer.map((el) => el.createdAt);
+  const sortData = () => {
+    console.log(sortDate(date));
+  };
   return (
     <>
       {answer.length ? (
@@ -24,7 +29,9 @@ const DetailAnswer = () => {
             <SortSelect>
               <SortOption>Highest score (default)</SortOption>
               <SortOption>Date modified (newest first)</SortOption>
-              <SortOption>Date created (oldest first)</SortOption>
+              <SortOption selected={sortData}>
+                Date created (oldest first)
+              </SortOption>
             </SortSelect>
           </SortContainer>
         </AnswerHeader>
@@ -33,6 +40,7 @@ const DetailAnswer = () => {
         ? answer.map((answer) => (
             <DetailPost
               answer={answer.body}
+              vote={answer.vote}
               key={answer.author.displayName}
               answerer={answer.author.displayName}
               createdAt={calculateTime(answer.createdAt)}

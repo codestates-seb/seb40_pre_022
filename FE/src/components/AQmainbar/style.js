@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const MainbarContainer = styled.div`
   display: inline-block;
-  flex: 1 1 auto;
+  flex: 3;
   padding-top: 24px;
 `;
 

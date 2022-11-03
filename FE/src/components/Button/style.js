@@ -90,7 +90,6 @@ const Btn = styled.button`
     &:hover {
       background-color: hsl(205deg 53% 88%);
       color: hsl(206deg 100% 52%);
-      margin: 0px 5px 0px 0px;
     }
   }
 

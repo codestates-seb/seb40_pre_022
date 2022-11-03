@@ -1,11 +1,11 @@
 import React from "react";
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 
 import { SIDEBAR_ITEMS, SIDEBAR_SENTENCES } from "../../constants";
-import { asideState } from '../../store/user';
+import { asideState } from "../../store/user";
 
 import {
   Tabtitle,
@@ -25,7 +25,9 @@ const Leftsidebar = ({ isLeftSidebar }) => {
 
   return (
     <>
-      <SidebarContainer isShow={isLeftSidebar} className={ isAside ? 'active':'' }>
+      <SidebarContainer
+        isShow={isLeftSidebar}
+        className={isAside ? "active" : ""}>
         <TabList>
           <TabItem className={pathname === "/" ? "active" : null}>
             <Link to='/' className='link'>

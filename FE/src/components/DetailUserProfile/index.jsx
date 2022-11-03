@@ -3,13 +3,15 @@ import { Link } from "react-router-dom";
 import { UserInfo, UserInfoText, InfoContainer } from "../DetailPost/style";
 import { UserInfoItem } from "./style";
 import { calculateTime } from "../../utils/calculateTime";
-import { data } from "../../db/data.json";
+import { useRecoilValue } from "recoil";
+import { DetailQData } from "../../store/DetailQData";
 
 const DetailUserProfile = ({ answerer, createdAt, profile }) => {
-  const questionData = data[0];
+  const questionData = useRecoilValue(DetailQData);
   const question = {
     username: questionData.user.displayName,
     createdAt: questionData.createdAt,
+    profile: questionData.user.image,
   };
   return (
     <UserInfo className={answerer ? "answerer" : null}>
@@ -19,10 +21,7 @@ const DetailUserProfile = ({ answerer, createdAt, profile }) => {
       <InfoContainer>
         <Link to='/mypage'>
           <UserInfoItem>
-            <img
-              src={answerer ? profile : "/initialProfile.png"}
-              className='img'
-            />
+            <img src={answerer ? profile : question.profile} className='img' />
           </UserInfoItem>
         </Link>
         <Link to='/mypage'>

@@ -1,5 +1,5 @@
 import React from "react";
-import { PostContainer } from "./style";
+import { LeftPostContainer, PageContainer, PostContainer } from "./style";
 import DetailPost from "../../components/DetailPost";
 import DetailHeader from "../../components/DetailHeader";
 import Layout from "../../components/Layout";
@@ -12,12 +12,14 @@ const QuestionsDetail = () => {
     <>
       <Layout>
         <PostContainer>
-          <DetailHeader />
-          <DetailPost />
-          <DetailAnswer />
-          <CreateAnswer />
+          <LeftPostContainer>
+            <DetailHeader />
+            <DetailPost />
+            <DetailAnswer />
+            <CreateAnswer />
+          </LeftPostContainer>
+          <AQRightsidebar />
         </PostContainer>
-        <AQRightsidebar />
       </Layout>
     </>
   );
