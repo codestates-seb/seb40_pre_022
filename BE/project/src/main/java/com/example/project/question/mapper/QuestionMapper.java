@@ -1,12 +1,10 @@
 package com.example.project.question.mapper;
 
-import com.example.project.dto.MultiResponseDto;
 import com.example.project.member.entity.Member;
 import com.example.project.question.dto.*;
 import com.example.project.question.entity.Question;
 import com.example.project.question.entity.QuestionTag;
 import org.mapstruct.Mapper;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -93,7 +91,7 @@ public interface QuestionMapper {
         questionResponseDto.setBody(question.getBody());
         questionResponseDto.setVoteCount(question.getVote().getVoteCount());
         questionResponseDto.setViewCount(question.getViewCount());
-        questionResponseDto.setQuestionMemberDto(questionMemberDto);
+        questionResponseDto.setMember(questionMemberDto);
         questionResponseDto.setAnswers(questionAnswerDtos);
         questionResponseDto.setQuestionTags(questionTagDtoList);
         questionResponseDto.setCreatedAt(question.getCreatedAt());
@@ -134,7 +132,7 @@ public interface QuestionMapper {
         questionListResponseDto.setBody(question.getBody());
         questionListResponseDto.setViewCount(question.getViewCount());
         questionListResponseDto.setVoteCount(question.getVote().getVoteCount());
-        questionListResponseDto.setQuestionMemberDto(questionMemberDto);
+        questionListResponseDto.setMember(questionMemberDto);
 
         List<QuestionDto.QuestionTagDto> questionTagDtoList = question.getQuestionTags().stream()
                 .map(questionTag -> {
