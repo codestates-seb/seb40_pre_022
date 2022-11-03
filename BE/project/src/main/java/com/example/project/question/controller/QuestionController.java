@@ -3,6 +3,7 @@ package com.example.project.question.controller;
 import com.example.project.answer.entity.Answer;
 import com.example.project.answer.service.AnswerService;
 import com.example.project.dto.MultiResponseDto;
+import com.example.project.dto.PageInfo;
 import com.example.project.dto.SingleResponseDto;
 import com.example.project.question.dto.QuestionDto;
 import com.example.project.question.entity.Question;
@@ -62,13 +63,21 @@ public class QuestionController {
         return new ResponseEntity(new MultiResponseDto<>(lists, result), HttpStatus.OK);
     }
 
-    //todo : keyword로 검색하여 최신순으로 반환한다.
-    @GetMapping("questions/search_result")
-    public ResponseEntity getQuestionsByKeword(@RequestParam String keyword,
+
+    //3. 검색결과 페이지
+    @GetMapping("/questions/search_result")
+    public ResponseEntity getQuestionsByKeyword(@RequestParam(value = "keyword") String keyword,
                                                @RequestParam int page,
                                                @RequestParam int size){
 
-        return null;
+
+        Page<Question> result = questionService.findQuestionByKeyword(keyword, page-1, size);
+
+        List<QuestionDto.QuestionListResponse> lists = result.getContent().stream()
+                .map(list -> mapper.questionToQuestionListResponseDto(list))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(new MultiResponseDto<>(lists, result), HttpStatus.OK);
     }
 
     /**

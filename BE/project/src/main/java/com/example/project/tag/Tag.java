@@ -2,6 +2,7 @@ package com.example.project.tag;
 
 import com.example.project.audit.Auditable;
 import com.example.project.question.entity.QuestionTag;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class Tag extends Auditable {
     private int usageCount;
 
     //태그 분류별로 사용된 태그의 리스트를 저장한다.
+
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     private List<QuestionTag> questionTags = new ArrayList<>();
 

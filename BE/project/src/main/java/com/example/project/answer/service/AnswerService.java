@@ -36,7 +36,6 @@ public class AnswerService {
      * 3. 질문 - 답변 - 유저의 연관관계를 설정한다.
      * 4. VOTE - 답변의 연관관계를 설정한다.
      * 5. 저장한다.
-     * @return
      */
     public Answer createAnswer(Answer answer, long questionId, String memberEmail){
 
@@ -185,7 +184,6 @@ public class AnswerService {
      * (question의 추천과 동일로직)
      */
     public void voteUpCase(Answer answer, long memberId){
-
         Map<Long, Integer> voteMap = answer.getVote().getMemberVoteMap();
 
         if(voteMap.containsKey(memberId)){                      // votemap에 해당 멤버가 있으면

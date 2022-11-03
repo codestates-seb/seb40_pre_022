@@ -1,12 +1,10 @@
 package com.example.project.question.mapper;
 
-import com.example.project.dto.MultiResponseDto;
 import com.example.project.member.entity.Member;
 import com.example.project.question.dto.*;
 import com.example.project.question.entity.Question;
 import com.example.project.question.entity.QuestionTag;
 import org.mapstruct.Mapper;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,6 +60,25 @@ public interface QuestionMapper {
         questionMemberDto.setEmail(member.getEmail());
         questionMemberDto.setImage(member.getImage());
 
+        List<QuestionDto.QuestionAnswerDto> questionAnswerDtos = question.getAnswers().stream()
+                .map(answer -> {
+                    QuestionDto.QuestionAnswerDto questionAnswerDto = new QuestionDto.QuestionAnswerDto();
+                    questionAnswerDto.setAnswerId(answer.getAnswerId());
+                    questionAnswerDto.setBody(answer.getBody());
+                    questionAnswerDto.setVoteCount(answer.getVote().getVoteCount());
+                    Member answerMember = answer.getMember();
+                    QuestionDto.QuestionMemberDto answerQuestionMemberDto = new QuestionDto.QuestionMemberDto();
+                    answerQuestionMemberDto.setName(answerMember.getName());
+                    answerQuestionMemberDto.setEmail(answerMember.getEmail());
+                    answerQuestionMemberDto.setImage(answerQuestionMemberDto.getImage());
+                    questionAnswerDto.setMember(answerQuestionMemberDto);
+                    questionAnswerDto.setIsAccepted(answer.getIsAccepted());
+                    questionAnswerDto.setCreatedAt(answer.getCreatedAt());
+                    questionAnswerDto.setUpdatedAt(answer.getModifiedAt());
+                    return questionAnswerDto;
+                })
+                .collect(Collectors.toList());
+
         List<QuestionDto.QuestionTagDto> questionTagDtoList = question.getQuestionTags().stream()
                         .map(questionTag -> {
                             QuestionDto.QuestionTagDto questionTagDto = new QuestionDto.QuestionTagDto();
@@ -74,8 +91,8 @@ public interface QuestionMapper {
         questionResponseDto.setBody(question.getBody());
         questionResponseDto.setVoteCount(question.getVote().getVoteCount());
         questionResponseDto.setViewCount(question.getViewCount());
-        questionResponseDto.setQuestionMemberDto(questionMemberDto);
-        questionResponseDto.setAnswers(question.getAnswers());
+        questionResponseDto.setMember(questionMemberDto);
+        questionResponseDto.setAnswers(questionAnswerDtos);
         questionResponseDto.setQuestionTags(questionTagDtoList);
         questionResponseDto.setCreatedAt(question.getCreatedAt());
         questionResponseDto.setUpdatedAt(question.getModifiedAt());
@@ -115,7 +132,7 @@ public interface QuestionMapper {
         questionListResponseDto.setBody(question.getBody());
         questionListResponseDto.setViewCount(question.getViewCount());
         questionListResponseDto.setVoteCount(question.getVote().getVoteCount());
-        questionListResponseDto.setQuestionMemberDto(questionMemberDto);
+        questionListResponseDto.setMember(questionMemberDto);
 
         List<QuestionDto.QuestionTagDto> questionTagDtoList = question.getQuestionTags().stream()
                 .map(questionTag -> {
