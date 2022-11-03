@@ -18,6 +18,7 @@ import {
 } from "./style";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import Modal from "../../components/Modal";
 
 const QuestionAsk = () => {
   const [tagInput, setTagInput] = useState("");
@@ -50,12 +51,25 @@ const QuestionAsk = () => {
     setTagArr(deletedTags);
   };
 
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   return (
     <AskContainer>
       <Header />
       <AskTitleHeader>
         <AskTitleH1>Ask a public question</AskTitleH1>
       </AskTitleHeader>
+      <button onClick={openModal}>모달팝업</button>
+      <Modal open={modalOpen} close={closeModal} header='Modal heading'>
+        모두 화이팅
+      </Modal>
       <AskBox>
         <AskForm>
           <AskWrapper>
