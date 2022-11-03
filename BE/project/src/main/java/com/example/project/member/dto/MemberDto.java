@@ -56,6 +56,9 @@ public class MemberDto {
         private String image;
     }
 
+    /**
+     * 마이페이지를 위한 response에 멤버정보를 담아주기 위한 DTO
+     */
     @Getter
     @Setter
     @AllArgsConstructor
@@ -65,6 +68,9 @@ public class MemberDto {
         private AnswerResponse answers;
     }
 
+    /**
+     * response에 넣기 위한 가공용 DTO
+     */
     @Getter
     @Setter
     @AllArgsConstructor
@@ -74,6 +80,9 @@ public class MemberDto {
         private int answersCount;
     }
 
+    /**
+     * response에 넣기 위한 가공용 DTO
+     */
     @Getter
     @Setter
     @AllArgsConstructor

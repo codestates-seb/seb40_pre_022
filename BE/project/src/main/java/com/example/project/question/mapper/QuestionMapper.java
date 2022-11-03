@@ -62,6 +62,25 @@ public interface QuestionMapper {
         questionMemberDto.setEmail(member.getEmail());
         questionMemberDto.setImage(member.getImage());
 
+        List<QuestionDto.QuestionAnswerDto> questionAnswerDtos = question.getAnswers().stream()
+                .map(answer -> {
+                    QuestionDto.QuestionAnswerDto questionAnswerDto = new QuestionDto.QuestionAnswerDto();
+                    questionAnswerDto.setAnswerId(answer.getAnswerId());
+                    questionAnswerDto.setBody(answer.getBody());
+                    questionAnswerDto.setVoteCount(answer.getVote().getVoteCount());
+                    Member answerMember = answer.getMember();
+                    QuestionDto.QuestionMemberDto answerQuestionMemberDto = new QuestionDto.QuestionMemberDto();
+                    answerQuestionMemberDto.setName(answerMember.getName());
+                    answerQuestionMemberDto.setEmail(answerMember.getEmail());
+                    answerQuestionMemberDto.setImage(answerQuestionMemberDto.getImage());
+                    questionAnswerDto.setMember(answerQuestionMemberDto);
+                    questionAnswerDto.setIsAccepted(answer.getIsAccepted());
+                    questionAnswerDto.setCreatedAt(answer.getCreatedAt());
+                    questionAnswerDto.setUpdatedAt(answer.getModifiedAt());
+                    return questionAnswerDto;
+                })
+                .collect(Collectors.toList());
+
         List<QuestionDto.QuestionTagDto> questionTagDtoList = question.getQuestionTags().stream()
                         .map(questionTag -> {
                             QuestionDto.QuestionTagDto questionTagDto = new QuestionDto.QuestionTagDto();
@@ -75,7 +94,7 @@ public interface QuestionMapper {
         questionResponseDto.setVoteCount(question.getVote().getVoteCount());
         questionResponseDto.setViewCount(question.getViewCount());
         questionResponseDto.setQuestionMemberDto(questionMemberDto);
-        questionResponseDto.setAnswers(question.getAnswers());
+        questionResponseDto.setAnswers(questionAnswerDtos);
         questionResponseDto.setQuestionTags(questionTagDtoList);
         questionResponseDto.setCreatedAt(question.getCreatedAt());
         questionResponseDto.setUpdatedAt(question.getModifiedAt());

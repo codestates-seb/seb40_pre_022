@@ -61,7 +61,7 @@ public class QuestionDto {
         private int voteCount;
         private int viewCount;
         private QuestionMemberDto questionMemberDto;  // * 놓치지 말 것 (mapper에서 name, email, image userStatus만 담아야함 -> 생성자생성)
-        private List<Answer> answers;
+        private List<QuestionAnswerDto> answers;
         private List<QuestionTagDto> questionTags;  // * 놓치지 말 것 (mapper에서 tagName만 담아야함 -> 생성자 생성)
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
@@ -147,5 +147,18 @@ public class QuestionDto {
         private String name;
         private String email;
         private String image;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class QuestionAnswerDto{
+        private long answerId;
+        private String body;
+        private int voteCount;
+        private int isAccepted;
+        private QuestionMemberDto member;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
     }
 }
