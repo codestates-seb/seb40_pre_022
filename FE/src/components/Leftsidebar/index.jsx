@@ -1,4 +1,12 @@
-import { React } from "react";
+import React from "react";
+import { useRecoilValue } from 'recoil';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
+import { Link, useLocation } from "react-router-dom";
+
+import { SIDEBAR_ITEMS, SIDEBAR_SENTENCES } from "../../constants";
+import { asideState } from '../../store/user';
+
 import {
   Tabtitle,
   SidebarContainer,
@@ -7,19 +15,17 @@ import {
   ItemContainer,
   TabItemText,
 } from "./style";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
-import { Link, useLocation } from "react-router-dom";
-import { SIDEBAR_ITEMS, SIDEBAR_SENTENCES } from "../../constants";
 
-const Leftsidebar = ({display}) => {
+const Leftsidebar = ({ isLeftSidebar }) => {
   let { pathname } = useLocation();
   let path = pathname.split("/")[1];
   if (window.location.pathname === "/question/ask") return null;
 
+  const isAside = useRecoilValue(asideState);
+
   return (
     <>
-      {display && <SidebarContainer>
+      <SidebarContainer isShow={isLeftSidebar} className={ isAside ? 'active':'' }>
         <TabList>
           <TabItem className={pathname === "/" ? "active" : null}>
             <Link to='/' className='link'>
@@ -57,7 +63,7 @@ const Leftsidebar = ({display}) => {
             </TabItem>
           ))}
         </TabList>
-      </SidebarContainer>}
+      </SidebarContainer>
     </>
   );
 };

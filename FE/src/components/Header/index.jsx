@@ -1,16 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
-import { Wrapper, Container, ProductsBox, ProductsDropBox, SearchBox, SearchInnerBox, SearchDropBox, IconUl } from './style'
+import { Wrapper, Container, ProductsBox, ProductsDropBox, SearchBox, SearchInnerBox, SearchDropBox, IconUl, ButtonWrap } from './style'
 import { HEADER_PRODUCTS , HEADER_ICONS, SEARCH_TOOLTIPS } from '../../constants/header';
+import { asideState } from '../../store/user';
+
 import { Button } from '@components/Button';
 
 const Header = () => {
   const [isTooltip, setIsTooltip] = useState(false)
   const [isSearchBox, setIsSearchBox] = useState(false)
+
+  const [isAside, setIsAside] = useRecoilState(asideState);
   const productsTooltip = useRef()
+
+  const isLogin = localStorage.getItem("isLogin");
 
   useEffect(()=>{
     document.addEventListener('mousedown', handleClickOutside);
@@ -20,7 +27,11 @@ const Header = () => {
   },[productsTooltip])
 
   const handleClickOutside = (e) => {
-    if(productsTooltip.current && !productsTooltip.current.contains(e.target)) setIsTooltip(false)
+    if( productsTooltip.current && !productsTooltip.current.contains(e.target)) setIsTooltip(false)
+  }
+
+  const handleMenuToggle = ()=> {
+    setIsAside(!isAside)
   }
 
   const handleToggle = (e) => {
@@ -32,16 +43,17 @@ const Header = () => {
     }
   }
 
+
   return (
     <Wrapper>
       <Container>
-        <Link className='menu' to='/'>
+        <button className='menu' onClick={handleMenuToggle}>
           <FontAwesomeIcon icon={faBars} />
-        </Link>
+        </button>
         <Link className='logo' to='/'><span>stack overflow</span></Link>
-        <ProductsBox>
+        <ProductsBox ref={productsTooltip}>
           <Button primary='Linkbutton' label='Products' className={isTooltip ? 'active':''} onClick={()=>handleToggle('products')}>Products</Button>
-          {isTooltip && <ProductsDropBox ref={productsTooltip}>
+          {isTooltip && <ProductsDropBox>
             {
             HEADER_PRODUCTS.map((product, i)=>{
               const { title, detail } = product
@@ -55,8 +67,8 @@ const Header = () => {
             <li><Link>About the company</Link></li>
           </ProductsDropBox>}
         </ProductsBox>
-        <SearchBox>
-          <SearchInnerBox className={isSearchBox ? 'active' : ''}>
+        <SearchBox className={isSearchBox ? 'active' : ''}>
+          <SearchInnerBox >
               <FontAwesomeIcon className='icon' icon={faMagnifyingGlass} />
               <input type='text' placeholder='Search...' />
               <SearchDropBox>
@@ -76,24 +88,32 @@ const Header = () => {
               </SearchDropBox>
           </SearchInnerBox>
         </SearchBox>
+
+        { isLogin ? 
         <IconUl>
+            <li><FontAwesomeIcon className='icon' icon={faMagnifyingGlass} onClick={()=>handleToggle('search')} /></li>
+            <li>
+              <Link className='profile' to='/mypage'>
+                <img src="/initialProfile.png" alt='profile' />
+                <span>1</span>
+              </Link>
+            </li>
+            {
+            HEADER_ICONS.map((icons, i)=>{
+              const { title, icon } = icons
+              return (
+                <li key={i}>
+                  <FontAwesomeIcon className='icon' role="menuitem" title={title} icon={icon} />
+                </li>
+              )
+            })} 
+        </IconUl> :
+        <ButtonWrap>
           <li><FontAwesomeIcon className='icon' icon={faMagnifyingGlass} onClick={()=>handleToggle('search')} /></li>
-          <li>
-            <Link className='profile' to='/mypage'>
-              <img src="/initialProfile.png" alt='profile' />
-              <span>1</span>
-            </Link>
-          </li>
-          {
-          HEADER_ICONS.map((icons, i)=>{
-            const { title, icon } = icons
-            return (
-              <li key={i}>
-                <FontAwesomeIcon className='icon' role="menuitem" title={title} icon={icon} />
-              </li>
-            )
-          })}
-        </IconUl>
+          <li><Link to='/login'>Log in</Link></li>
+          <li><Link to='/join'>Sign up</Link></li>
+        </ButtonWrap>
+        }
       </Container>
     </Wrapper>
   )

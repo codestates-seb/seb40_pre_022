@@ -12,3 +12,8 @@ export const userState = atom({
     email: "",
   },
 });
+
+export const asideState = atom({
+  key: "asideState",
+  default: false,
+});
