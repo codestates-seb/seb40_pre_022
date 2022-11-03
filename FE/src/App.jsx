@@ -30,7 +30,7 @@ function App() {
               <Route path='/question/edit' element={<QuestionEdit />}></Route>
               <Route path='/mypage' element={<MyPage />}></Route>
               <Route
-                path='/question/detail'
+                path='/question/detail/:id'
                 element={<QuestionsDetail />}></Route>
               <Route path='/*' element={<Error />}></Route>
             </Routes>

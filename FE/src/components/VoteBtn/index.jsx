@@ -4,30 +4,33 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { useRecoilValue } from "recoil";
+import { DetailQData } from "../../store/DetailQData";
 
-const VoteBtn = ({ answer, bestAnswer }) => {
-  let initialCount = 0;
+const VoteBtn = ({ answer, bestAnswer, vote }) => {
+  const QVoteCount = useRecoilValue(DetailQData).vote;
   const [isVotedUp, setIsVotedUp] = useState(false);
   const [isVotedDown, setIsVotedDown] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [count, setCount] = useState(initialCount);
+  const [count, setCount] = useState(vote || QVoteCount);
 
   const handleVoteClick = (status) => {
     if (
       status === "up" &&
-      (count === initialCount || count === initialCount - 1)
+      (count === (vote || QVoteCount) || count === (vote || QVoteCount) - 1)
     ) {
       setIsVotedUp(true);
       setIsVotedDown(false);
-      setCount((prev) => prev + 1);
+      setCount(count + 1);
     } else if (
       status === "down" &&
-      (count === initialCount || count === initialCount + 1)
+      (count === (vote || QVoteCount) || count === (vote || QVoteCount) + 1)
     ) {
       setIsVotedDown(true);
       setIsVotedUp(false);
-      setCount((prev) => prev - 1);
+      setCount(count - 1);
     }
+    console.log(count);
   };
 
   const handleCheckClick = () => {
@@ -38,13 +41,13 @@ const VoteBtn = ({ answer, bestAnswer }) => {
     <VoteContainer>
       <Btn
         onClick={() => handleVoteClick("up")}
-        className={isVotedUp && count !== initialCount ? "voted" : null}
+        className={isVotedUp && count !== (vote || QVoteCount) ? "voted" : null}
       />
-      <VoteCount>{count}</VoteCount>
+      <VoteCount>{vote ? vote : QVoteCount}</VoteCount>
       <Btn
         onClick={() => handleVoteClick("down")}
         className={
-          isVotedDown && count !== initialCount ? "down voted" : "down"
+          isVotedDown && count !== (vote || QVoteCount) ? "down voted" : "down"
         }
       />
       <FontAwesomeIcon

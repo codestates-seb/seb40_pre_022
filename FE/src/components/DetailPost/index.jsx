@@ -1,4 +1,4 @@
-import { React } from "react";
+import { React, useEffect } from "react";
 import {
   PostLayout,
   LayoutLeft,
@@ -16,8 +16,11 @@ import ContentViewer from "../ContentViewer";
 import DetailUserProfile from "../DetailUserProfile";
 import { Button } from "../Button";
 import { TagWrapper } from "../CreateAnswer/style";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { data } from "../../db/data.json";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { DetailQData } from "../../store/DetailQData";
+import AQRightsidebar from "../AQsidebar";
 
 const DetailPost = ({
   answer,
@@ -26,13 +29,17 @@ const DetailPost = ({
   updatedAt,
   profile,
   bestAnswer,
+  vote,
 }) => {
-  let question = data[0];
-  console.log(question.answers.questionTags);
+  const [queData, setQueData] = useRecoilState(DetailQData);
+  const params = Number(useParams().id);
+  setQueData(data.filter((el) => el.questionId === params)[0]);
+  const question = useRecoilValue(DetailQData);
+
   return (
     <PostLayout className={answer ? "answer" : null}>
       <LayoutLeft>
-        <VoteBtn answer={answer} bestAnswer={bestAnswer} />
+        <VoteBtn answer={answer} bestAnswer={bestAnswer} vote={vote} />
       </LayoutLeft>
       <LayoutRight>
         <PostBody>
@@ -41,9 +48,9 @@ const DetailPost = ({
         <TagContainer>
           {answer
             ? null
-            : question.answers.questionTags.map((el) => (
-                <TagWrapper>
-                  <Button primary={false} label={el.tagName} Tagged='Tagged' />
+            : question.questionTags.map((el) => (
+                <TagWrapper key={el.tagName}>
+                  <Button label={el.tagName} Tagged='Tagged' />
                 </TagWrapper>
               ))}
         </TagContainer>
@@ -55,6 +62,8 @@ const DetailPost = ({
               <PostMenu>Edit</PostMenu>
             </Link>
             <PostMenu>Follow</PostMenu>
+            <PostMenu>Delete</PostMenu>
+            {/* 작성자일 때만 보여야 함 */}
           </PostMenuContainer>
           <UserInfo className='edit'>
             <UserInfoText>{updatedAt}</UserInfoText>

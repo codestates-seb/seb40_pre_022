@@ -11,9 +11,12 @@ const QuestionHeader = styled.div`
 `;
 
 const QuestionTitle = styled.h1`
-  font-size: 2.07692308rem;
+  font-size: 1.9rem;
   margin-top: 16px;
   color: hsl(210deg 8% 25%);
+  @media ${(props) => props.theme.mobile} {
+    font-size: 1.7rem;
+  }
 `;
 
 const QuestionInfo = styled.span`

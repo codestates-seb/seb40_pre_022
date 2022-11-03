@@ -13,12 +13,23 @@
         "image": "https://mblogthumb-phinf.pstatic.net/MjAyMDA2MTBfMTY1/MDAxNTkxNzQ2ODcyOTI2.Yw5WjjU3IuItPtqbegrIBJr3TSDMd_OPhQ2Nw-0-0ksg.8WgVjtB0fy0RCv0XhhUOOWt90Kz_394Zzb6xPjG6I8gg.PNG.lamute/user.png?type=w800",
         "userStatus": "USER_EXIST"
       },
+      "questionTags": [
+        {
+          "tagName": "java"
+        },
+        {
+          "tagName": "react"
+        },
+        {
+          "tagName": "html"
+        }
+      ],
       "answers": {
         "data": [
           {
             "answerId": 17,
             "body": "Since React 18 I have some errors when rendering the application and can't nest any elements as it seems. For example, I have the following code in my application:\n\n```javascript\nreturn (\n        <Card>\n            <div className={`flex flex-row justify-content-center align-items-center`}>\n                {props.icon}\n                <h2>{props.text}</h2>\n            </div>\n            <div className={\"flex justify-content-center align-items-center\"}>\n                <Button onClick={() => props.onButtonClick()} className={\"w-2\"} label={props.buttonText}/>\n            </div>\n        </Card>\n\n\n    );\n```\n \nThis code worked fine up to React 18, now from 18 version I get the following error: enter image description here\n\nLikewise, element arrays can no longer be rendered, again, the following code worked fine in React17:\n\n```javascript\n  <DataTable metaKeySelection={false} selectionMode={\"single\"} onSelectionChange={e => {\n                                setSelection(e.value)\n                            }} selection={selection} stripedRows={true} showGridlines={true} size={\"small\"}\n                                       value={artifacts}>\n                                {colModels}\n                            </DataTable>\n```\n\nAnd now since React18 the following problem occurs: enter image description here\n\nIt seems to me that with v18 React expects React Nodes everywhere and JSX as such is no longer accepted. These errors disappear as soon as I enclose said elements with a React fragment, is this really the only way to solve this problem?\n\nThanks in advance!",
-            "vote": 2,
+            "vote": 5,
             "author": {
               "displayName": "sangbin",
               "email": "mosangbin@gmail.com",
@@ -61,17 +72,6 @@
             "createdAt": "2022-11-01T10:49:19.415Z",
             "updatedAt": "2022-11-01T10:49:19.415Z"
           }
-        ],
-        "questionTags": [
-          {
-            "tagName": "java"
-          },
-          {
-            "tagName": "react"
-          },
-          {
-            "tagName": "html"
-          }
         ]
       },
       "createdAt": "2022-10-25T17:11:48",
@@ -104,6 +104,21 @@
           "tagName": "sks"
         }
       ],
+      "answers": {
+        "data": [
+          {
+            "author": {
+              "displayName": "dahee",
+              "image": "https://mblogthumb-phinf.pstatic.net/MjAyMDA2MTBfMTY1/MDAxNTkxNzQ2ODcyOTI2.Yw5WjjU3IuItPtqbegrIBJr3TSDMd_OPhQ2Nw-0-0ksg.8WgVjtB0fy0RCv0XhhUOOWt90Kz_394Zzb6xPjG6I8gg.PNG.lamute/user.png?type=w800"
+            },
+            "body": "**두번째 테스트입니다**",
+            "vote": 3,
+            "isChecked": false,
+            "createdAt": "2022-11-02T23:18:23",
+            "updatedAt": "2022-11-02T23:18:23"
+          }
+        ]
+      },
       "createdAt": "2022-10-25T13:15:48",
       "updatedAt": "2022-10-25T17:11:20"
     },
@@ -137,6 +152,56 @@
           "tagName": "#sql"
         }
       ],
+      "answers": {
+        "data": [
+          {
+            "answerId": 17,
+            "body": "Since React 18 I have some errors when rendering the application and can't nest any elements as it seems. For example, I have the following code in my application:\n\n```javascript\nreturn (\n        <Card>\n            <div className={`flex flex-row justify-content-center align-items-center`}>\n                {props.icon}\n                <h2>{props.text}</h2>\n            </div>\n            <div className={\"flex justify-content-center align-items-center\"}>\n                <Button onClick={() => props.onButtonClick()} className={\"w-2\"} label={props.buttonText}/>\n            </div>\n        </Card>\n\n\n    );\n```\n \nThis code worked fine up to React 18, now from 18 version I get the following error: enter image description here\n\nLikewise, element arrays can no longer be rendered, again, the following code worked fine in React17:\n\n```javascript\n  <DataTable metaKeySelection={false} selectionMode={\"single\"} onSelectionChange={e => {\n                                setSelection(e.value)\n                            }} selection={selection} stripedRows={true} showGridlines={true} size={\"small\"}\n                                       value={artifacts}>\n                                {colModels}\n                            </DataTable>\n```\n\nAnd now since React18 the following problem occurs: enter image description here\n\nIt seems to me that with v18 React expects React Nodes everywhere and JSX as such is no longer accepted. These errors disappear as soon as I enclose said elements with a React fragment, is this really the only way to solve this problem?\n\nThanks in advance!",
+            "vote": 2,
+            "author": {
+              "displayName": "arang",
+              "email": "mosangbin@gmail.com",
+              "image": "https://mblogthumb-phinf.pstatic.net/MjAyMDA2MTBfMTY1/MDAxNTkxNzQ2ODcyOTI2.Yw5WjjU3IuItPtqbegrIBJr3TSDMd_OPhQ2Nw-0-0ksg.8WgVjtB0fy0RCv0XhhUOOWt90Kz_394Zzb6xPjG6I8gg.PNG.lamute/user.png?type=w800"
+            },
+            "isChecked": true,
+            "createdAt": "2022-10-11T01:39:34",
+            "updatedAt": "2022-10-11T01:39:38"
+          },
+          {
+            "author": {
+              "displayName": "MINDA01",
+              "image": "https://mblogthumb-phinf.pstatic.net/MjAyMDA2MTBfMTY1/MDAxNTkxNzQ2ODcyOTI2.Yw5WjjU3IuItPtqbegrIBJr3TSDMd_OPhQ2Nw-0-0ksg.8WgVjtB0fy0RCv0XhhUOOWt90Kz_394Zzb6xPjG6I8gg.PNG.lamute/user.png?type=w800"
+            },
+            "body": "test1",
+            "vote": 3,
+            "isChecked": false,
+            "createdAt": "2022-11-01T10:37:23.156Z",
+            "updatedAt": "2022-11-01T10:37:23.156Z"
+          },
+          {
+            "author": {
+              "displayName": "Heeyoon",
+              "image": "https://mblogthumb-phinf.pstatic.net/MjAyMDA2MTBfMTY1/MDAxNTkxNzQ2ODcyOTI2.Yw5WjjU3IuItPtqbegrIBJr3TSDMd_OPhQ2Nw-0-0ksg.8WgVjtB0fy0RCv0XhhUOOWt90Kz_394Zzb6xPjG6I8gg.PNG.lamute/user.png?type=w800"
+            },
+            "body": "test2",
+            "vote": 4,
+            "isChecked": false,
+            "createdAt": "2022-11-01T10:45:05.141Z",
+            "updatedAt": "2022-11-01T10:45:05.141Z"
+          },
+          {
+            "author": {
+              "displayName": "Helperbot5",
+              "image": "https://mblogthumb-phinf.pstatic.net/MjAyMDA2MTBfMTY1/MDAxNTkxNzQ2ODcyOTI2.Yw5WjjU3IuItPtqbegrIBJr3TSDMd_OPhQ2Nw-0-0ksg.8WgVjtB0fy0RCv0XhhUOOWt90Kz_394Zzb6xPjG6I8gg.PNG.lamute/user.png?type=w800"
+            },
+            "body": "test3",
+            "isChecked": false,
+            "vote": 5,
+            "createdAt": "2022-11-01T10:49:19.415Z",
+            "updatedAt": "2022-11-01T10:49:19.415Z"
+          }
+        ]
+      },
       "createdAt": "2022-10-25T08:55:42",
       "updatedAt": "2022-10-25T08:55:42"
     },
@@ -158,6 +223,9 @@
           "tagName": "java"
         }
       ],
+      "answers": {
+        "data": []
+      },
       "createdAt": "2022-10-25T07:32:07",
       "updatedAt": "2022-10-25T08:39:12"
     },
@@ -179,6 +247,9 @@
           "tagName": "java"
         }
       ],
+      "answers": {
+        "data": []
+      },
       "createdAt": "2022-10-25T07:31:40",
       "updatedAt": "2022-10-25T07:31:40"
     },
@@ -200,6 +271,9 @@
           "tagName": "javascript"
         }
       ],
+      "answers": {
+        "data": []
+      },
       "createdAt": "2022-10-25T07:29:17",
       "updatedAt": "2022-10-25T07:29:16"
     },
@@ -221,6 +295,9 @@
           "tagName": "java"
         }
       ],
+      "answers": {
+        "data": []
+      },
       "createdAt": "2022-10-25T07:14:13",
       "updatedAt": "2022-10-25T07:14:13"
     },
@@ -242,6 +319,9 @@
           "tagName": "spring"
         }
       ],
+      "answers": {
+        "data": []
+      },
       "createdAt": "2022-10-25T06:05:29",
       "updatedAt": "2022-10-25T06:05:29"
     },
@@ -263,6 +343,9 @@
           "tagName": "spring"
         }
       ],
+      "answers": {
+        "data": []
+      },
       "createdAt": "2022-10-25T06:02:32",
       "updatedAt": "2022-10-25T06:02:32"
     },
@@ -290,6 +373,9 @@
           "tagName": "winteriscoming"
         }
       ],
+      "answers": {
+        "data": []
+      },
       "createdAt": "2022-10-25T02:59:09",
       "updatedAt": "2022-10-25T02:59:09"
     },
@@ -311,6 +397,9 @@
           "tagName": "javascript"
         }
       ],
+      "answers": {
+        "data": []
+      },
       "createdAt": "2022-10-25T02:17:38",
       "updatedAt": "2022-10-25T02:17:38"
     },
@@ -332,6 +421,9 @@
           "tagName": "js"
         }
       ],
+      "answers": {
+        "data": []
+      },
       "createdAt": "2022-10-25T01:24:39",
       "updatedAt": "2022-10-25T01:24:39"
     },
@@ -353,6 +445,9 @@
           "tagName": "js"
         }
       ],
+      "answers": {
+        "data": []
+      },
       "createdAt": "2022-10-24T14:10:46",
       "updatedAt": "2022-10-24T14:10:46"
     },
@@ -374,6 +469,9 @@
           "tagName": "ㅇ"
         }
       ],
+      "answers": {
+        "data": []
+      },
       "createdAt": "2022-10-24T09:00:13",
       "updatedAt": "2022-10-24T09:00:13"
     },
@@ -395,6 +493,9 @@
           "tagName": "php"
         }
       ],
+      "answers": {
+        "data": []
+      },
       "createdAt": "2022-10-24T06:54:11",
       "updatedAt": "2022-10-24T06:54:11"
     }
