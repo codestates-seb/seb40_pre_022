@@ -60,24 +60,25 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())// 커스텀 필터
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-//                        .antMatchers(HttpMethod.POST, "/members/login").permitAll() // 1. 로그인 : EVERYONE
-//                        //logout
-//                        .antMatchers(HttpMethod.DELETE, "/members/logout").hasAnyRole("USER", "ADMIN")
-//                         //member
-//                        .antMatchers(HttpMethod.POST, "/members/signup").permitAll() // 2. 회원가입 : EVERYONE
-//                        .antMatchers(HttpMethod.GET, "/members").hasAnyRole("USER", "ADMIN") // 2. 회원정보 접근 : USER, ADMIN
-//                        .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER") // 2. 회원 삭제 : USER
-//                        .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER") // 2. 회원 정보 수정 : USER
-//                        //answer
-//                        .antMatchers(HttpMethod.POST, "/questions/*/answers").hasRole("USER") // 3. 답변 등록 : USER
-//                        .antMatchers(HttpMethod.PATCH, "/questions/*/answers/**").hasRole("USER") // 3. 답변 수정관련 : USER
-//                        .antMatchers(HttpMethod.DELETE, "/questions/*/answers/**").hasRole("USER") // 3. 답변 삭제
-//                        //question
-//                        .antMatchers(HttpMethod.GET, "/questions/edit/*").hasRole("USER") // 4. 질문 수정을 위한 불러오기 : USER, ADMIN
-//                        .antMatchers(HttpMethod.GET, "/questions/**").permitAll() // 4. 글 목록, 상세페이지 : EVERYONE
-//                        .antMatchers(HttpMethod.POST, "/questions/**").hasAnyRole("USER") // 4. 질문 생성 : USER, ADMIN
-//                        .antMatchers(HttpMethod.PATCH, "/questions/**").hasRole("USER") // 4. 질문 수정 : USER
-//                        .antMatchers(HttpMethod.DELETE, "/questions/**").hasAnyRole("USER", "ADMIN") // 4. 질문 삭제 : USER, ADMIN
+                        //login
+                        .antMatchers(HttpMethod.POST, "/members/login").permitAll() // 1. 로그인 : EVERYONE
+                        //logout
+                        .antMatchers(HttpMethod.DELETE, "/members/logout").hasAnyRole("USER", "ADMIN")
+                        //member
+                        .antMatchers(HttpMethod.POST, "/members/signup").permitAll() // 2. 회원가입 : EVERYONE
+                        .antMatchers(HttpMethod.GET, "/members").hasAnyRole("USER", "ADMIN") // 2. 회원정보 접근 : USER, ADMIN
+                        .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER") // 2. 회원 삭제 : USER
+                        .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER") // 2. 회원 정보 수정 : USER
+                        //answer
+                        .antMatchers(HttpMethod.POST, "/questions/*/answers").hasRole("USER") // 3. 답변 등록 : USER
+                        .antMatchers(HttpMethod.PATCH, "/questions/*/answers/**").hasRole("USER") // 3. 답변 수정관련 : USER
+                        .antMatchers(HttpMethod.DELETE, "/questions/*/answers/**").hasRole("USER") // 3. 답변 삭제
+                        //question
+                        .antMatchers(HttpMethod.GET, "/questions/edit/*").hasRole("USER") // 4. 질문 수정을 위한 불러오기 : USER, ADMIN
+                        .antMatchers(HttpMethod.GET, "/questions/**").permitAll() // 4. 글 목록, 상세페이지 : EVERYONE
+                        .antMatchers(HttpMethod.POST, "/questions/**").hasAnyRole("USER") // 4. 질문 생성 : USER, ADMIN
+                        .antMatchers(HttpMethod.PATCH, "/questions/**").hasRole("USER") // 4. 질문 수정 : USER
+                        .antMatchers(HttpMethod.DELETE, "/questions/**").hasAnyRole("USER", "ADMIN") // 4. 질문 삭제 : USER, ADMIN
                         .anyRequest().permitAll()
                 );
 

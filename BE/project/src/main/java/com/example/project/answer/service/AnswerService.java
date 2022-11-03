@@ -36,7 +36,6 @@ public class AnswerService {
      * 3. 질문 - 답변 - 유저의 연관관계를 설정한다.
      * 4. VOTE - 답변의 연관관계를 설정한다.
      * 5. 저장한다.
-     * @return
      */
     public Answer createAnswer(Answer answer, long questionId, String memberEmail){
 
