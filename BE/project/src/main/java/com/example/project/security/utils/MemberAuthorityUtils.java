@@ -10,7 +10,9 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// security를 위한 권한 생성, db 테이블 관리를 위한 권한 생성
+/**
+ * security를 위한 권한 생성, db 테이블 관리를 위한 권한 생성
+ */
 @Component
 public class MemberAuthorityUtils {
 

@@ -27,7 +27,9 @@ import java.util.Arrays;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-// 보안 구성. - 어떠한 방법론들을 이용할 것인가.
+/**
+ * 보안구성 : security에서 어떤 filter들을 이용할 것인가(어떤 방법론들을 이용할 것인가)
+ */
 @Configuration
 @EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
@@ -35,7 +37,14 @@ public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final MemberAuthorityUtils authorityUtils;
 
-    // 1. DelegatingFilterProxy가 호출하는 Filter. 아래 설정값들을 실행한다.
+    /**
+     * filterchain들의 동작 순서, 설정값들 지정
+     * 동작 원리
+     * 1. request가 DelegatingFilterProxy에 도착, FilterChainProxy 호출
+     * 2. DelegatingFilterProxy가 ApplicationContext의 Bean들을 filter들에 연결(주입)
+     * 3. http 설정들 실행. 각 필터 설명은 주석에
+     * @SneakyThorws -> throws를 쓰지 않아도 알아서 예외를 찾아서 던져줌
+     */
     @Bean
     @SneakyThrows
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -48,7 +57,7 @@ public class SecurityConfiguration {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin().disable() // csr 방식이기 때문에.
-                .apply(new CustomFilterConfigurer())
+                .apply(new CustomFilterConfigurer())// 커스텀 필터
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
 //                        .antMatchers(HttpMethod.POST, "/members/login").permitAll() // 1. 로그인 : EVERYONE
@@ -75,13 +84,15 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-    // 2. PasswordEncoder 관련 설정 - PasswordEncoder를 구현한 객체가 DI되어 암호화 진행하게 하기 위함
+    /**
+     * 비밀번호를 암호화 해주는 PasswordEncoder 반환
+     * PasswordEncoder 인터페이스의 구현체를 생성해서 반환한다. (return문)
+     */
     @Bean
     public PasswordEncoder passwordEncoder(){
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    // 3. cors 관련 설정
     @Bean
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();  // Cors설정 객체생성(정책 설정)
@@ -93,12 +104,18 @@ public class SecurityConfiguration {
 
         return source;
     }
+
+    /**
+     * SecurityFilterChain 이외 커스텀 필터들의 설정 : apply('여기에 생성')로 호출함
+     * 역할설명)
+     * 1. AuthenticationManager - UserDetailService를 호출하여 UserDetail을 확인, 인증 여부를 파악한다.
+     * 2. JwtAuthenticationFilter - 인증 성공시 토큰을 발급하는 역할을 한다.
+     */
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
         @Override
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager =
                     builder.getSharedObject(AuthenticationManager.class);
-//            MemberAuthorityUtils authorityUtils = new MemberAuthorityUtils(); // **맞는지는 모르겠지만, 추가함 파라미터로 넘기기 위해
 
             JwtAuthenticationFilter jwtAuthenticationFilter =
                     new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
@@ -115,7 +132,7 @@ public class SecurityConfiguration {
 }
 
 /*
-인증 매카니즘
+인증 매커니즘
 
 - 회원정보의 저장 - 회원가입
 1) 유저디테일매니저 (db에 유저 정보 저장)
