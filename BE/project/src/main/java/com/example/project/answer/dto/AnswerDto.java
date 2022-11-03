@@ -5,6 +5,7 @@ import com.example.project.member.entity.Member;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 public class AnswerDto {
@@ -18,7 +19,7 @@ public class AnswerDto {
     @NoArgsConstructor
     public static class Post {
 
-        @NotBlank
+        @NotBlank(message = "답변 내용은 공백이 아니여야 합니다.")
         private String body;
 
     }
@@ -32,7 +33,10 @@ public class AnswerDto {
     @NoArgsConstructor
     public static class Patch {
 
+        @Positive
         private long answerId;
+
+        @NotBlank(message = "답변 내용은 공백이 아니여야 합니다.")
         private String body;
 
     }
@@ -44,7 +48,7 @@ public class AnswerDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class AnswerVotePatch {
-
+        @Positive
         private long answerId;
 
     }
@@ -56,8 +60,11 @@ public class AnswerDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class AcceptPatch {
+        @Positive
         private long memberId;
+        @Positive
         private long questionId;
+        @Positive
         private long answerId;
     }
 
