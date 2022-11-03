@@ -25,7 +25,10 @@ public class AnswerController {
     private final AnswerMapper mapper;
     private final JwtTokenizer jwtTokenizer;
 
-    // 1. 답변 등록
+    /**
+     * 기능 : answer 등록
+     * @param request - header에서 토큰을 추출하여 로그인 유저 이메일을 알기 위함 - 이하 동문
+     */
     @PostMapping("/{questionId}/answers")
     public ResponseEntity postAnswer(HttpServletRequest request,
                                      @PathVariable long questionId,
@@ -42,7 +45,9 @@ public class AnswerController {
         );
     }
 
-    // 2. 답변 수정
+    /**
+     * 기능 : answer 수정
+     */
     @PatchMapping("/{questionId}/answers/{answerId}")
     public ResponseEntity patchAnswer(HttpServletRequest request,
                                       @PathVariable long questionId,
@@ -59,7 +64,10 @@ public class AnswerController {
         );
     }
 
-    // 3. 답변 추천 up
+    /**
+     * 기능 : answer 추천 up
+     * 한번 누르면 up, 두번 누르면 down됨.
+     */
     @PatchMapping("/{questionId}/answers/vote_up/{answerId}")
     public ResponseEntity patchAnswerVoteUp(HttpServletRequest request,
                                             @PathVariable long questionId,
@@ -75,7 +83,10 @@ public class AnswerController {
         );
     }
 
-    // 4. 답번 비추천 down
+    /**
+     * 기능 : answer 추천 down
+     * 한번 누르면 down, 두번 누르면 up됨.
+     */
     @PatchMapping("/{questionId}/answers/vote_down/{answerId}")
     public ResponseEntity patchAnswerVoteDown(HttpServletRequest request,
                                               @PathVariable long questionId,
@@ -91,7 +102,9 @@ public class AnswerController {
     }
 
 
-    // 5. 답변 채택
+    /**
+     * 기능 : answer 채택
+     */
     @PatchMapping("/{questionId}/answers/accept/{answerId}")
     public ResponseEntity patchAnswerAccept(HttpServletRequest request,
                                             @PathVariable long questionId,
@@ -110,7 +123,9 @@ public class AnswerController {
         );
     }
 
-    // 6. 답변 삭제
+    /**
+     * 기능 : answer 삭제
+     */
     @DeleteMapping("/{questionId}/answers/{answerId}")
     public ResponseEntity deleteAnswer(HttpServletRequest request,
                                        @PathVariable long questionId,
@@ -123,6 +138,10 @@ public class AnswerController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * 메서드 : email정보를 추출한다.
+     * @return request 헤더의 토큰에서 추출한 로그인 유저의 email정보
+     */
     private String extractMemberEmail(HttpServletRequest request){
         String jws = request.getHeader("Authorization").replace("Bearer ", "");
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());

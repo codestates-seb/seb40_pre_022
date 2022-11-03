@@ -10,11 +10,13 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// security를 위한 권한 생성, db 테이블 관리를 위한 권한 생성
+/**
+ * security를 위한 권한 생성, db 테이블 관리를 위한 권한 생성
+ */
 @Component
 public class MemberAuthorityUtils {
 
-    @Value("${mail.address.admin")
+    @Value("${mail.address.admin}")
     private String adminMailAddress;
 
     // 테이블을 위한 관리자 권한 목록

@@ -1,6 +1,6 @@
 package com.example.project.answer.service;
 
-import com.example.project.answer.dto.AnswerDto;
+
 import com.example.project.answer.entity.Answer;
 import com.example.project.answer.repository.AnswerRepository;
 import com.example.project.exception.BusinessLogicException;
@@ -28,7 +28,16 @@ public class AnswerService {
     private final QuestionService questionService;
     private final MemberService memberService;
 
-    // 1. Answer 등록 로직
+
+    /**
+     * 필수) answer 등록 로직
+     * 1. 질문이 DB에 존재하는지 확인 후 정보를 가져온다.
+     * 2. 로그인 유저이 DB에 존재하는지 확인 후 정보를 가져온다.
+     * 3. 질문 - 답변 - 유저의 연관관계를 설정한다.
+     * 4. VOTE - 답변의 연관관계를 설정한다.
+     * 5. 저장한다.
+     * @return
+     */
     public Answer createAnswer(Answer answer, long questionId, String memberEmail){
 
         Question question = questionService.findVerifiedQuestion(questionId);
@@ -46,7 +55,13 @@ public class AnswerService {
         return answerRepository.save(answer);
     }
 
-    // 2. Answer 수정 로직
+    /**
+     * 필수) answer 수정 로직
+     * 1. 답변의 DB에 존재하는지 확인 후 정보를 가져온다.
+     * 2. 로그인한 유저와 답변 작성자의 일치여부를 확인한다.
+     * 3. 일치 시에 DTO에서 가져온 정보를 덮어쓴다.
+     * 4. 저장한다.
+     */
     public Answer updateAnswer(Answer answer, String memberEmail){
 
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
@@ -61,7 +76,12 @@ public class AnswerService {
         return answerRepository.save(findAnswer);
     }
 
-    // 3-1. Answer 추천 로직
+    /**
+     * 필수) answer의 vote 추천 로직
+     * 1. 로그인 유저가 DB에 존재하는지 확인한다.
+     * 2. 질문이 DB에 존재하는지 확인한다.
+     * 3. 유저의 상황(과거추천여부, 처음)을 고려하여 추천수를 설정한다.
+     */
     public Answer answerVoteUp(Answer answer, String memberEmail) {
 
         memberService.DoesMemberExist(memberEmail);
@@ -74,7 +94,12 @@ public class AnswerService {
 
     }
 
-    // 3-2. Answer 비추천 로직
+    /**
+     * 필수) answer의 vote 비추천 로직
+     * 1. 로그인 유저가 DB에 존재하는지 확인한다.
+     * 2. 질문이 DB에 존재하는지 확인한다.
+     * 3. 유저의 상황(과거추천여부, 처음)을 고려하여 추천수를 설정한다.
+     */
     public Answer answerVoteDown(Answer answer, String memberEmail) {
 
         memberService.DoesMemberExist(memberEmail);
@@ -86,22 +111,27 @@ public class AnswerService {
         return answerRepository.save(findAnswer);
     }
 
-    // 4. Answer 채택 로직
+    // fixme - 로그인 정보의 memberEmail 추출 후 이를 적용하여 로직 수정해야함
+    /**
+     * 필수) answer의 채택 로직
+     * 1. 질문과 답변이 DB에 존재하는지 확인 후 가져온다.
+     * 2. 로그인 유저와 질문 작성자의 일치 여부를 확인한다.
+     * 3. 상황에 따라 채택 여부를 결정한다
+     * -> 이미 채택되어 있는 경우 : 채택 취소
+     * -> 첫 채택인 경우 : 채택
+     */
     public Answer acceptAnswer(Answer answer) {
-        // answer에는 지금 member, question, answer 각각의 Id값만 가지고 있는 객체들이 저장되어 있음.
+
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
         Question findQuestion = questionService.findVerifiedQuestion(answer.getQuestion().getQuestionId());
 
-        // 1. 해당 question의 member가 지금 요청하는 member와 같은지 확인.
         if (findQuestion.getMember().getMemberId() != answer.getMember().getMemberId())
             throw new BusinessLogicException(ExceptionCode.CANNOT_CHANGE_ANSWER);
-            
-        // 2. 채택된 answerId(isAccepted==1 인 경우)를 또 채택하려하면 , 채택을 취소 (0)으로 처리 후, 저장 하고 return.
+
         if(findAnswer.getIsAccepted()==1){
             findAnswer.setIsAccepted(0);
             return answerRepository.save(findAnswer);
         }
-        // 채택된 answer가 아니라면, 채택된 답변이 있는지 확인하고, 없다면 채택 1
         else{
             acceptAnswerCheck(findQuestion);    // 해당 질문의 Answer 리스트들을 확인하여 채택된 답변 있는지 확인.
             findAnswer.setIsAccepted(1);
@@ -109,7 +139,12 @@ public class AnswerService {
         }
     }
 
-    // 5. Answer 삭제 로직
+    /**
+     * 필수) answer의 삭제 로직
+     * 1. 답변이 DB에 존재하는지 확인한다.
+     * 2. 로그인 유저와 답변 작성자의 일치여부를 확인한다.
+     * 3. 2번 통과시 삭제한다.
+     */
     public void deleteAnswer(long answerId, String memberEmail) {
 
         Answer findAnswer = findVerifiedAnswer(answerId);
@@ -121,7 +156,9 @@ public class AnswerService {
         answerRepository.delete(findAnswer);
     }
 
-    // 6. Answer이 실제 DB에 존재하는지 검증
+    /**
+     * 도구) answer가 db에 존재하는지 여부를 체크하는 메서드
+     */
     @Transactional(readOnly = true)
     public Answer findVerifiedAnswer(long answerId){
         Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
@@ -131,12 +168,9 @@ public class AnswerService {
     }
 
 
-    // 7. request한 member가 Answer의 member인지 확인하는 로직 (자신의 Answer인지 확인)
-    public void verifyAnswerMember(){
-
-    }
-
-    // 채택된 답변 있는지 확인하는 로직.
+    /**
+     * 도구) 채택된 답변이 있는지를 체크하는 메서드
+     */
     private void acceptAnswerCheck(Question question){
         for (Answer answer1 : question.getAnswers()) {
             if(answer1.getIsAccepted() == 1)  throw new BusinessLogicException(ExceptionCode.ACCEPT_ANSWER_EXISTS);    // 채택된 답변이 이미 있으면, 에러 처리.
@@ -144,25 +178,30 @@ public class AnswerService {
     }
 
 
-    // voteUp계산
-    public void voteUpCase(Answer answer, long memberId){ // checked v
+    /**
+     * 도구) vote 추천의 경우를 계산하는 메서드
+     * 1. 해당 answer와 연결된 vote의 voteMap을 가져온다(유저의 과거 추천 저장)
+     * 2. key와 value값으로 계산한다.
+     * (question의 추천과 동일로직)
+     */
+    public void voteUpCase(Answer answer, long memberId){
 
-        Map<Long, Integer> voteMap = answer.getVote().getMemberVoteMap();  // 해당 question의 votemap을 가져온다.
+        Map<Long, Integer> voteMap = answer.getVote().getMemberVoteMap();
 
-        if(voteMap.containsKey(memberId)){    // votemap에 해당 멤버가 있으면
-            int value = voteMap.get(memberId);  // 스위치문을 위해 value를 int값으로 가져온다.
+        if(voteMap.containsKey(memberId)){                      // votemap에 해당 멤버가 있으면
+            int value = voteMap.get(memberId);                  // 스위치문을 위해 value를 int값으로 가져온다.
             switch(value){
                 case 1:    // 이미 업을 누른상황
-                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()-1); // 카운트 다운
-                    voteMap.put(memberId, 0); // 1 -> 0값으로 넣어줌
+                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()-1);
+                    voteMap.put(memberId, 0);
                     break;
                 case 0: // 0으로 바꾼상황
-                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()+1); // 카운트 업
-                    voteMap.put(memberId, 1); // 0 -> 1 넣어줌
+                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()+1);
+                    voteMap.put(memberId, 1);
                     break;
                 case -1: // 이미 다운을 누른 상황
-                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()+1); // 카운트 업
-                    voteMap.put(memberId, 0); // -1 -> 0
+                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()+1);
+                    voteMap.put(memberId, 0);
                     break;
             }
         }
@@ -173,24 +212,30 @@ public class AnswerService {
         answer.getVote().setVoteCheck(voteMap.get(memberId));     // voteCheck 상태 저장.
     }
 
-    public void voteDownCase(Answer answer, long memberId){ // checked v
+    /**
+     * 도구) vote 비추천의 경우를 계산하는 메서드
+     * 1. 해당 answer와 연결된 vote의 voteMap을 가져온다(유저의 과거 추천 저장)
+     * 2. key와 value값으로 계산한다.
+     * (question의 비추천과 동일로직)
+     */
+    public void voteDownCase(Answer answer, long memberId){
 
-        Map<Long, Integer> voteMap = answer.getVote().getMemberVoteMap();  // 해당 question의 votemap을 가져온다.
+        Map<Long, Integer> voteMap = answer.getVote().getMemberVoteMap();
 
-        if(voteMap.containsKey(memberId)){    // votemap에 해당 멤버가 있으면
-            int value = voteMap.get(memberId);  // 스위치문을 위해 value를 int값으로 가져온다.
+        if(voteMap.containsKey(memberId)){                      // votemap에 해당 멤버가 있으면
+            int value = voteMap.get(memberId);                  // 스위치문을 위해 value를 int값으로 가져온다.
             switch(value){
                 case 1:    // 업이면
-                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()-1); // 카운트 다운
-                    voteMap.put(memberId, 0); // 1 -> 0
+                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()-1);
+                    voteMap.put(memberId, 0);
                     break;
                 case 0:
-                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()-1); // 카운트 다운
-                    voteMap.put(memberId, -1); // 0 -> -1
+                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()-1);
+                    voteMap.put(memberId, -1);
                     break;
                 case -1:
-                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()+1); // 카운트 업
-                    voteMap.put(memberId, 0); // -1 -> 0
+                    answer.getVote().setVoteCount(answer.getVote().getVoteCount()+1);
+                    voteMap.put(memberId, 0);
                     break;
             }
         }
@@ -202,7 +247,9 @@ public class AnswerService {
         answer.getVote().setVoteCheck(voteMap.get(memberId));     // voteCheck 상태 저장.
     }
 
-    //answer pagination하는 로직
+    /**
+     * 도구) answer의 pagination로직
+     */
     public Page<Answer> findAnswers(int page, int size){
         return answerRepository.findAll(PageRequest.of(page, size, Sort.by("questionId").descending()));
     }

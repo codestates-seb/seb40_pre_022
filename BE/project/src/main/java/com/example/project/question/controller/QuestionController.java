@@ -32,7 +32,9 @@ public class QuestionController {
     private final QuestionMapper mapper;
     private final JwtTokenizer jwtTokenizer;
 
-    //1. 메인페이지
+    /**
+     * 기능 : 추천수로 정렬한 question 리스트 반환
+     */
     @GetMapping
     public ResponseEntity getQuestionsByViewCount(@RequestParam int page,
                                                   @RequestParam int size){
@@ -45,7 +47,9 @@ public class QuestionController {
         return new ResponseEntity(new MultiResponseDto<>(lists, result), HttpStatus.OK);
     }
 
-    //2. all question 목록 제공
+    /**
+     * 기능 : 최신순으로로 정렬한 question 리스트 반환
+     */
     @GetMapping("/questions")
     public ResponseEntity getQuestions(@RequestParam int page,
                                        @RequestParam int size){
@@ -58,7 +62,7 @@ public class QuestionController {
         return new ResponseEntity(new MultiResponseDto<>(lists, result), HttpStatus.OK);
     }
 
-    //3. 검색결과 페이지 url 토의 후 수정하기
+    //todo : keyword로 검색하여 최신순으로 반환한다.
     @GetMapping("questions/search_result")
     public ResponseEntity getQuestionsByKeword(@RequestParam String keyword,
                                                @RequestParam int page,
@@ -67,7 +71,9 @@ public class QuestionController {
         return null;
     }
 
-    //4. question 상세 페이지
+    /**
+     * 기능 : question 상세 페이지
+     */
     @GetMapping("/questions/{question_Id}")
     public ResponseEntity getQuestion(@PathVariable("question_Id") @Positive long questionId){
 
@@ -76,7 +82,9 @@ public class QuestionController {
         return new ResponseEntity(new SingleResponseDto<>(mapper.questionToQuestionResponseDto(result)), HttpStatus.OK);
     }
 
-    //5. question 수정을 위한 글 불러오기
+    /**
+     * 기능 : question 수정을 위한(수정 바로 직전 단계) 글 불러오기
+     */
     @GetMapping("/questions/edit/{question_Id}")
 
     public ResponseEntity getQuestionForUpdate(HttpServletRequest request,
@@ -87,7 +95,9 @@ public class QuestionController {
         return new ResponseEntity(new SingleResponseDto<>(mapper.questionToQuestionForUpdateResponseDto(result)), HttpStatus.OK);
     }
 
-    //6. question 수정
+    /**
+     * 기능 : question 수정
+     */
     @PatchMapping("/questions/{question_Id}")
 
     public ResponseEntity patchQuestion(HttpServletRequest request,
@@ -99,7 +109,9 @@ public class QuestionController {
         return new ResponseEntity(new SingleResponseDto<>(mapper.questionToQuestionResponseDto(result)), HttpStatus.OK);
     }
 
-    //7. question 추천 올리기
+    /**
+     * 기능 : question 추천
+     */
     @PatchMapping("/questions/vote_up/{question_Id}")
     public ResponseEntity patchVoteUp(HttpServletRequest request,
                                       @PathVariable("question_Id") long questionId,
@@ -112,7 +124,9 @@ public class QuestionController {
                 new SingleResponseDto<>(mapper.questionToVoteResponse(question)), HttpStatus.OK);
     }
 
-    //8. question 추천 내리기 - **url수정이나 dto안의 필드 requestparam 수정 가능.
+    /**
+     * 기능 : question 비추천
+     */
     @PatchMapping("/questions/vote_down/{question_Id}")
     public ResponseEntity patchVoteDown(HttpServletRequest request,
                                         @PathVariable("question_Id") long questionId,
@@ -125,7 +139,9 @@ public class QuestionController {
                 new SingleResponseDto<>(mapper.questionToVoteResponse(question)), HttpStatus.OK);
     }
 
-    //9. question 작성 요청
+    /**
+     * 기능 : question 작성
+     */
     @PostMapping("/questions/ask/submit")
 
     public ResponseEntity postQuestion(HttpServletRequest request,
@@ -137,7 +153,9 @@ public class QuestionController {
         return new ResponseEntity(new SingleResponseDto<>(mapper.questionToQuestionResponseDto(result)), HttpStatus.CREATED);
     }
 
-    //10. question 삭제 요청
+    /**
+     * 기능 : question 삭제
+     */
     @DeleteMapping("/questions/{question_Id}")
     public ResponseEntity deleteQuestion(HttpServletRequest request,
                                          @PathVariable("question_Id") long questionId){
@@ -148,6 +166,10 @@ public class QuestionController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * 메서드 : email정보를 추출한다.
+     * @return request 헤더의 토큰에서 추출한 로그인 유저의 email정보
+     */
     private String extractMemberEmail(HttpServletRequest request){
         String jws = request.getHeader("Authorization").replace("Bearer ", "");
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
