@@ -3,15 +3,14 @@ package com.example.project.vote;
 import com.example.project.answer.entity.Answer;
 import com.example.project.question.entity.Question;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -35,6 +34,7 @@ public class Vote {
     @Column(name = "VOTE_COUNT")
     private int voteCount;
 
+    @JsonIgnore
     @ElementCollection
     @CollectionTable(
             name = "MEMBER_VOTE_MAP",
