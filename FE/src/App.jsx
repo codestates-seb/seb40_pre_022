@@ -13,33 +13,34 @@ import QuestionEdit from "./pages/QuestionEdit";
 import Error from "./pages/Error";
 import Logout from "./pages/Logout";
 import Recovery from "./pages/Recovery";
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
+  const auth = localStorage.getItem('isLogin');
+  
   return (
-    <>
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
-        <RecoilRoot>
-          <BrowserRouter>
-            <Routes>
-              <Route path='/' element={<Home />}></Route>
-              <Route path='members/login' element={<Login />}></Route>
-              <Route path='members/logout' element={<Logout />}></Route>
-              <Route path='/join' element={<Join />}></Route>
-              <Route path='/recovery' element={<Recovery />}></Route>
-              <Route path='/question' element={<AllQuestion />}></Route>
-              <Route path='/question/ask' element={<QuestionAsk />}></Route>
-              <Route path='/question/edit' element={<QuestionEdit />}></Route>
-              <Route path='/mypage' element={<MyPage />}></Route>
-              <Route
-                path='/question/detail/:id'
-                element={<QuestionsDetail />}></Route>
-              <Route path='/*' element={<Error />}></Route>
-            </Routes>
-          </BrowserRouter>
-        </RecoilRoot>
-      </ThemeProvider>
-    </>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <RecoilRoot>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='members/login' element={<Login />} />
+            <Route path='members/logout' element={<Logout />} />
+            <Route path='/join' element={<Join />} />
+            <Route path='/recovery' element={<Recovery />} />
+            <Route path='/question' element={<AllQuestion />} />
+            <Route path='/question/ask' element={<PrivateRoute component={<QuestionAsk />} auth={auth}/>} />
+            <Route path='/question/edit' element={<PrivateRoute component={<QuestionEdit />} auth={auth}/>} />
+            <Route path='/mypage' element={<PrivateRoute component={<MyPage />} auth={auth}/>} />
+            <Route
+              path='/question/detail/:id'
+              element={<QuestionsDetail />} />
+            <Route path='/*' element={<Error />} />
+          </Routes>
+        </BrowserRouter>
+      </RecoilRoot>
+    </ThemeProvider>
   );
 }
 
