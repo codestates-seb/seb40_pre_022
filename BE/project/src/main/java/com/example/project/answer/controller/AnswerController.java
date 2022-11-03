@@ -102,7 +102,7 @@ public class AnswerController {
     }
 
 
-    /**
+    /** todo ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅅㅁㄴㅇ13616146
      * 기능 : answer 채택
      */
     @PatchMapping("/{questionId}/answers/accept/{answerId}")
@@ -113,10 +113,7 @@ public class AnswerController {
 
         String memberEmail = extractMemberEmail(request);
 
-        requestBody.setAnswerId(answerId);
-        requestBody.setQuestionId(questionId);
-
-        Answer answer = answerService.acceptAnswer(mapper.answerAcceptToAnswer(requestBody));
+        Answer answer = answerService.acceptAnswer(mapper.answerAcceptToAnswer(requestBody), memberEmail, questionId);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.answerToAcceptResponse(answer)), HttpStatus.OK
