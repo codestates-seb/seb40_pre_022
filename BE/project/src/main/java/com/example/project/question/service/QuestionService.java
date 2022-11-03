@@ -5,6 +5,7 @@ import com.example.project.exception.ExceptionCode;
 import com.example.project.member.entity.Member;
 import com.example.project.member.service.MemberService;
 import com.example.project.question.entity.Question;
+import com.example.project.question.entity.QuestionTag;
 import com.example.project.question.repository.QuestionRepository;
 import com.example.project.tag.Tag;
 import com.example.project.tag.TagRepository;
