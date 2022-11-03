@@ -1,23 +1,16 @@
 import styled from "styled-components";
 
-const AskQuestionBox = styled.section`
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  box-shadow: grey 0px 0px 3px;
-  border-radius: 3px;
-`;
-
-const QuestionContainer = styled.section`
+const QuestionContainer = styled.div`
   padding: 20px;
 `;
 
-const TitleInputText = styled.div`
+const AskInputText = styled.div`
   display: block;
   margin-bottom: 6px;
   font-weight: 600;
   &.text {
     color: #525960;
+    font-size: 0.8rem;
   }
 `;
 
@@ -28,8 +21,8 @@ const TitleInput = styled.input`
   height: 35px;
   border: 1px solid rgb(186, 191, 196);
   border-radius: 3px;
-  color: rgb(186 191 196);
+  color: rgb(133, 133, 133);
   margin-bottom: 30px;
 `;
 
-export { QuestionContainer, AskQuestionBox, TitleInputText, TitleInput };
+export { QuestionContainer, AskInputText, TitleInput };

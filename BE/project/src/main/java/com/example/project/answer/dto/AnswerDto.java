@@ -9,103 +9,105 @@ import java.time.LocalDateTime;
 
 public class AnswerDto {
 
-
-    @Getter
+    /**
+     * request에서 답변 '등록'을 위한 데이터를 담아오는 DTO
+     */
     @Builder
-    @Setter
-    @AllArgsConstructor
-    public static class Post{
-        private long memberId;
-
-        @NotBlank
-        private String body;
-
-        private long questionId;
-
-        public Member getMember(){
-            Member member = new Member();
-            member.setMemberId(memberId);
-            return member;
-        }
-    }
-
-    //답변 수정을 위한 requestBody
-    @Getter
-    @Builder
-    @Setter
-    @AllArgsConstructor
-    public static class Patch{
-
-        private long memberId;      // 수정하려는 사용자 ** 추후 보안시 변경 가능사항
-        private long answerId;
-        @NotBlank
-        private long questionId;
-
-        private String body;
-    }
-
-    //답변 추천수 변경을 위한 requestBody
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    public static class AnswerVotePatch {
-        private long memberId;
-        private long answerId;      // answerId를 통해 연결된 Vote를 가져오기 위해 사용.
-    }
-
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    public static class AcceptPatch{
-        private long memberId;
-        private long questionId;
-        private long answerId;
-    }
-
-    //답변 응답을 위한 responseBody
-    @Getter
-    @Setter
+    @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Response{
+    public static class Post {
+
+        @NotBlank
+        private String body;
+
+    }
+
+    /**
+     * request에서 답변 '수정'을 위한 데이터를 담아오는 DTO
+     */
+    @Builder
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Patch {
+
+        private long answerId;
+        private String body;
+
+    }
+
+    /**
+     * request에서 답변 '추천'을 위한 데이터를 담아오는 DTO
+     */
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class AnswerVotePatch {
+
+        private long answerId;
+
+    }
+
+    /**
+     * request에서 답변 '채택'을 위한 데이터를 담아오는 DTO
+     */
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class AcceptPatch {
+        private long memberId;
+        private long questionId;
+        private long answerId;
+    }
+
+    /**
+     * response에 '답변 자체'를 위한 데이터를 담는 DTO
+     */
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Response {
         private long answerId;
         private String body;
         private int voteCount;
-        private int isAccepted;                 // 답변 채택 여부
-        private AnswerMemberResponse member;    // answerMemberResponse를 member로 선언, Front에서 사용시 member로 사용할 수 있도록 함.
+        private int isAccepted;
+        private AnswerMemberResponse member;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
 
-    //답변 추천수 변경을 위한 responseBody
-    @Getter
-    @Setter
+    /**
+     * response에 답변의 '추천,비추천'과 관련한 데이터를 담는 DTO
+     * * -1 , 0, 1 의 숫자가 좋아요의 상태를 표현할 것
+     */
+    @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class VoteResponse{
-        private int voteCheck; // -1,0,1 로 좋아요 싫어요 상태 구분.
-        private int voteCount; // 추천 수.
+    public static class VoteResponse {
+        private int voteCheck;
+        private int voteCount;
     }
 
-    //답변 응답에 Member의 필요응답 필드만 돌려주기 위함
-    @Getter
-    @Setter
+    /**
+     * 답변 response에 돌려줄 member의 정보를 추리기 위한 DTO
+     */
+    @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class AnswerMemberResponse{
+    public static class AnswerMemberResponse {
         private String name;
         private String email;
         private String image;
     }
 
+    /**
+     * response에 답변의 '채택여부' 를 담는 DTO
+     */
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     public static class AcceptResponse {
         private int isAccepted;
-    }
-
-    public static class AnswerListResponse{
-        private MultiResponseDto answerList;
     }
 }

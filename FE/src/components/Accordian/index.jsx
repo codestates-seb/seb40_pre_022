@@ -1,30 +1,19 @@
 import React, { useState } from "react";
-import { AskRight, RoleContainer, Title, Content, Ol, Ul } from "./style";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { STEP1_1 } from "../../constants/accordian";
 
-const step1_1 = [
-  {
-    title: "1. Summarize the problem",
-    content: [
-      "Include details about your goal",
-      "Describe expected and actual results",
-      "Include any error messages",
-    ],
-  },
-  {
-    title: "2. Describe what you've tried",
-    content: [
-      "IShow what you’ve tried and tell us what you found (on this site or elsewhere) and why it didn’t meet your needs. You can get better answers when you provide research.",
-    ],
-  },
-  {
-    title: "3. show some code",
-    content: [
-      "When appropriate, share the minimum amount of code others need to reproduce your problem (also called a minimum, reproducible example)",
-    ],
-  },
-];
+import {
+  AskRightAside,
+  AskStep,
+  RoleContainer,
+  Title,
+  Content,
+  Ol,
+  Ul,
+} from "./style";
 
-const QuestionAskRight = () => {
+const Accordian = () => {
   const [select, setSelect] = useState(false);
 
   const clicked = (idx) => {
@@ -36,8 +25,8 @@ const QuestionAskRight = () => {
   };
 
   return (
-    <>
-      <AskRight>
+    <AskRightAside>
+      <AskStep>
         <RoleContainer>
           <Title>Step 1: Draft your question</Title>
           <Content>
@@ -46,11 +35,18 @@ const QuestionAskRight = () => {
             <br />
             Avoid asking opinion-based questions. <br />
             <br />
-            {step1_1.map((el, idx) => {
+            {STEP1_1.map((el, idx) => {
               return (
                 <Ol key={idx} onClick={(e) => clicked(idx)}>
                   <li className='li-content'>
-                    <div className='li-title-logo'>{el.title}</div>
+                    <div className='li-title-logo'>
+                      {el.title}
+                      {select === idx ? (
+                        <FontAwesomeIcon icon={faChevronUp} />
+                      ) : (
+                        <FontAwesomeIcon icon={faChevronDown} />
+                      )}
+                    </div>
                     <div>
                       {el.content.map((el, idx2) => {
                         return (
@@ -68,9 +64,9 @@ const QuestionAskRight = () => {
             })}
           </Content>
         </RoleContainer>
-      </AskRight>
-    </>
+      </AskStep>
+    </AskRightAside>
   );
 };
 
-export default QuestionAskRight;
+export default Accordian;

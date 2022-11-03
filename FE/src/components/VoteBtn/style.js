@@ -19,6 +19,14 @@ const VoteContainer = styled.div`
   ${flexColumnCenter}
   .icon {
     margin-bottom: 1em;
+    cursor: pointer;
+  }
+  .check {
+    width: 36px;
+    height: 36px;
+  }
+  .checked {
+    color: hsl(140deg 41% 31%);
   }
 `;
 

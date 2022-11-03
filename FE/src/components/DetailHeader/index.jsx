@@ -10,8 +10,15 @@ import {
 import { Button } from "../Button";
 import { DETAIL_HEADER_INFO } from "../../constants";
 import { Link } from "react-router-dom";
+import { data } from "@src/db/data.json";
+import { calculateTime } from "../../utils/calculateTime";
 
 const DetailHeader = () => {
+  const questionInfo = [
+    calculateTime(data[0].createdAt),
+    calculateTime(data[0].updatedAt),
+    data[0].view,
+  ];
   return (
     <>
       <HeaderContainer>
@@ -23,11 +30,11 @@ const DetailHeader = () => {
         </QuestionHeader>
       </HeaderContainer>
       <InfoWrapper>
-        {DETAIL_HEADER_INFO.map((info) => {
+        {DETAIL_HEADER_INFO.map((info, i) => {
           return (
             <InfoContainer key={info.title}>
               <QuestionInfo>{info.title}</QuestionInfo>
-              <QuestionInfo color='black'>{info.content}</QuestionInfo>
+              <QuestionInfo color='black'>{questionInfo[i]}</QuestionInfo>
             </InfoContainer>
           );
         })}

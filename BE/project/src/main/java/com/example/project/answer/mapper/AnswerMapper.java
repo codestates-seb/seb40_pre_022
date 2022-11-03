@@ -9,20 +9,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")      // unmappedTargetPolicy 는 추후 추가.
 public interface AnswerMapper {
-    default Answer answerPostToAnswer(AnswerDto.Post answerPostDto){
-        Answer answer = new Answer();
-        Member member = new Member();
-        Question question = new Question();
-        member.setMemberId(answerPostDto.getMemberId());
-        question.setQuestionId(answerPostDto.getQuestionId());
-
-        answer.setMember(member);
-        answer.setQuestion(question);
-        answer.setBody(answerPostDto.getBody());
-
-        return answer;
-    }
-
+    Answer answerPostToAnswer(AnswerDto.Post answerPostDto);
 
     Answer answerPatchToAnswer(AnswerDto.Patch answerPatchDto);
 
@@ -72,17 +59,7 @@ public interface AnswerMapper {
     }
 
     //여기서 필요 정보를 가공해서 answer로 넘기면 dto를 서비스단까지 옮길 필요가 없습니다.
-    default Answer answerVoteDtoToAnswer(AnswerDto.AnswerVotePatch answerVotePatch){
-        Answer answer = new Answer();
-        Member member = new Member();
-
-        member.setMemberId(answerVotePatch.getMemberId());
-        answer.setAnswerId(answerVotePatch.getAnswerId());
-
-        answer.setMember(member);
-
-        return answer;
-    }
+    Answer answerVoteDtoToAnswer(AnswerDto.AnswerVotePatch answerVotePatch);
 
     // AcceptResponse로 변환. (default 정의 필요 없을듯)
     AnswerDto.AcceptResponse answerToAcceptResponse(Answer answer);

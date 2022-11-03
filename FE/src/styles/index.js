@@ -33,7 +33,6 @@ export const container = css`
   max-width: 1264px;
   width: 100%;
   display: flex;
-  justify-content: space-between;
   margin: 0 auto;
 `;
 
