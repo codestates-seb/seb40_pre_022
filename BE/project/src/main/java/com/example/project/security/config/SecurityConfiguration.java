@@ -7,11 +7,13 @@ import com.example.project.security.handler.MemberAuthSuccessHandler;
 import com.example.project.security.jwt.JwtTokenizer;
 import com.example.project.security.utils.MemberAuthorityUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -25,55 +27,72 @@ import java.util.Arrays;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-// 보안 구성. - 어떠한 방법론들을 이용할 것인가.
+/**
+ * 보안구성 : security에서 어떤 filter들을 이용할 것인가(어떤 방법론들을 이용할 것인가)
+ */
 @Configuration
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
+    private final MemberAuthorityUtils authorityUtils;
 
-    // 1. DelegatingFilterProxy가 호출하는 Filter. 아래 설정값들을 실행한다.
+    /**
+     * filterchain들의 동작 순서, 설정값들 지정
+     * 동작 원리
+     * 1. request가 DelegatingFilterProxy에 도착, FilterChainProxy 호출
+     * 2. DelegatingFilterProxy가 ApplicationContext의 Bean들을 filter들에 연결(주입)
+     * 3. http 설정들 실행. 각 필터 설명은 주석에
+     * @SneakyThorws -> throws를 쓰지 않아도 알아서 예외를 찾아서 던져줌
+     */
     @Bean
+    @SneakyThrows
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .headers().frameOptions().sameOrigin()// 동일 출처만 렌더링 허용. h2는 tag를 이용하기 때문
                 .and()
+                .httpBasic().disable() // 토큰을 이용할것이기 때문에. basic은 header에 id/pw 다 줌
                 .csrf().disable() // 로컬테스트시에만.
                 .cors(withDefaults()) // corsConfigurationSource bean을 이용함 = cors필터 적용
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .formLogin().disable() // csr 방식이기 때문에.
-                .httpBasic().disable() // 토큰을 이용할것이기 때문에. basic은 header에 id/pw 다 줌
-                .apply(new CustomFilterConfigurer())
+                .apply(new CustomFilterConfigurer())// 커스텀 필터
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers(HttpMethod.POST, "/login").permitAll() // 1. 로그인 : EVERYONE
-                        //member
-                        .antMatchers(HttpMethod.POST, "/members/signup").permitAll() // 2. 회원가입 : EVERYONE
-                        .antMatchers(HttpMethod.GET, "/members").hasAnyRole("USER", "ADMIN") // 2. 회원정보 접근 : USER, ADMIN
-                        .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER") // 2. 회원 삭제 : USER
-                        .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER") // 2. 회원 정보 수정 : USER
-                        //answer
-                        .antMatchers(HttpMethod.POST, "/questions/*/answers").hasRole("USER") // 3. 답변 등록 : USER
-                        .antMatchers(HttpMethod.PATCH, "/questions/*/answers/**").hasRole("USER") // 3. 답변 수정관련 : USER
-                        .antMatchers(HttpMethod.DELETE, "/questions/*/answers/**").hasRole("USER") // 3. 답변 삭제
-                        //question
-                        .antMatchers(HttpMethod.GET, "/questions/edit/*").hasRole("USER") // 4. 질문 수정을 위한 불러오기 : USER, ADMIN
-                        .antMatchers(HttpMethod.GET, "/questions/**").permitAll() // 4. 글 목록, 상세페이지 : EVERYONE
-                        .antMatchers(HttpMethod.POST, "/questions/**").hasAnyRole("USER") // 4. 질문 생성 : USER, ADMIN
-                        .antMatchers(HttpMethod.PATCH, "/questions/**").hasRole("USER") // 4. 질문 수정 : USER
-                        .antMatchers(HttpMethod.DELETE, "/questions/**").hasAnyRole("USER", "ADMIN") // 4. 질문 삭제 : USER, ADMIN
+//                        .antMatchers(HttpMethod.POST, "/members/login").permitAll() // 1. 로그인 : EVERYONE
+//                        //logout
+//                        .antMatchers(HttpMethod.DELETE, "/members/logout").hasAnyRole("USER", "ADMIN")
+//                         //member
+//                        .antMatchers(HttpMethod.POST, "/members/signup").permitAll() // 2. 회원가입 : EVERYONE
+//                        .antMatchers(HttpMethod.GET, "/members").hasAnyRole("USER", "ADMIN") // 2. 회원정보 접근 : USER, ADMIN
+//                        .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER") // 2. 회원 삭제 : USER
+//                        .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER") // 2. 회원 정보 수정 : USER
+//                        //answer
+//                        .antMatchers(HttpMethod.POST, "/questions/*/answers").hasRole("USER") // 3. 답변 등록 : USER
+//                        .antMatchers(HttpMethod.PATCH, "/questions/*/answers/**").hasRole("USER") // 3. 답변 수정관련 : USER
+//                        .antMatchers(HttpMethod.DELETE, "/questions/*/answers/**").hasRole("USER") // 3. 답변 삭제
+//                        //question
+//                        .antMatchers(HttpMethod.GET, "/questions/edit/*").hasRole("USER") // 4. 질문 수정을 위한 불러오기 : USER, ADMIN
+//                        .antMatchers(HttpMethod.GET, "/questions/**").permitAll() // 4. 글 목록, 상세페이지 : EVERYONE
+//                        .antMatchers(HttpMethod.POST, "/questions/**").hasAnyRole("USER") // 4. 질문 생성 : USER, ADMIN
+//                        .antMatchers(HttpMethod.PATCH, "/questions/**").hasRole("USER") // 4. 질문 수정 : USER
+//                        .antMatchers(HttpMethod.DELETE, "/questions/**").hasAnyRole("USER", "ADMIN") // 4. 질문 삭제 : USER, ADMIN
+                        .anyRequest().permitAll()
                 );
 
         return http.build();
     }
 
-    // 2. PasswordEncoder 관련 설정 - PasswordEncoder를 구현한 객체가 DI되어 암호화 진행하게 하기 위함
+    /**
+     * 비밀번호를 암호화 해주는 PasswordEncoder 반환
+     * PasswordEncoder 인터페이스의 구현체를 생성해서 반환한다. (return문)
+     */
     @Bean
     public PasswordEncoder passwordEncoder(){
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    // 3. cors 관련 설정
     @Bean
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();  // Cors설정 객체생성(정책 설정)
@@ -85,19 +104,24 @@ public class SecurityConfiguration {
 
         return source;
     }
+
+    /**
+     * SecurityFilterChain 이외 커스텀 필터들의 설정 : apply('여기에 생성')로 호출함
+     * 역할설명)
+     * 1. AuthenticationManager - UserDetailService를 호출하여 UserDetail을 확인, 인증 여부를 파악한다.
+     * 2. JwtAuthenticationFilter - 인증 성공시 토큰을 발급하는 역할을 한다.
+     */
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
         @Override
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager =
                     builder.getSharedObject(AuthenticationManager.class);
-            MemberAuthorityUtils authorityUtils = new MemberAuthorityUtils(); // **맞는지는 모르겠지만, 추가함 파라미터로 넘기기 위해
 
             JwtAuthenticationFilter jwtAuthenticationFilter =
                     new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
-            jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+            jwtAuthenticationFilter.setFilterProcessesUrl("/members/login");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthSuccessHandler());
-            jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthFailureHandler());
-            builder.addFilter(jwtAuthenticationFilter);
+//            jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthFailureHandler());
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
 
@@ -108,7 +132,7 @@ public class SecurityConfiguration {
 }
 
 /*
-인증 매카니즘
+인증 매커니즘
 
 - 회원정보의 저장 - 회원가입
 1) 유저디테일매니저 (db에 유저 정보 저장)

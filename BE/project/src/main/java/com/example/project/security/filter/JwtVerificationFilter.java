@@ -2,6 +2,8 @@ package com.example.project.security.filter;
 
 import com.example.project.security.jwt.JwtTokenizer;
 import com.example.project.security.utils.MemberAuthorityUtils;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,10 +31,25 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        // request에서 claim을 얻어옴.
-        Map<String, Object> claims = verifyJws(request);
-        // 이를 바탕으로 Authentication 생성
-        setAuthenticationToContext(claims);
+//        // request에서 claim을 얻어옴.
+//        String refreshToken = jwtTokenizer.getRefreshTokenFromReq(request.getCookies());
+//        jwtTokenizer.verifiedRefreshToken(refreshToken);
+//        Map<String, Object> claims = verifyJws(request);
+//        // 이를 바탕으로 Authentication 생성
+//        setAuthenticationToContext(claims);
+
+        try {
+            String refreshToken = jwtTokenizer.getRefreshTokenFromReq(request.getCookies());
+            jwtTokenizer.verifiedRefreshToken(refreshToken);
+            Map<String, Object> claims = verifyJws(request);
+            setAuthenticationToContext(claims);
+        } catch (SignatureException se) {
+            request.setAttribute("exception", se);
+        } catch (ExpiredJwtException ee) {
+            request.setAttribute("exception", ee);
+        } catch (Exception e) {
+            request.setAttribute("exception", e);
+        }
 
         filterChain.doFilter(request, response);
     }
