@@ -82,3 +82,16 @@ MypageSelected.args = {
   label: "Sorting",
   Selected: "Selected",
 };
+
+export const Paging = Template.bind({});
+Paging.args = {
+  primary: "Pagingbutton",
+  label: "Sorting",
+};
+
+export const PagingSelected = Template.bind({});
+PagingSelected.args = {
+  primary: "Pagingbutton",
+  label: "Sorting",
+  Selected: "Selected",
+};

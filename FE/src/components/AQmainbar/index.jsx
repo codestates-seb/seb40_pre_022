@@ -7,6 +7,7 @@ import {
 } from "./style";
 import { Button } from "../Button";
 import Question from "../Question";
+import Paging from "../Pagenation";
 
 const AQMainbar = () => {
   const Questions = ["23,156,830"];
@@ -32,6 +33,7 @@ const AQMainbar = () => {
           </AQsortingButton>
         </AQsorting>
         <Question />
+        <Paging />
       </MainbarContainer>
     </>
   );

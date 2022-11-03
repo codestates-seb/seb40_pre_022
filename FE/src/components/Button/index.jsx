@@ -34,7 +34,12 @@ export const Button = ({
 };
 
 Button.propTypes = {
-  primary: PropTypes.oneOf(["Normalbutton", "Linkbutton", "Mypagebutton"]),
+  primary: PropTypes.oneOf([
+    "Normalbutton",
+    "Linkbutton",
+    "Mypagebutton",
+    "Pagingbutton",
+  ]),
   backgroundColor: PropTypes.string,
   color: PropTypes.string,
   size: PropTypes.oneOf(["small", "medium", "large", "header-size"]),
