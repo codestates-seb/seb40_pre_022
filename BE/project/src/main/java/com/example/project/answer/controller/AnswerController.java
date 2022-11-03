@@ -102,7 +102,7 @@ public class AnswerController {
     }
 
 
-    /** todo ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅅㅁㄴㅇ13616146
+    /** 
      * 기능 : answer 채택
      */
     @PatchMapping("/{questionId}/answers/accept/{answerId}")
