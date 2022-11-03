@@ -102,7 +102,7 @@ public class QuestionController {
 
     public ResponseEntity patchQuestion(HttpServletRequest request,
                                         @PathVariable("question_Id") long questionId,
-                                        @RequestBody QuestionDto.Patch questionPatchDto){
+                                        @Valid @RequestBody QuestionDto.Patch questionPatchDto){
         String memberEmail = extractMemberEmail(request);
         Question result = questionService.updateQuestion(mapper.questionPatchDtoToQuestion(questionPatchDto), memberEmail);
 
@@ -145,7 +145,7 @@ public class QuestionController {
     @PostMapping("/questions/ask/submit")
 
     public ResponseEntity postQuestion(HttpServletRequest request,
-                                       @RequestBody QuestionDto.Post questionPostDto){
+                                       @Valid @RequestBody QuestionDto.Post questionPostDto){
 
         String memberEmail = extractMemberEmail(request);
         Question result = questionService.createQuestion(mapper.questionPostDtoToQuestion(questionPostDto),memberEmail);
