@@ -23,7 +23,7 @@ public class Question extends Auditable implements Comparable<Question>{
     @Id
     @Column(name = "QUESTION_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long questionId;  // private, long -> Long : ver 1.1
+    private Long questionId;  // private, long -> Long : ver 1.1
 
     @Column(name = "QUESTION_TITLE")
     private String title;

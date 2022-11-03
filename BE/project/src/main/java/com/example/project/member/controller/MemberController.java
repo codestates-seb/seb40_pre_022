@@ -24,7 +24,6 @@ public class MemberController {
         this.mapper = mapper;
     }
 
-    //로그인은 컨트롤러로 빼기,
 
     //1. 회원가입 checked v
     @PostMapping("/signup")
@@ -36,9 +35,8 @@ public class MemberController {
     }
 
     //2. 회원 정보 수정
-    @PatchMapping("/{user_id}/{username}")
-    public ResponseEntity patchMember(@PathVariable("user_id") long userId,
-                                      @PathVariable("username") long username,
+    @PatchMapping("/{member_Id}")
+    public ResponseEntity patchMember(@PathVariable("member_Id") long memberId,
                                       @RequestBody MemberDto.Patch memberPatchDto){
 
         Member result = memberService.updateMember(mapper.memberPatchDtoToMember(memberPatchDto));
@@ -46,14 +44,14 @@ public class MemberController {
         return new ResponseEntity(new SingleResponseDto<>(mapper.memberToMemberResponseDto(result)),HttpStatus.OK);
     }
 
-    //3. 회원 정보 - 마이페이지?
-    @GetMapping("/{user_id}/{username}")
-    public ResponseEntity getMember(@PathVariable("user_id") long userId,
-                                    @PathVariable("username") long username){
+    //3. 마이페이지
+    @GetMapping("/{member_Id}")
+    public ResponseEntity getMember(@PathVariable("member_Id") long memberId) {
 
-        Member result = memberService.getMember(userId);
+        Member result = memberService.getMember(memberId);
 
-        return new ResponseEntity(new SingleResponseDto<>(mapper.memberToMemberResponseDto(result)),HttpStatus.OK);
+//        return new ResponseEntity(new SingleResponseDto<>(mapper.memberToMemberResponseDto(result)),HttpStatus.OK);
+        return new ResponseEntity(new SingleResponseDto<>(mapper.memberToMyPageResponse(result)),HttpStatus.OK);
     }
 
     //4. 회원 정보 삭제
