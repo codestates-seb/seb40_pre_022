@@ -86,11 +86,10 @@ const Btn = styled.button`
     display: inline-block;
     line-height: 1;
     white-space: nowrap;
-    margin: 2 2 2 0;
+    margin: 0px 3px 0px 0px;
     &:hover {
       background-color: hsl(205deg 53% 88%);
       color: hsl(206deg 100% 52%);
-      margin: 0px 5px 0px 0px;
     }
   }
 
@@ -109,13 +108,32 @@ const Btn = styled.button`
     &:hover {
       background-color: hsl(210, 10%, 85%);
     }
+
+    &.Selected {
+      color: white;
+      background-color: hsl(27, 90%, 55%);
+      &:hover {
+        background-color: hsl(18, 65%, 55%);
+      }
+    }
   }
 
-  &.Selected {
-    color: white;
-    background-color: hsl(27, 90%, 55%);
-    &:hover {
-      background-color: hsl(18, 65%, 55%);
+  &.Pagingbutton {
+    margin-right: 4px;
+    height: 25px;
+    padding: 0px 8px;
+    border: 1px solid hsl(210, 8%, 85%);
+    border-radius: 3px;
+    font-size: 13px;
+    line-height: 25/13;
+    cursor: pointer;
+    background-color: transparent;
+    color: hsl(210, 8%, 25%);
+
+    &.Selected {
+      border-color: transparent;
+      background-color: hsl(27, 90%, 55%);
+      color: white;
     }
   }
 `;
