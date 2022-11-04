@@ -41,7 +41,7 @@ public class Question extends Auditable implements Comparable<Question>{
 
     //질문을 작성한 사람
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 

@@ -250,6 +250,18 @@ public class QuestionService {
             throw new RuntimeException();
         }
         Question question = findQuestion(questionId);
+        List<QuestionTag> questionTags = question.getQuestionTags();
+        for (int i = 0; i < questionTags.size(); i++) {
+            boolean alreadyExistTag = findTag(questionTags.get(i).getQuestionTagName());
+
+            if(alreadyExistTag == true){
+                Tag tag = findTagByName(questionTags.get(i).getQuestionTagName());
+                tag.setUsageCount(tag.getUsageCount() - 1);
+//                tag.addQuestionTag(questionTags.get(i));
+                questionTags.get(i).setTag(tag);
+            }
+        }
+        questionRepository.save(question);
         questionRepository.delete(question);
     }
 
