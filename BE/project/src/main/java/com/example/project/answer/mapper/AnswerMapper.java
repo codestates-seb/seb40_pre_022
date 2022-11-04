@@ -41,22 +41,25 @@ public interface AnswerMapper {
     }
 
     // 답변 채택 Dto
-    default Answer answerAcceptToAnswer(AnswerDto.AcceptPatch acceptPatch) {
-        Answer answer = new Answer();
-        Member member = new Member();
-        Question question = new Question();
+//    default Answer answerAcceptToAnswer(AnswerDto.AcceptPatch acceptPatch) {
+//        Answer answer = new Answer();
+//        Member member = new Member();
+//        Question question = new Question();
+//
+//        // member, question 에 먼저 Id값을 입력하고,
+//        question.setQuestionId(acceptPatch.getQuestionId());
+//        member.setMemberId(acceptPatch.getMemberId());
+//
+//        // answer에 그 값들을 각각 저장해준다.
+//        answer.setAnswerId(acceptPatch.getAnswerId());
+//        answer.setQuestion(question);
+//        answer.setMember(member);
+//
+//        return answer;
+//    }
 
-        // member, question 에 먼저 Id값을 입력하고,
-        question.setQuestionId(acceptPatch.getQuestionId());
-        member.setMemberId(acceptPatch.getMemberId());
+    Answer answerAcceptToAnswer(AnswerDto.AcceptPatch acceptPatch);
 
-        // answer에 그 값들을 각각 저장해준다.
-        answer.setAnswerId(acceptPatch.getAnswerId());
-        answer.setQuestion(question);
-        answer.setMember(member);
-
-        return answer;
-    }
 
     //여기서 필요 정보를 가공해서 answer로 넘기면 dto를 서비스단까지 옮길 필요가 없습니다.
     Answer answerVoteDtoToAnswer(AnswerDto.AnswerVotePatch answerVotePatch);

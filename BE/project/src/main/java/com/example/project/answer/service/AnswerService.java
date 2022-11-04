@@ -115,27 +115,32 @@ public class AnswerService {
      * 필수) answer의 채택 로직
      * 1. 질문과 답변이 DB에 존재하는지 확인 후 가져온다.
      * 2. 로그인 유저와 질문 작성자의 일치 여부를 확인한다.
+     *    -> 서로 다른 사용자일 경우, 에러 발생.
      * 3. 상황에 따라 채택 여부를 결정한다
-     * -> 이미 채택되어 있는 경우 : 채택 취소
-     * -> 첫 채택인 경우 : 채택
+     *    -> 이미 채택되어 있는 경우 : 채택 취소
+     *    -> 첫 채택인 경우 : 채택
      */
-    public Answer acceptAnswer(Answer answer) {
+    public Answer acceptAnswer(Answer answer, String memberEmail, long questionId) {
 
+        // db에서 answer 가져오기.
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
-        Question findQuestion = questionService.findVerifiedQuestion(answer.getQuestion().getQuestionId());
 
-        if (findQuestion.getMember().getMemberId() != answer.getMember().getMemberId())
+        // db에서 question 가져오기.
+        Question findQuestion = questionService.findVerifiedQuestion(questionId);
+
+
+        // 로그인 유저 (memberEmail) , 작성자(findQuestion.getMember().getEmail()) 이 같은지 확인.
+        if (!memberEmail.equals(findQuestion.getMember().getEmail()))
             throw new BusinessLogicException(ExceptionCode.CANNOT_CHANGE_ANSWER);
 
         if(findAnswer.getIsAccepted()==1){
             findAnswer.setIsAccepted(0);
-            return answerRepository.save(findAnswer);
         }
         else{
             acceptAnswerCheck(findQuestion);    // 해당 질문의 Answer 리스트들을 확인하여 채택된 답변 있는지 확인.
             findAnswer.setIsAccepted(1);
-            return answerRepository.save(findAnswer);
         }
+        return answerRepository.save(findAnswer);
     }
 
     /**
