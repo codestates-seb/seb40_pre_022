@@ -1,5 +1,5 @@
-# 로컬 정보는 application.yml,
-# 서버 정보는 application-server.yml.
+# 로컬 정보는 application-local.yml,
+# 서버 정보는 application.yml.
 
 spring:
   h2:
