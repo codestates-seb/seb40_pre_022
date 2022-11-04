@@ -142,12 +142,12 @@ public class JwtTokenizer {
             if(cookies[i].getName().equals("RefreshToken"))
                 return cookies[i].getValue();
         }
-        throw new RuntimeException(); //cookie not found
+        throw new BusinessLogicException(ExceptionCode.COOKIE_NOT_FOUND); //cookie not found
     }
 
     public void verifiedRefreshToken(String refreshToken){
         Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByTokenValue(refreshToken);
         if(!optionalRefreshToken.isPresent())
-            throw new RuntimeException(); // token not found
+            throw new BusinessLogicException(ExceptionCode.TOKEN_NOT_FOUND);
     }
 }
