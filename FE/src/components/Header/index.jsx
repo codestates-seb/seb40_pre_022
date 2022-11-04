@@ -110,7 +110,7 @@ const Header = () => {
         </IconUl> :
         <ButtonWrap>
           <li><FontAwesomeIcon className='icon' icon={faMagnifyingGlass} onClick={()=>handleToggle('search')} /></li>
-          <li><Link to='/login'>Log in</Link></li>
+          <li><Link to='/members/login'>Log in</Link></li>
           <li><Link to='/join'>Sign up</Link></li>
         </ButtonWrap>
         }

@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/members")
 @Validated
@@ -26,7 +28,7 @@ public class MemberController {
      * 기능 : 회원가입
      */
     @PostMapping("/signup")
-    public ResponseEntity postMember(@RequestBody MemberDto.Post memberPostDto){
+    public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post memberPostDto){
 
         Member result = memberService.createMember(mapper.memberPostDtoToMember(memberPostDto));
 
@@ -38,7 +40,7 @@ public class MemberController {
      */
     @PatchMapping("/{member_Id}")
     public ResponseEntity patchMember(@PathVariable("member_Id") long memberId,
-                                      @RequestBody MemberDto.Patch memberPatchDto){
+                                      @Valid @RequestBody MemberDto.Patch memberPatchDto){
 
         Member result = memberService.updateMember(mapper.memberPatchDtoToMember(memberPatchDto));
 

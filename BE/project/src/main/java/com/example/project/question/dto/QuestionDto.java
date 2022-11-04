@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.List;
 // 수정 - private 지정자 : ver 1.1
@@ -20,10 +21,12 @@ public class QuestionDto {
     @NoArgsConstructor
     public static class Post {
 
-        @NotBlank
+        @NotBlank(message = "질문의 제목은 공백일 수 없습니다.")
         private String title;
-        @NotBlank
+
+        @NotBlank(message = "질문의 내용은 공백일 수 없습니다.")
         private String body;
+
         private List<QuestionTagDto> questionTags;
 
     }
@@ -37,11 +40,15 @@ public class QuestionDto {
     @NoArgsConstructor
     public static class Patch {
 
+        @Positive
         private long questionId;
-        @NotBlank
+
+        @NotBlank(message = "질문의 제목은 공백일 수 없습니다.")
         private String title;
-        @NotBlank
+
+        @NotBlank(message = "질문의 내용은 공백일 수 없습니다.")
         private String body;
+
         private List<QuestionTagDto> questionTags;
 
     }
@@ -109,6 +116,8 @@ public class QuestionDto {
     @NoArgsConstructor
     public static class QuestionVotePatch {
         private long memberId; //fixme : 없어도 됨.
+
+        @Positive
         private long questionId;
     }
 
