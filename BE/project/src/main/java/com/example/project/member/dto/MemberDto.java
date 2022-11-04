@@ -111,4 +111,30 @@ public class MemberDto {
         private long questionId;
         private String title;
     }
+
+
+    /**
+     * 사용자 패스워드 초기화를 위한 클라이언트 request DTO
+     */
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class ResetPasswordDto{
+        @Email
+        @NotBlank(message = "이메일은 공백이 아니여야 합니다.")
+        private String email;
+    }
+
+    /**
+     * 사용자 패스워드 초기화 관련 내용을 담은 mail DTO
+     */
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class ResetPasswordMail{
+        private String address;
+        private String title;
+        private String body;
+    }
 }

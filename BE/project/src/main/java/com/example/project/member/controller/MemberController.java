@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 
 @RestController
 @RequestMapping("/members")
@@ -66,5 +67,24 @@ public class MemberController {
                                     @PathVariable("username") long username){
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     *  기능 : 비밀번호 찾기
+     */
+    @PostMapping("/passwordReset")
+    public ResponseEntity sendPwMail(@Valid @RequestBody MemberDto.ResetPasswordDto dto){
+
+        // 1. mail 보내기 (SMTP o)
+        //
+        // memberService.resetPassword(dto.getEmail());
+
+        // 2. mail 보내지 않고 response 하기 (SMTP x)
+        //
+        MemberDto.ResetPasswordMail mail = memberService.resetPassword(dto.getEmail());
+
+        return new ResponseEntity(
+                new SingleResponseDto<>(mail), HttpStatus.OK
+        );
     }
 }

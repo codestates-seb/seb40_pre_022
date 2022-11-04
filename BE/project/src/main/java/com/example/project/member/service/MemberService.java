@@ -1,7 +1,10 @@
 package com.example.project.member.service;
 
+
+import com.example.project.member.dto.MemberDto;
 import com.example.project.exception.BusinessLogicException;
 import com.example.project.exception.ExceptionCode;
+
 import com.example.project.member.entity.Member;
 import com.example.project.member.repository.MemberRepository;
 import com.example.project.security.utils.MemberAuthorityUtils;
@@ -16,12 +19,13 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MemberService {
+public class MemberService{
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final MemberAuthorityUtils authorityUtils;
 
+    private final SendMailService mailService;
 
 
     /**
@@ -130,5 +134,60 @@ public class MemberService {
         Optional<Member> member = memberRepository.findByEmail(email);
         if(!member.isPresent())
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+    }
+
+    /**
+     * 패스워드 리셋 후 메일보내기
+     * 1. DB에서 email로 member가 존재하는지 확인 후 가져옴.
+     * 2. 임시 비밀번호 발급
+     * 3. member의 password를 임시비밀번호로 저장.
+     *   // 4. 임시비밀번호 메일 발송 (비밀번호 변경 권유) , 보안이슈로 사용 X
+     * 4. 임시 비밀번호 메일 내용을 controller로 전달.
+     */
+     public MemberDto.ResetPasswordMail resetPassword(String email) {
+         // 1
+         Member findMember = findExistMemberByEmail(email);
+
+         // 2
+         String pw = tempPassword();
+
+         // 3
+         String encryptedPassword = passwordEncoder.encode(pw);
+         findMember.setPassword(encryptedPassword);
+         memberRepository.save(findMember);
+
+         // 4
+         MemberDto.ResetPasswordMail mail = new MemberDto.ResetPasswordMail();
+         mail.setAddress(findMember.getEmail());
+         mail.setTitle(findMember.getName() + "님의 Stack Over Flow 임시 비밀번호 발급");
+         mail.setBody("안녕하세요. Stack Over Flow 임시 비밀번호 발급 안내 메일입니다." +
+                 findMember.getName() + "님의 임시 비밀번호는 " + pw + "입니다. 접속 후 비밀번호 변경을 권장합니다.");
+
+//         mailService.mailSend(mail);
+
+         return mail;
+    }
+
+
+
+
+    /**
+     * 임시 비밀번호 생성기
+     */
+    private String tempPassword(){
+        char[] charSet = new char[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+                '!', '@', '#', '$', '%', '^', '&'};
+
+        String str = "";
+
+        int index = 0;
+        for (int i = 0; i < 10; i++) {
+            index = (int) (charSet.length * Math.random());
+            str += charSet[index];
+        }
+        return str;
+
     }
 }
