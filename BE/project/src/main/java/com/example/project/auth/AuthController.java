@@ -2,10 +2,7 @@ package com.example.project.auth;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +27,27 @@ public class AuthController {
         mbCookie.setMaxAge(0);
         mbCookie.setPath("/");
 
+        response.addCookie(cookie);
+        response.addCookie(mbCookie);
+    }
+
+    @GetMapping("/members/refresh")
+    public void refreshTokenReissue(@CookieValue(name = "RefreshToken") String refreshToken,
+                                    @CookieValue(name = "MemberId") String memberId,
+                                    HttpServletResponse response){
+
+        String reIssueAccessToken = authService.reIssueAccessToken(refreshToken);
+        String reIssueRefreshToken = authService.reIssueRefreshToken(refreshToken);
+
+        Cookie cookie = new Cookie("RefreshToken" , reIssueRefreshToken);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+
+        Cookie mbCookie = new Cookie("MemberId", memberId);
+        mbCookie.setPath("/");
+        mbCookie.setHttpOnly(true);
+
+        response.setHeader("Authorization", "Bearer " + reIssueAccessToken);
         response.addCookie(cookie);
         response.addCookie(mbCookie);
     }

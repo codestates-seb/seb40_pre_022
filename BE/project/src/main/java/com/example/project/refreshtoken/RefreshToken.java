@@ -26,12 +26,12 @@ public class RefreshToken {
     @Column(name = "TOKEN_EMAIL")
     private String tokenEmail;
 
-    @Column(name = "TOKEN_ID")
-    private long tokenId;
+    @Column(name = "MEMBER_ID")
+    private long memberId;
 
     public RefreshToken(String tokenValue, String tokenEmail, long tokenId) {
         this.tokenValue = tokenValue;
         this.tokenEmail = tokenEmail;
-        this.tokenId = tokenId;
+        this.memberId = tokenId;
     }
 }
