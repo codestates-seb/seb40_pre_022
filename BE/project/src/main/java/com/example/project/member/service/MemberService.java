@@ -1,5 +1,7 @@
 package com.example.project.member.service;
 
+import com.example.project.exception.BusinessLogicException;
+import com.example.project.exception.ExceptionCode;
 import com.example.project.member.entity.Member;
 import com.example.project.member.repository.MemberRepository;
 import com.example.project.security.utils.MemberAuthorityUtils;
@@ -96,7 +98,7 @@ public class MemberService {
     public void verifyExistMember(String email){
         Optional<Member> member = memberRepository.findByEmail(email);
         if(member.isPresent())
-            throw new RuntimeException(); //fixme : exceptioncode
+            throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
     }
 
     /**
@@ -105,7 +107,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public Member findExistMember(long memberId){
         Optional<Member> member = memberRepository.findById(memberId);
-        Member findMember = member.orElseThrow(()->new RuntimeException()); //fixme : exceptioncode
+        Member findMember = member.orElseThrow(()->new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         return findMember;
     }
 
@@ -116,7 +118,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public Member findExistMemberByEmail(String email){
         Optional<Member> member = memberRepository.findByEmail(email);
-        Member findMember = member.orElseThrow(()->new RuntimeException()); //fixme : exceptioncode
+        Member findMember = member.orElseThrow(()->new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         return findMember;
     }
 
@@ -127,6 +129,6 @@ public class MemberService {
     public void DoesMemberExist(String email){
         Optional<Member> member = memberRepository.findByEmail(email);
         if(!member.isPresent())
-            throw new RuntimeException(); //fixme : exceptioncode
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
     }
 }
