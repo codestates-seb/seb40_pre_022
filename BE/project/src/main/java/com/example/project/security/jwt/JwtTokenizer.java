@@ -128,12 +128,13 @@ public class JwtTokenizer {
 
         return memberRepository.findByEmail(email).orElseThrow(()->new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
-    public void saveRefreshToken(String refreshToken, String email, long userId){
 
-        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findById(userId);
+    public void saveRefreshToken(String refreshToken, String email, long memberId){
+
+        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findById(memberId);
         optionalRefreshToken.ifPresent(refreshTokenRepository::delete);
 
-        refreshTokenRepository.save(new RefreshToken(refreshToken, email, userId));
+        refreshTokenRepository.save(new RefreshToken(refreshToken, email, memberId));
     }
 
     public String getRefreshTokenFromReq(Cookie[] cookies){

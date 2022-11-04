@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * 로그인 시 인증정보를 생성하고 확인 후 토큰을 발급해줄 필터
  * 1. AuthenticationManager - UserDetailService를 호출하여 UserDetail을 확인, 인증 여부를 파악한다.
- * 2. JwtAuthenticationFilter - 인증 성공시 토큰을 발급하는 역할을 한다.
+ * 2. JwtTokenizer - 인증 성공시 토큰을 발급하는 역할을 한다.
  */
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
