@@ -17,7 +17,7 @@ public class MemberDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Post{
+    public static class Post {
 
         @NotBlank
         private String name;
@@ -34,7 +34,7 @@ public class MemberDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Patch{
+    public static class Patch {
         private long memberId;
         @NotBlank
         private String name;
@@ -42,13 +42,14 @@ public class MemberDto {
         private String password;
         private String image;
     }
+
     /**
      * response에 멤버정보를 담아주기 위한 DTO
      */
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Response{
+    public static class Response {
         private long memberId;
         private String name;
         private String email;
@@ -63,7 +64,7 @@ public class MemberDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class MyPageResponse{
+    public static class MyPageResponse {
         private QuestionResponse questions;
         private AnswerResponse answers;
     }
@@ -75,8 +76,8 @@ public class MemberDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class AnswerResponse{
-        private List<Long> answerId;
+    public static class AnswerResponse {
+        private List<Long> answerIds;
         private int answersCount;
     }
 
@@ -87,10 +88,17 @@ public class MemberDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class QuestionResponse{
-        private List<Long> questionId;
+    public static class QuestionResponse {
+        private List<QuestionForMyPage> questionList;
         private int questionsCount;
+    }
 
-
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class QuestionForMyPage {
+        private long questionId;
+        private String title;
     }
 }
