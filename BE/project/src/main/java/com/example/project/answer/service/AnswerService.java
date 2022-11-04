@@ -110,7 +110,7 @@ public class AnswerService {
         return answerRepository.save(findAnswer);
     }
 
-    // fixme - 로그인 정보의 memberEmail 추출 후 이를 적용하여 로직 수정해야함
+    //
     /**
      * 필수) answer의 채택 로직
      * 1. 질문과 답변이 DB에 존재하는지 확인 후 가져온다.

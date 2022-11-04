@@ -115,7 +115,7 @@ public class QuestionDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class QuestionVotePatch {
-        private long memberId; //fixme : 없어도 됨.
+        private long memberId;
 
         @Positive
         private long questionId;

@@ -20,6 +20,15 @@ spring:
     servlet:
       path: /
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SMTP_USER}    # 환경변수에 gmail 아이디 / 비밀번호 추가.
+    password: ${SMTP_PW}
+    properties:
+      mail.smtp.auth: ture
+      mail.smtp.starttls.enable: true
+
 mail:
   address:
     admin: admin@gmail.com
