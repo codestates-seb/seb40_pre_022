@@ -22,12 +22,12 @@ public class QuestionTag {
     private String questionTagName;
 
     //사용된 태그가 속한 질문
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "QUESTION_ID")
     private Question question;
 
     //사용된 태그가 속한 태그분류
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "TAG_ID")
     private Tag tag;
 
