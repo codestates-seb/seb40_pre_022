@@ -1,5 +1,7 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 import { calculateTime } from "../../utils/calculateTime";
 import DetailPost from "../DetailPost";
 import {
@@ -11,14 +13,21 @@ import {
   SortText,
 } from "./style";
 import { DetailQData } from "../../store/DetailQData";
+import { getDetailQPost } from "../../api/question/detailQApi";
 import { sortDate } from "../../utils/sortDate";
+import { useState } from "react";
+import { useEffect } from "react";
 
-const DetailAnswer = () => {
-  const answer = useRecoilValue(DetailQData).answers.data;
-  const date = answer.map((el) => el.createdAt);
-  const sortData = () => {
-    console.log(sortDate(date));
-  };
+const DetailAnswer = ({ answers }) => {
+  // const date = answer.map((el) => el.createdAt);
+  // const sortData = () => {
+  //   console.log(sortDate(date));
+  // };
+  const [answer, setAnswer] = useState("");
+  useEffect(() => {
+    if (answers.answers) setAnswer(answers.answers);
+  });
+
   return (
     <>
       {answer.length ? (
@@ -29,25 +38,14 @@ const DetailAnswer = () => {
             <SortSelect>
               <SortOption>Highest score (default)</SortOption>
               <SortOption>Date modified (newest first)</SortOption>
-              <SortOption selected={sortData}>
-                Date created (oldest first)
-              </SortOption>
+              <SortOption>Date created (oldest first)</SortOption>
             </SortSelect>
           </SortContainer>
         </AnswerHeader>
       ) : null}
       {answer.length
         ? answer.map((answer) => (
-            <DetailPost
-              answer={answer.body}
-              vote={answer.vote}
-              key={answer.author.displayName}
-              answerer={answer.author.displayName}
-              createdAt={calculateTime(answer.createdAt)}
-              updatedAt={calculateTime(answer.updatedAt)}
-              profile={answer.author.image}
-              bestAnswer={answer.isChecked}
-            />
+            <DetailPost key={answer.answerId} answers={answer} />
           ))
         : null}
     </>

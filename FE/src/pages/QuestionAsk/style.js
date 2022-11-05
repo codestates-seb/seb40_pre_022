@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const AskContainer = styled.div`
   width: 100vw;
-  height: 100vh;
+  margin-top: 5px;
   background-color: #f8f9f9;
 `;
 

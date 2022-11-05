@@ -1,4 +1,4 @@
-import { React, useEffect } from "react";
+import { React, useState } from "react";
 import {
   PostLayout,
   LayoutLeft,
@@ -17,44 +17,39 @@ import DetailUserProfile from "../DetailUserProfile";
 import { Button } from "../Button";
 import { TagWrapper } from "../CreateAnswer/style";
 import { Link, useParams } from "react-router-dom";
-import { data } from "../../db/data.json";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { DetailQData } from "../../store/DetailQData";
-import AQRightsidebar from "../AQsidebar";
+import { useEffect } from "react";
+import DetailAnswer from "../DetailAnswer";
 
-const DetailPost = ({
-  answer,
-  answerer,
-  createdAt,
-  updatedAt,
-  profile,
-  bestAnswer,
-  vote,
-}) => {
-  const [queData, setQueData] = useRecoilState(DetailQData);
-  const params = Number(useParams().id);
-  setQueData(data.filter((el) => el.questionId === params)[0]);
-  const question = useRecoilValue(DetailQData);
+const DetailPost = ({ questions, answers }) => {
+  const [question, setQuestion] = useState([]);
+  const [answer, setAnswer] = useState([]);
+  useEffect(() => {
+    if (questions) setQuestion(questions);
+    if (answers) setAnswer(answers);
+  });
 
   return (
     <PostLayout className={answer ? "answer" : null}>
       <LayoutLeft>
-        <VoteBtn answer={answer} bestAnswer={bestAnswer} vote={vote} />
+        <VoteBtn
+          answer={answer.body}
+          bestAnswer={answer.isAccepted}
+          vote={answer.voteCount}
+        />
       </LayoutLeft>
       <LayoutRight>
         <PostBody>
-          <ContentViewer markdown={answer || question.body} />
+          <ContentViewer markdown={answer.body || question.body} />
         </PostBody>
         <TagContainer>
           {answer
             ? null
             : question.questionTags.map((el) => (
-                <TagWrapper key={el.tagName}>
-                  <Button label={el.tagName} Tagged='Tagged' />
+                <TagWrapper key={el.questionTagName}>
+                  <Button label={el.questionTagName} Tagged='Tagged' />
                 </TagWrapper>
               ))}
         </TagContainer>
-
         <InfoContainer>
           <PostMenuContainer>
             <PostMenu>Share</PostMenu>
@@ -63,16 +58,11 @@ const DetailPost = ({
             </Link>
             <PostMenu>Follow</PostMenu>
             <PostMenu>Delete</PostMenu>
-            {/* 작성자일 때만 보여야 함 */}
           </PostMenuContainer>
           <UserInfo className='edit'>
-            <UserInfoText>{updatedAt}</UserInfoText>
+            <UserInfoText>{answer.updatedAt}</UserInfoText>
           </UserInfo>
-          <DetailUserProfile
-            answerer={answerer}
-            createdAt={createdAt}
-            profile={profile}
-          />
+          <DetailUserProfile answers={answer} questions={question} />
         </InfoContainer>
       </LayoutRight>
     </PostLayout>
