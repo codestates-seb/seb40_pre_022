@@ -16,7 +16,7 @@ const Question = () => {
   return (
     <>
       {data.map((data) => {
-        let id = `/question/detail/${data.questionId}`;
+        let id = `/questions/${data.questionId}`;
 
         return (
           <QuestionContainer>
@@ -35,15 +35,15 @@ const Question = () => {
                   {data.questionTags.map((list) => {
                     return (
                       <Button
-                        primary='Linkbutton'
+                        primary="Linkbutton"
                         label={list.tagName}
-                        Tagged='Tagged'
+                        Tagged="Tagged"
                       />
                     );
                   })}
                 </Questiontags>
                 <Questionuser>
-                  <img src={data.user.image} className='img' />
+                  <img src={data.user.image} className="img" />
                   {data.user.displayName} asked{" "}
                 </Questionuser>
               </Questionfooter>
