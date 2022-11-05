@@ -15,7 +15,7 @@ const VoteBtn = ({ question }) => {
   const voteUp = useMutation(QvoteUp, {
     retry: 0,
     onSuccess: (data) => {
-      console.log(data);
+      console.log('QvoteUp',data);
     },
     onError: (error) => {
       console.log(error.message);
@@ -24,7 +24,7 @@ const VoteBtn = ({ question }) => {
   const voteDown = useMutation(QvoteDown, {
     retry: 0,
     onSuccess: (data) => {
-      console.log(data);
+      console.log('QvoteDown', data);
     },
     onError: (error) => {
       console.log(error.message);

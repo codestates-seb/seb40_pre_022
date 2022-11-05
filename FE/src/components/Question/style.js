@@ -22,7 +22,7 @@ const Questiontitle = styled.h3`
   margin-left: 0;
   margin-right: 0;
   font-weight: bold;
-  color: hsl(206, 100%, 40%); ;
+  color: hsl(206, 100%, 40%);
 `;
 
 const Questionbody = styled.div`
