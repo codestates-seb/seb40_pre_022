@@ -128,12 +128,13 @@ public class JwtTokenizer {
 
         return memberRepository.findByEmail(email).orElseThrow(()->new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
-    public void saveRefreshToken(String refreshToken, String email, long userId){
 
-        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findById(userId);
+    public void saveRefreshToken(String refreshToken, String email, long memberId){
+
+        Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findById(memberId);
         optionalRefreshToken.ifPresent(refreshTokenRepository::delete);
 
-        refreshTokenRepository.save(new RefreshToken(refreshToken, email, userId));
+        refreshTokenRepository.save(new RefreshToken(refreshToken, email, memberId));
     }
 
     public String getRefreshTokenFromReq(Cookie[] cookies){
@@ -141,12 +142,12 @@ public class JwtTokenizer {
             if(cookies[i].getName().equals("RefreshToken"))
                 return cookies[i].getValue();
         }
-        throw new RuntimeException(); //cookie not found
+        throw new BusinessLogicException(ExceptionCode.COOKIE_NOT_FOUND); //cookie not found
     }
 
     public void verifiedRefreshToken(String refreshToken){
         Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByTokenValue(refreshToken);
         if(!optionalRefreshToken.isPresent())
-            throw new RuntimeException(); // token not found
+            throw new BusinessLogicException(ExceptionCode.TOKEN_NOT_FOUND);
     }
 }

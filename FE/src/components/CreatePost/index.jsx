@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useCallback } from "react";
 import ContentEditor from "../ContentEditor";
 import { TitleInput, AskInputText, QuestionContainer } from "./style";
+import { useRecoilState } from "recoil";
+import { QuestionTitle } from "../../store/QuestionPostTitle";
 
 function CreatePost() {
-  const [title, setTitle] = useState("");
+  // const titleRegist = () => {
+  //   handleTitleChange();
+  // };
+  const [title, setTitle] = useRecoilState(QuestionTitle);
 
-  const handleTitleChange = useCallback(
-    (e) => {
-      setTitle(e.target.value);
-    },
-    [title],
-  );
+  const handleTitleChange = useCallback((e) => {
+    setTitle(e.target.value);
+  });
 
   return (
     <>
@@ -21,8 +23,7 @@ function CreatePost() {
         </AskInputText>
         <TitleInput
           label='Title'
-          id='title'
-          value={title.value}
+          value={title}
           onChange={(e) => handleTitleChange(e)}
           placeholder='e.g. Is there an R function for finding the index of an element in a vector?'
         />

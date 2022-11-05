@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useRecoilState, useResetRecoilState } from "recoil";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
-import { Link } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
+
+import { userLogin } from "../../api/members";
 
 import { EMAIL_REGEX, PW_REGEX } from "../../constants/regex";
-import { loginState, userState } from "../../store/user";
 
 import Layout from "@components/Layout";
 import TextInput from "@components/TextInput";
@@ -13,53 +13,40 @@ import Sns from "@components/Sns";
 import { Button } from "@components/Button";
 
 import { Wrapper, FormWrap, Info } from "./style";
-import { userLogin } from "../../api/member/memberApi";
-
-// const { isLoading, isError, data, error } = useQuery("todos", fetchTodoList, {
-//   refetchOnWindowFocus: false, // react-query는 사용자가 사용하는 윈도우가 다른 곳을 갔다가 다시 화면으로 돌아오면 이 함수를 재실행합니다. 그 재실행 여부 옵션 입니다.
-//   retry: 0, // 실패시 재호출 몇번 할지
-//   onSuccess: data => {
-//     // 성공시 호출
-//     console.log(data);
-//   },
-//   onError: e => {
-//     // 실패시 호출 (401, 404 같은 error가 아니라 정말 api 호출이 실패한 경우만 호출됩니다.)
-//     // 강제로 에러 발생시키려면 api단에서 throw Error 날립니다. (참조: https://react-query.tanstack.com/guides/query-functions#usage-with-fetch-and-other-clients-that-do-not-throw-by-default)
-//     console.log(e.message);
-//   }
-// });
 
 const Login = () => {
+  const auth = localStorage.getItem("isLogin");
+  if (auth) return <Navigate to='/' />;
+
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
 
   const [emailError, setEmailError] = useState(false);
   const [pwError, setPwError] = useState(false);
 
-  const [isLogin, setIsLogin] = useRecoilState(loginState);
-  const [_, setUserInfo] = useRecoilState(userState);
-  const resetLogin = useResetRecoilState(loginState);
+  const [isLogin, setIsLogin] = useState(false);
 
   const navigate = useNavigate();
 
-  const { mutate, isLoading, isError, data, error } = useMutation(userLogin, {
-    retry: 0,
-    onSuccess: (data) => {
-      // Incalidates cache and refetch
-      // queryClient.invalidateQueries("todos");
-      console.log(data);
+  const { mutate, data } = useMutation(userLogin, {
+    onSuccess: () => {
+      setIsLogin(true);
+    },
+    onError: (error) => {
+      alert(error.message);
     },
   });
 
-  console.log(isLoading, isError, data, error);
-
   useEffect(() => {
     if (isLogin) {
+      localStorage.setItem("isLogin", true);
+      localStorage.setItem("token", JSON.stringify(data.headers.authorization));
+      localStorage.setItem(
+        "refreshToken",
+        JSON.stringify(data.headers.refreshtoken),
+      );
       navigate("/");
     }
-    return () => {
-      resetLogin;
-    };
   }, [isLogin]);
 
   const handleChangeEmail = useCallback(
@@ -84,22 +71,11 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // if (!EMAIL_REGEX.test(email) || !PW_REGEX.test(pw)) {
-    //   if (!EMAIL_REGEX.test(email)) setEmailError(true);
-    //   if (!PW_REGEX.test(pw)) setPwError(true);
-    //   return;
-    // }
-
-    // if(user.email === email && user.pw === pw){
-    //     alert('로그인 성공');
-    //     setIsLogin(true);
-    //     setUserInfo({ email:user.email })
-
-    //     localStorage.setItem("isLogin", true);
-    //     localStorage.setItem('user', JSON.stringify({ email:user.email }))
-    // } else {
-    //   alert('아이디나 비밀번호가 다릅니다!');
-    // }
+    if (!EMAIL_REGEX.test(email) || !PW_REGEX.test(pw)) {
+      if (!EMAIL_REGEX.test(email)) setEmailError(true);
+      if (!PW_REGEX.test(pw)) setPwError(true);
+      return;
+    }
     mutate({
       username: email,
       password: pw,

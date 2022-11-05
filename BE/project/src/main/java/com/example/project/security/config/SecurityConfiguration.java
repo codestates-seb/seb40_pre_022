@@ -66,7 +66,8 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.DELETE, "/members/logout").hasAnyRole("USER", "ADMIN")
                         //member
                         .antMatchers(HttpMethod.POST, "/members/signup").permitAll() // 2. 회원가입 : EVERYONE
-                        .antMatchers(HttpMethod.GET, "/members").hasAnyRole("USER", "ADMIN") // 2. 회원정보 접근 : USER, ADMIN
+                        .antMatchers(HttpMethod.GET, "/members/list").permitAll()
+                        .antMatchers(HttpMethod.GET, "/members/myPage/**").permitAll() // 2. 회원정보 접근 : USER, ADMIN
                         .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER") // 2. 회원 삭제 : USER
                         .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER") // 2. 회원 정보 수정 : USER
                         //answer
@@ -99,6 +100,11 @@ public class SecurityConfiguration {
         CorsConfiguration configuration = new CorsConfiguration();  // Cors설정 객체생성(정책 설정)
         configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PATCH","DELETE"));
+        configuration.setExposedHeaders(Arrays.asList("*"));        // Cors 에러를 위한 임시방편, 보안 취약 가능성
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+
+        // configuration.setAllowCredentials(false);
+
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration); // 해당 인터페이스 구현 객체에 넣어준다.

@@ -2,6 +2,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { GlobalStyles, theme } from "./styles";
 import { RecoilRoot } from "recoil";
+import {
+  QueryClient,
+  QueryClientProvider,
+  QueryCache,
+} from "@tanstack/react-query";
+
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Join from "./pages/Join";
@@ -13,35 +19,35 @@ import QuestionEdit from "./pages/QuestionEdit";
 import Error from "./pages/Error";
 import Logout from "./pages/Logout";
 import Recovery from "./pages/Recovery";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
+  const auth = localStorage.getItem("isLogin");
+
   return (
-    <>
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
-        <RecoilRoot>
-          <BrowserRouter>
-            <Routes>
-              <Route path='/' element={<Home />}></Route>
-              <Route path='members/login' element={<Login />}></Route>
-              <Route path='members/logout' element={<Logout />}></Route>
-              <Route path='/join' element={<Join />}></Route>
-              <Route path='/recovery' element={<Recovery />}></Route>
-              <Route path='/questions' element={<AllQuestion />}></Route>
-              <Route path='/questions/ask' element={<QuestionAsk />}></Route>
-              <Route
-                path='/questions/edit/:id'
-                element={<QuestionEdit />}></Route>
-              <Route path='/mypage' element={<MyPage />}></Route>
-              <Route
-                path='/questions/:id'
-                element={<QuestionsDetail />}></Route>
-              <Route path='/*' element={<Error />}></Route>
-            </Routes>
-          </BrowserRouter>
-        </RecoilRoot>
-      </ThemeProvider>
-    </>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <RecoilRoot>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='members/login' element={<Login />} />
+            <Route path='members/logout' element={<Logout />} />
+            <Route path='/join' element={<Join />} />
+            <Route path='/recovery' element={<Recovery />} />
+            <Route path='/question' element={<AllQuestion />} />
+            <Route path='/question/ask' element={<QuestionAsk />} />
+            <Route path='/question/edit' element={<QuestionEdit />} />
+            <Route
+              path='/mypage'
+              element={<PrivateRoute component={<MyPage />} auth={auth} />}
+            />
+            <Route path='/question/detail/:id' element={<QuestionsDetail />} />
+            <Route path='/*' element={<Error />} />
+          </Routes>
+        </BrowserRouter>
+      </RecoilRoot>
+    </ThemeProvider>
   );
 }
 

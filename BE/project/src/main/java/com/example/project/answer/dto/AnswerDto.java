@@ -60,10 +60,7 @@ public class AnswerDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class AcceptPatch {
-        @Positive
-        private long memberId;
-        @Positive
-        private long questionId;
+
         @Positive
         private long answerId;
     }
