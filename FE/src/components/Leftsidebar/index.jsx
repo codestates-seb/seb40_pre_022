@@ -2,7 +2,7 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
-import { Link, useLocation } from "react-router-dom";
+import { NavLink, Link, useLocation } from "react-router-dom";
 import { useMutation } from '@tanstack/react-query';
 
 import { SIDEBAR_ITEMS, SIDEBAR_SENTENCES } from "../../constants";
@@ -34,7 +34,7 @@ const Leftsidebar = ({ isLeftSidebar }) => {
     mutate();
   }
 
-  const { mutate, isLoading, isError, data, error } = useMutation(userLogout, {
+  const { mutate } = useMutation(userLogout, {
     onSuccess: () => {
       localStorage.clear();
       window.location.replace('/')
@@ -69,12 +69,12 @@ const Leftsidebar = ({ isLeftSidebar }) => {
               {SIDEBAR_ITEMS.map((item) => (
                 <TabItem
                   className={
-                    path === "members" && item === "Users"
+                    path === "users" && item.name === "Users"
                       ? "tab active"
                       : "tab"
                   }
-                  key={item}>
-                  <TabItemText>{item}</TabItemText>
+                  key={item.name}>
+                  <TabItemText><Link to='/users'>{item.name}</Link></TabItemText>
                 </TabItem>
               ))}
             </TabList>
