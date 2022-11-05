@@ -28,6 +28,7 @@ public class MemberService{
 //    private final SendMailService mailService;
 
 
+
     /**
      * 필수) member 회원가입 로직
      * 1. 이미 등록된 이메일인지 확인한다.

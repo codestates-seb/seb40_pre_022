@@ -23,7 +23,7 @@ public class AuthController {
     @DeleteMapping("/members/logout")
     public void logoutMember(@CookieValue(name = "RefreshToken") String refreshToken,
                              @CookieValue(name = "MemberId") String memberId,
-                             HttpServletRequest request,
+                             HttpServletRequest request,    // 헤더 사용하기 위함.
                              HttpServletResponse response){
         log.info("{}",response);
 //        authService.logoutMember(refreshToken);
@@ -49,7 +49,7 @@ public class AuthController {
     @GetMapping("/members/refresh")
     public void refreshTokenReissue(@CookieValue(name = "RefreshToken") String refreshToken,
                                     @CookieValue(name = "MemberId") String memberId,
-                                    HttpServletRequest request,
+                                    HttpServletRequest request,  // 헤더 사용하기 위함.
                                     HttpServletResponse response){
 
 //        String reIssueAccessToken = authService.reIssueAccessToken(refreshToken);
@@ -68,6 +68,7 @@ public class AuthController {
 
         response.setHeader("Authorization", "Bearer " + reIssueAccessToken);
         response.setHeader("refreshToken", reIssueRefreshToken);
+
         response.addCookie(cookie);
         response.addCookie(mbCookie);
     }
