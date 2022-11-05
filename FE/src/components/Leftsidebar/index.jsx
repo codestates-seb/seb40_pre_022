@@ -19,7 +19,7 @@ import {
 const Leftsidebar = ({ isLeftSidebar }) => {
   let { pathname } = useLocation();
   let path = pathname.split("/")[1];
-  if (window.location.pathname === "/question/ask") return null;
+  if (window.location.pathname === "/questions/ask") return null;
 
   const isAside = useRecoilValue(asideState);
 
@@ -37,8 +37,8 @@ const Leftsidebar = ({ isLeftSidebar }) => {
           <TabItem>
             <Tabtitle>PUBLIC</Tabtitle>
             <TabList>
-              <TabItem className={path === "question" ? "active" : null}>
-                <Link to='/question'>
+              <TabItem className={path === "questions" ? "active" : null}>
+                <Link to='/questions'>
                   <ItemContainer>
                     <FontAwesomeIcon icon={faEarthAmericas} className='icon' />
                     Questions
