@@ -27,7 +27,8 @@ export const Button = ({
         `${Selected}`,
       ].join(" ")}
       style={(backgroundColor && { backgroundColor }, color && { color })}
-      {...props}>
+      {...props}
+      value={label}>
       {label}
     </Btn>
   );

@@ -7,11 +7,18 @@ const Title = styled.div`
 `;
 
 const UserContainer = styled.div`
-  width: 500px;
   display: block;
+  flex: 3;
   border: 1px solid hsl(210, 8%, 85%);
   border-radius: 5px;
   padding: 25px;
+  padding-right: 50px;
+`;
+
+const Qlist = styled.a`
+  display: block;
+  margin-bottom: 10px;
+  color: #33a7ff;
 `;
 
 const Useritem = styled.div`
@@ -21,4 +28,4 @@ const Useritem = styled.div`
   padding-right: 0px;
 `;
 
-export { Title, UserContainer, Useritem };
+export { Title, UserContainer, Useritem, Qlist };

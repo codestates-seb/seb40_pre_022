@@ -72,7 +72,9 @@ const Leftsidebar = ({ isLeftSidebar }) => {
               {SIDEBAR_ITEMS.map((item) => (
                 <TabItem
                   className={
-                    path === "mypage" && item === "Users" ? "tab active" : "tab"
+                    path === "members" && item === "Users"
+                      ? "tab active"
+                      : "tab"
                   }
                   key={item}>
                   <TabItemText>{item}</TabItemText>

@@ -8,6 +8,7 @@ import {
 import { Button } from "../Button";
 import Question from "../Question";
 import Paging from "../Pagenation";
+import { Link } from "react-router-dom";
 
 const AQMainbar = () => {
   const Questions = ["23,156,830"];
@@ -17,19 +18,22 @@ const AQMainbar = () => {
       <MainbarContainer>
         <AQheader>
           <h1>All Questions</h1>
-          <Button label='Ask Question' size='large' />
+          <Link to={"/question/ask"}>
+            <Button label='Ask Question' size='large' />
+          </Link>
         </AQheader>
         <AQsorting>
           {Questions}questions
           <AQsortingButton>
-            <Button
+            {/* <Button
               primary='Linkbutton'
               label='Newest'
               Position='Left'
               Choosed='Choosed'
             />
             <Button primary='Linkbutton' label='Unanswered' Position='Middle' />
-            <Button primary='Linkbutton' label='Views' Position='Right' />
+            <Button primary='Linkbutton' label='Views' Position='Right' /> */}
+            <Button primary='Linkbutton' label='Newest' Choosed='Choosed' />
           </AQsortingButton>
         </AQsorting>
         <Question />

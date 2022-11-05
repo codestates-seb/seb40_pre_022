@@ -40,30 +40,30 @@ function App() {
         <RecoilRoot>
           <BrowserRouter>
             <Routes>
-              <Route path='/' element={<Home />} />
-              <Route path='members/login' element={<Login />} />
-              <Route path='members/logout' element={<Logout />} />
-              <Route path='/join' element={<Join />} />
-              <Route path='/recovery' element={<Recovery />} />
-              <Route path='/questions' element={<AllQuestion />} />
+              <Route path="/" element={<Home />} />
+              <Route path="members/login" element={<Login />} />
+              <Route path="members/logout" element={<Logout />} />
+              <Route path="/join" element={<Join />} />
+              <Route path="/recovery" element={<Recovery />} />
+              <Route path="/questions" element={<AllQuestion />} />
               <Route
-                path='/questions/ask'
+                path="/questions/ask"
                 element={
                   <PrivateRoute component={<QuestionAsk />} auth={auth} />
                 }
               />
               <Route
-                path='/questions/edit'
+                path="/questions/edit"
                 element={
                   <PrivateRoute component={<QuestionEdit />} auth={auth} />
                 }
               />
+              <Route path="/members/myPage/:id" element={<MyPage />} />
               <Route
-                path='/mypage'
-                element={<PrivateRoute component={<MyPage />} auth={auth} />}
+                path="/questions/detail/:id"
+                element={<QuestionsDetail />}
               />
-              <Route path='/questions/:id' element={<QuestionsDetail />} />
-              <Route path='/*' element={<Error />} />
+              <Route path="/*" element={<Error />} />
             </Routes>
           </BrowserRouter>
         </RecoilRoot>
