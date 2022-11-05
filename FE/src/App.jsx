@@ -60,7 +60,7 @@ function App() {
               />
               <Route path="/members/myPage/:id" element={<MyPage />} />
               <Route
-                path="/question/detail/:id"
+                path="/questions/detail/:id"
                 element={<QuestionsDetail />}
               />
               <Route path="/*" element={<Error />} />
