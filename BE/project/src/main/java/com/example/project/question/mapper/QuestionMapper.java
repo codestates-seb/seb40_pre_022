@@ -56,6 +56,7 @@ public interface QuestionMapper {
         QuestionDto.QuestionMemberDto questionMemberDto = new QuestionDto.QuestionMemberDto();
 
         Member member = question.getMember();
+        questionMemberDto.setMemberId(member.getMemberId());
         questionMemberDto.setName(member.getName());
         questionMemberDto.setEmail(member.getEmail());
         questionMemberDto.setImage(member.getImage());
@@ -123,6 +124,7 @@ public interface QuestionMapper {
         QuestionDto.QuestionMemberDto questionMemberDto = new QuestionDto.QuestionMemberDto();
 
         Member member = question.getMember();
+        questionMemberDto.setMemberId(member.getMemberId());
         questionMemberDto.setName(member.getName());
         questionMemberDto.setEmail(member.getEmail());
         questionMemberDto.setImage(member.getImage());

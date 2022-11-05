@@ -25,7 +25,8 @@ public class MemberService{
     private final PasswordEncoder passwordEncoder;
     private final MemberAuthorityUtils authorityUtils;
 
-    private final SendMailService mailService;
+//    private final SendMailService mailService;
+
 
 
     /**

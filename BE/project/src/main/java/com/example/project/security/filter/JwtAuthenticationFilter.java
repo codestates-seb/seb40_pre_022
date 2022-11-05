@@ -80,17 +80,18 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String encodedRefreshToken = URLEncoder.encode(refreshToken, "UTF-8");
         Cookie cookie = new Cookie("RefreshToken", encodedRefreshToken);
         cookie.setPath("/");
-        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(false);   // cookie 사용 이슈로 인한 true -> false 수정
 
         Cookie mbCookie = new Cookie("MemberId", String.valueOf(findMember.getMemberId()));
         mbCookie.setPath("/");
-        mbCookie.setHttpOnly(true);
+        mbCookie.setHttpOnly(false);    // cookie 사용 이슈로 인한 true -> false 수정
 
         response.addCookie(cookie);
         response.addCookie(mbCookie);
 
         response.setHeader("Authorization", "Bearer " + accessToken);
 //        response.setHeader("Refresh", refreshToken);
+        response.setHeader("refreshToken", refreshToken);
     }
 
     /**

@@ -152,6 +152,7 @@ public class QuestionDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class QuestionMemberDto {
+        private long memberId;              // All question memberId 출력을 위함.
         private String name;
         private String email;
         private String image;
