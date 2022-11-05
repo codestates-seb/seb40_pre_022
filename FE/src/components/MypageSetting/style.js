@@ -2,8 +2,7 @@ import styled from "styled-components";
 
 const MembersContainer = styled.div`
   margin-top: 24px;
-  display: inline-block;
-  flex: 3;
+  display: block;
   flex-direction: column;
   justify-content: start;
 `;
