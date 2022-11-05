@@ -45,6 +45,9 @@ export const FormWrap = styled.div`
   }
   button {
     width: 100%;
+    :disabled {
+      background: #ddd;
+    }
   }
   p {
     position: inherit;

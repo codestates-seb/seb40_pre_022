@@ -1,16 +1,30 @@
 import React, { useState, useCallback } from "react";
-
-import { EMAIL_REGEX } from '../../constants/regex';
+import { useMutation } from '@tanstack/react-query';
 
 import Layout from '@components/Layout';
 import TextInput from '@components/TextInput';
 import { Button } from '@components/Button';
+import Modal from "@components/Modal";
+
+import { EMAIL_REGEX } from '../../constants/regex';
+import { userRecover } from "../../api/members";
 
 import { Wrapper, FormWrap } from './style';
 
 const Recovery = () => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false);
+
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const { mutate, data } = useMutation(userRecover, {
+    onSuccess: () => {
+      openModal();
+    },
+    onError: (error) => {
+      alert(error.message)
+    }
+  });
 
   const handleChangeEmail = useCallback ((e)=> {
       if(EMAIL_REGEX.test(e.target.value)){
@@ -19,6 +33,12 @@ const Recovery = () => {
       setEmail(e.target.value)
   }, [email])
 
+  const openModal = () => {
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   const handleSubmit = ((e)=>{
     e.preventDefault();
@@ -26,10 +46,14 @@ const Recovery = () => {
       if (!EMAIL_REGEX.test(email)) setEmailError(true);
       return;
     }
+    mutate({
+      "email" : email
+    })
   })
 
   return (
     <Layout isLeftSidebar={false}>
+      <Modal open={modalOpen} close={closeModal} header={data?.data.title}>{data?.data.body}</Modal>
       <Wrapper>
           <FormWrap>
             <form>
