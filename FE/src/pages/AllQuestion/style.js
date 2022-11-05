@@ -9,7 +9,6 @@ const PageContainer = styled.div`
 
 const PostContainer = styled.div`
   padding: 24px;
-  padding-top: 48px;
   display: flex;
   flex: 1 1 auto;
 `;

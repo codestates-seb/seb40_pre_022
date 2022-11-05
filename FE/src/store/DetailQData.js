@@ -4,45 +4,26 @@ export const DetailQData = atom({
   key: "DetailQData",
   default: {
     data: {
-      questionId: undefined,
+      questionId: 0,
       title: "",
       body: "",
-      vote: undefined,
-      view: undefined,
-      author: {
-        displayName: "",
+      voteCount: 0,
+      viewCount: 0,
+      member: {
+        name: "",
         email: "",
         image: "",
       },
-      answers: {
-        data: [
-          {
-            answerId: undefined,
-            body: "",
-            vote: undefined,
-            author: {
-              displayName: "",
-              email: "",
-              image: "",
-            },
-            isAccepted: undefined,
-            createdAt: "",
-            updatedAt: "",
-          },
-        ],
-        pageInfo: {
-          page: undefined,
-          size: undefined,
-          totalElements: undefined,
-          totalPages: undefined,
+      answers: [
+        {
+          name: "",
+          email: "",
+          image: "",
         },
-      },
+      ],
       questionTags: [
         {
-          tagName: "",
-        },
-        {
-          tagName: "",
+          questionTagName: "",
         },
       ],
       createdAt: "",

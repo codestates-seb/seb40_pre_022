@@ -16,7 +16,7 @@ import { Wrapper, FormWrap, Info } from "./style";
 
 const Login = () => {
   const auth = localStorage.getItem("isLogin");
-  if (auth) return <Navigate to='/' />;
+  if (auth) return <Navigate to="/" />;
 
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
@@ -43,7 +43,7 @@ const Login = () => {
       localStorage.setItem("token", JSON.stringify(data.headers.authorization));
       localStorage.setItem(
         "refreshToken",
-        JSON.stringify(data.headers.refreshtoken),
+        JSON.stringify(data.headers.refreshtoken)
       );
       navigate("/");
     }
@@ -56,7 +56,7 @@ const Login = () => {
       }
       setEmail(e.target.value);
     },
-    [email],
+    [email]
   );
 
   const handleChangePw = useCallback(
@@ -66,7 +66,7 @@ const Login = () => {
       }
       setPw(e.target.value);
     },
-    [pw],
+    [pw]
   );
 
   const handleSubmit = (e) => {
@@ -85,38 +85,38 @@ const Login = () => {
   return (
     <Layout isLeftSidebar={false}>
       <Wrapper>
-        <Link className='logo' to='/'>
+        <Link className="logo" to="/">
           <span>stack overflow</span>
         </Link>
         <Sns />
         <FormWrap>
           <form>
             <TextInput
-              id='email'
-              label='Email'
-              errorMsg='이메일 형식을 맞춰주세요.'
+              id="email"
+              label="Email"
+              errorMsg="이메일 형식을 맞춰주세요."
               isError={emailError}
               value={email}
               onChange={handleChangeEmail}
             />
             <TextInput
-              id='pw'
-              type='password'
-              label='Password'
-              errorMsg='최소 8 자, 최소 하나의 문자,하나의 숫자 및 하나의 특수 문자'
+              id="pw"
+              type="password"
+              label="Password"
+              errorMsg="최소 8 자, 최소 하나의 문자,하나의 숫자 및 하나의 특수 문자"
               isError={pwError}
               link
               value={pw}
               onChange={handleChangePw}
             />
-            <Button label='Log in' type='submit' onClick={handleSubmit}>
+            <Button label="Log in" type="submit" onClick={handleSubmit}>
               Login
             </Button>
           </form>
         </FormWrap>
         <Info>
           <li>
-            Don't have an account? <Link to='/join'>Sign up</Link>
+            Don't have an account? <Link to="/join">Sign up</Link>
           </li>
           <li>
             Are you an employer? <Link>Sign up on Talent</Link>

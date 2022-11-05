@@ -26,6 +26,7 @@ const ContentEditor = () => {
       ]}
       useCommandShortcut={true}
       hideModeSwitch={true}
+      initialValue=' '
       ref={editorRef}
       onChange={onChangeHandle}></Editor>
   );

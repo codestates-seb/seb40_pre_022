@@ -11,19 +11,32 @@ import {
 } from "./style";
 import ContentEditor from "../ContentEditor";
 import { AnswerEditData } from "../../store/AnswerEditData";
-import { data } from "../../db/data.json";
 import { useRecoilValue } from "recoil";
+import { createAnswer } from "../../api/details";
+import { useMutation } from "@tanstack/react-query";
 
-const CreateAnswer = () => {
+const CreateAnswer = ({ questionId }) => {
   const answer = useRecoilValue(AnswerEditData);
-  let time = new Date().toJSON();
+  console.log(answer);
+  const { mutate, isLoading, isError, data, error } = useMutation(
+    () => {
+      createAnswer(questionId);
+    },
+    {
+      retry: 0,
+      onSuccess: (data) => {
+        console.log(data);
+      },
+      onError: (error) => {
+        console.log(error.message);
+      },
+    }
+  );
+
   const clickHandle = () => {
     if (answer.length <= 0) return;
-    data[0].answers.data.push({
+    mutate({
       body: answer,
-      author: { displayName: "answerer" },
-      createdAt: time,
-      updatedAt: time,
     });
   };
 
@@ -34,8 +47,8 @@ const CreateAnswer = () => {
         <ContentEditor />
         <BtnContainer>
           <Button
-            label='Post Your Answer'
-            size='header-size'
+            label="Post Your Answer"
+            size="header-size"
             onClick={clickHandle}
           />
         </BtnContainer>
@@ -43,15 +56,15 @@ const CreateAnswer = () => {
       <AnswerText>
         Browse other questions tagged
         <TagWrapper>
-          <Button label='javascript' Tagged='Tagged' />
+          <Button label="javascript" Tagged="Tagged" />
         </TagWrapper>
         <TagWrapper>
-          <Button label='reactjs' Tagged='Tagged' />
+          <Button label="reactjs" Tagged="Tagged" />
         </TagWrapper>
         <TagWrapper>
-          <Button label='css' Tagged='Tagged' />
+          <Button label="css" Tagged="Tagged" />
         </TagWrapper>
-        <Link to='/question/ask' className='link'>
+        <Link to="/questions/ask" className="link">
           ask your own question.
         </Link>
       </AnswerText>

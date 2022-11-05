@@ -7,12 +7,12 @@ const Title = styled.div`
 `;
 
 const SettingContainer = styled.div`
-  width: 450px;
   display: flex;
   border: 1px solid hsl(210, 8%, 85%);
   border-radius: 5px;
   padding: 25px;
   padding-bottom: 35px;
+  padding-right: 60px;
 `;
 
 const Settingitem = styled.input``;

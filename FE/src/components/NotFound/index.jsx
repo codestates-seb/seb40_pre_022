@@ -26,14 +26,14 @@ const NotFound = () => {
             Try <Link to='/'>searching for similar questions</Link>
           </ErrorMessage>
           <ErrorMessage>
-            Browse our <Link to='/question'>recent questions</Link>
+            Try <Link to='/members/login'>Login</Link> or{" "}
+            <Link to='/join'>Sign up</Link>
+          </ErrorMessage>
+          <ErrorMessage>
+            Browse our <Link to='/questions'>recent questions</Link>
           </ErrorMessage>
           <ErrorMessage>
             Browse our <Link to='/mypage'>My page</Link>
-          </ErrorMessage>
-          <ErrorMessage>
-            If you feel something is missing that should be here,{" "}
-            <Link to='/question'>contact us.</Link>
           </ErrorMessage>
         </MessageContainer>
       </ErrorItemContainer>

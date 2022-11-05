@@ -1,9 +1,6 @@
 import React from "react";
-import { useRecoilValue, useRecoilState } from "recoil";
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { calculateTime } from "../../utils/calculateTime";
-import DetailPost from "../DetailPost";
 import {
   AnswerCount,
   AnswerHeader,
@@ -12,21 +9,28 @@ import {
   SortSelect,
   SortText,
 } from "./style";
-import { DetailQData } from "../../store/DetailQData";
-import { getDetailQPost } from "../../api/question/detailQApi";
-import { sortDate } from "../../utils/sortDate";
-import { useState } from "react";
-import { useEffect } from "react";
+import {
+  PostLayout,
+  LayoutLeft,
+  LayoutRight,
+  PostBody,
+  InfoContainer,
+  PostMenuContainer,
+  PostMenu,
+  UserInfo,
+  UserInfoText,
+} from "../DetailPost/style";
+import ContentViewer from "../ContentViewer";
 
-const DetailAnswer = ({ answers }) => {
+import { sortDate } from "../../utils/sortDate";
+import AnswerVoteBtn from "../AnswerVoteBtn";
+import AnswerDetailProfile from "../AnswerDetailProfile";
+
+const DetailAnswer = ({ answer, questionId }) => {
   // const date = answer.map((el) => el.createdAt);
   // const sortData = () => {
   //   console.log(sortDate(date));
   // };
-  const [answer, setAnswer] = useState("");
-  useEffect(() => {
-    if (answers.answers) setAnswer(answers.answers);
-  });
 
   return (
     <>
@@ -44,9 +48,37 @@ const DetailAnswer = ({ answers }) => {
         </AnswerHeader>
       ) : null}
       {answer.length
-        ? answer.map((answer) => (
-            <DetailPost key={answer.answerId} answers={answer} />
-          ))
+        ? answer.map((el) => {
+            return (
+              <PostLayout className="answer" key={el.answerId}>
+                <LayoutLeft>
+                  <AnswerVoteBtn answer={el} questionId={questionId} />
+                </LayoutLeft>
+                <LayoutRight>
+                  <PostBody>
+                    <ContentViewer markdown={el.body} />
+                  </PostBody>
+                  <InfoContainer>
+                    <PostMenuContainer>
+                      <PostMenu>Share</PostMenu>
+                      <Link to="/questions/edit">
+                        <PostMenu>Edit</PostMenu>
+                      </Link>
+                      <PostMenu>Follow</PostMenu>
+                      <PostMenu>Delete</PostMenu>
+                    </PostMenuContainer>
+                    <UserInfo className="edit">
+                      <UserInfoText>{calculateTime(el.updatedAt)}</UserInfoText>
+                    </UserInfo>
+                    <AnswerDetailProfile
+                      answers={el}
+                      AcreatedAt={el.createdAt}
+                    />
+                  </InfoContainer>
+                </LayoutRight>
+              </PostLayout>
+            );
+          })
         : null}
     </>
   );
