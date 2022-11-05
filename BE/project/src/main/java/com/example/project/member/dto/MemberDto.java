@@ -75,6 +75,7 @@ public class MemberDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class MyPageResponse {
+        private MemberForMyPage member;
         private QuestionResponse questions;
         private AnswerResponse answers;
     }
@@ -136,5 +137,14 @@ public class MemberDto {
         private String address;
         private String title;
         private String body;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class MemberForMyPage{
+        private long memberId;
+        private String name;
+        private String image;
     }
 }
