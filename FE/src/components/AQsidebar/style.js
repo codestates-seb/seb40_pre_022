@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const SidebarContainer = styled.div`
+  padding-top: 24px;
   float: right;
   display: block;
   justify-content: center;

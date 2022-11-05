@@ -37,8 +37,8 @@ const Leftsidebar = ({ isLeftSidebar }) => {
           <TabItem>
             <Tabtitle>PUBLIC</Tabtitle>
             <TabList>
-              <TabItem className={path === "question" ? "active" : null}>
-                <Link to='/question'>
+              <TabItem className={path === "questions" ? "active" : null}>
+                <Link to='/questions'>
                   <ItemContainer>
                     <FontAwesomeIcon icon={faEarthAmericas} className='icon' />
                     Questions
@@ -48,7 +48,9 @@ const Leftsidebar = ({ isLeftSidebar }) => {
               {SIDEBAR_ITEMS.map((item) => (
                 <TabItem
                   className={
-                    path === "mypage" && item === "Users" ? "tab active" : "tab"
+                    path === "members" && item === "Users"
+                      ? "tab active"
+                      : "tab"
                   }
                   key={item}>
                   <TabItemText>{item}</TabItemText>

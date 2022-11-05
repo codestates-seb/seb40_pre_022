@@ -1,23 +1,37 @@
-import React from "react";
+import { React } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useRecoilState } from "recoil";
+
 import { Pagingcontainer, Pagination, Perpage } from "./style.js";
 import { Button } from "../Button/index.jsx";
-import { pageInfo } from "@src/db/data.json";
+import { getAQuestion } from "../../API/AQuestion/AQuestion";
+import { AQPage } from "../../store/AQData.js";
 
 const Paging = () => {
+  const [page, setPage] = useRecoilState(AQPage);
+
+  const { isLoading, data } = useQuery(["AllQuestion", { page }], () => {
+    return getAQuestion(page);
+  });
+
+  if (isLoading) return <div>now loading..</div>;
+
+  const pageInfo = data.pageInfo;
   const pages = [];
   const choosed = pageInfo.page;
+
   let upper = 5;
-  if (choosed + 2 < pageInfo.totalElements && choosed + 2 > 5) {
+  if (choosed + 2 < pageInfo.totalPages && choosed + 2 > 5) {
     upper = choosed + 2;
-  } else if (choosed + 2 >= pageInfo.totalElements) {
-    upper = pageInfo.totalElements;
+  } else if (choosed + 2 >= pageInfo.totalPages) {
+    upper = pageInfo.totalPages;
   }
 
   let downer = choosed - 2;
   if (choosed - 2 <= 0) {
     downer = 1;
-  } else if (choosed - 2 > pageInfo.totalElements - 4) {
-    downer = pageInfo.totalElements - 4;
+  } else if (choosed - 2 > pageInfo.totalPages - 4) {
+    downer = pageInfo.totalPages - 4;
   }
 
   {
@@ -29,7 +43,15 @@ const Paging = () => {
   return (
     <Pagingcontainer>
       <Pagination>
-        {choosed + 2 > 5 ? <Button primary='Pagingbutton' label='1' /> : null}
+        {choosed + 2 > 5 ? (
+          <Button
+            primary='Pagingbutton'
+            label='1'
+            onClick={(e) => {
+              setPage(e.target.value);
+            }}
+          />
+        ) : null}
         {choosed + 2 > 5 ? "... " : null}
 
         {pages.map((num) => {
@@ -38,19 +60,29 @@ const Paging = () => {
               primary='Pagingbutton'
               Selected={choosed === num ? "Selected" : null}
               label={num}
+              onClick={(e) => {
+                setPage(e.target.value);
+              }}
             />
           );
         })}
-        {choosed - 2 < pageInfo.totalElements - 4 ? "... " : null}
-        {choosed - 2 < pageInfo.totalElements - 4 ? (
-          <Button primary='Pagingbutton' label={pageInfo.totalElements} />
+        {choosed - 2 < pageInfo.totalPages - 4 && pageInfo.totalPages !== 5
+          ? "... "
+          : null}
+        {choosed - 2 < pageInfo.totalPages - 4 && pageInfo.totalPages !== 5 ? (
+          <Button
+            primary='Pagingbutton'
+            label={pageInfo.totalPages}
+            onClick={(e) => {
+              setPage(e.target.value);
+            }}
+          />
         ) : null}
       </Pagination>
       <Perpage>
-        <Button primary='Pagingbutton' Selected='Selected' label='15' />
+        <Button primary='Pagingbutton' Selected='Selected' label='10' />
         per page
       </Perpage>
-      {console.log(pages)}
     </Pagingcontainer>
   );
 };

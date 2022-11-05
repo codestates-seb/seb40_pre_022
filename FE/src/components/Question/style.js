@@ -35,7 +35,7 @@ const Questionbody = styled.div`
   hyphens: auto !important;
 `;
 
-const Questionuser = styled.div`
+const Questionuser = styled.a`
   display: flex;
   text-align: center;
 

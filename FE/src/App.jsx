@@ -13,11 +13,11 @@ import QuestionEdit from "./pages/QuestionEdit";
 import Error from "./pages/Error";
 import Logout from "./pages/Logout";
 import Recovery from "./pages/Recovery";
-import PrivateRoute from './components/PrivateRoute';
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
-  const auth = localStorage.getItem('isLogin');
-  
+  const auth = localStorage.getItem("isLogin");
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
@@ -29,13 +29,23 @@ function App() {
             <Route path='members/logout' element={<Logout />} />
             <Route path='/join' element={<Join />} />
             <Route path='/recovery' element={<Recovery />} />
-            <Route path='/question' element={<AllQuestion />} />
-            <Route path='/question/ask' element={<PrivateRoute component={<QuestionAsk />} auth={auth}/>} />
-            <Route path='/question/edit' element={<PrivateRoute component={<QuestionEdit />} auth={auth}/>} />
-            <Route path='/mypage' element={<PrivateRoute component={<MyPage />} auth={auth}/>} />
+            <Route path='/questions' element={<AllQuestion />} />
             <Route
-              path='/question/detail/:id'
-              element={<QuestionsDetail />} />
+              path='/question/ask'
+              element={<PrivateRoute component={<QuestionAsk />} auth={auth} />}
+            />
+            <Route
+              path='/question/edit'
+              element={
+                <PrivateRoute component={<QuestionEdit />} auth={auth} />
+              }
+            />
+            {/* <Route
+              path='/mypage'
+              element={<PrivateRoute component={<MyPage />} auth={auth} />} 
+            /> */}
+            <Route path='/members/myPage/:id' element={<MyPage />} />
+            <Route path='/question/detail/:id' element={<QuestionsDetail />} />
             <Route path='/*' element={<Error />} />
           </Routes>
         </BrowserRouter>

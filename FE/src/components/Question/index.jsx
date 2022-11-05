@@ -1,4 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { useQuery } from "@tanstack/react-query";
+
 import {
   QuestionContainer,
   Questioncontent,
@@ -10,24 +14,33 @@ import {
   Questiontags,
 } from "./style";
 import { Button } from "../Button";
-import { data } from "@src/db/data.json";
+import { getAQuestion } from "../../API/AQuestion/AQuestion";
+import { AQPage } from "../../store/AQData";
 
 const Question = () => {
+  const page = useRecoilValue(AQPage);
+
+  const { isLoading, data } = useQuery(["AllQuestion", { page }], () => {
+    return getAQuestion(page);
+  });
+
+  if (isLoading) return;
+
   return (
     <>
-      {data.map((data) => {
-        let id = `/question/detail/${data.questionId}`;
-
+      {data.data.map((data) => {
+        const Mid = `/members/myPage/${data.member.memberId}`;
+        let Qid = `/questions/${data.questionId}`;
         return (
           <QuestionContainer>
             <Questionsummary>
-              <div>{data.vote} votes</div>
-              <div>{data.vote} answers</div>
-              <div>{data.view} views</div>
+              <div>{data.voteCount} votes</div>
+              <div>{data.answerCount} answers</div>
+              <div>{data.viewCount} views</div>
             </Questionsummary>
             <Questioncontent>
               <Questiontitle>
-                <a href={id}>{data.title}</a>
+                <a href={Qid}>{data.title}</a>
               </Questiontitle>
               <Questionbody>{data.body}</Questionbody>
               <Questionfooter>
@@ -36,16 +49,18 @@ const Question = () => {
                     return (
                       <Button
                         primary='Linkbutton'
-                        label={list.tagName}
+                        label={list.questionTagName}
                         Tagged='Tagged'
                       />
                     );
                   })}
                 </Questiontags>
-                <Questionuser>
-                  <img src={data.user.image} className='img' />
-                  {data.user.displayName} asked{" "}
-                </Questionuser>
+                <a href={Mid}>
+                  <Questionuser>
+                    <img src={data.member.image} className='img' />
+                    {data.member.name} asked{" "}
+                  </Questionuser>
+                </a>
               </Questionfooter>
             </Questioncontent>
           </QuestionContainer>
