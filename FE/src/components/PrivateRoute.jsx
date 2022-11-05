@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 
-function PrivateRoute({ auth, component: Component }) {
+function PrivateRoute({ component: Component }) {
+  const auth = localStorage.getItem("isLogin");
   return auth ? (
     Component
   ) : (

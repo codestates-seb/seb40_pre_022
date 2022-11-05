@@ -2,7 +2,7 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useMutation } from '@tanstack/react-query';
 
 import { SIDEBAR_ITEMS, SIDEBAR_SENTENCES } from "../../constants";
@@ -30,17 +30,14 @@ const Leftsidebar = ({ isLeftSidebar }) => {
 
   const isAside = useRecoilValue(asideState);
 
-  const navigate = useNavigate()
   const handleLogout = ()=> {
     mutate();
-    console.log('로그아웃')
   }
 
   const { mutate, isLoading, isError, data, error } = useMutation(userLogout, {
     onSuccess: () => {
-      localStorage.removeItem("isLogin");
-      localStorage.removeItem('token');
-      navigate('/');
+      localStorage.clear();
+      window.location.replace('/')
     },
     onError: (error) => {
       alert(error.message)

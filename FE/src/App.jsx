@@ -24,6 +24,7 @@ const queryClient = new QueryClient();
 
 function App() {
   const [auth, setAuth] = useState(false);
+
   useEffect(() => {
     if (auth !== null) {
       setAuth(localStorage.getItem("isLogin"));
@@ -32,6 +33,8 @@ function App() {
       setAuth(false);
     };
   }, []);
+
+  // console.log(auth)
 
   return (
     <ThemeProvider theme={theme}>
@@ -60,7 +63,7 @@ function App() {
               />
               <Route path="/members/myPage/:id" element={<MyPage />} />
               <Route
-                path="/questions/detail/:id"
+                path="/questions/:id"
                 element={<QuestionsDetail />}
               />
               <Route path="/*" element={<Error />} />
