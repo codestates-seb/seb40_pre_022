@@ -7,8 +7,12 @@ import com.example.project.exception.ExceptionCode;
 
 import com.example.project.member.entity.Member;
 import com.example.project.member.repository.MemberRepository;
+import com.example.project.question.entity.Question;
 import com.example.project.security.utils.MemberAuthorityUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,6 +87,11 @@ public class MemberService{
     public Member getMember(long memberId){
 
         return findExistMember(memberId);
+    }
+
+    public Page<Member> findMembers(int page, int size){
+
+        return memberRepository.findAll(PageRequest.of(page, size, Sort.by("memberId").descending()));
     }
 
     /**

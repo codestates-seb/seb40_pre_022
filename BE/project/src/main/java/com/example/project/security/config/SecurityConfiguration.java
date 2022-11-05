@@ -66,7 +66,8 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.DELETE, "/members/logout").hasAnyRole("USER", "ADMIN")
                         //member
                         .antMatchers(HttpMethod.POST, "/members/signup").permitAll() // 2. 회원가입 : EVERYONE
-                        .antMatchers(HttpMethod.GET, "/members").hasAnyRole("USER", "ADMIN") // 2. 회원정보 접근 : USER, ADMIN
+                        .antMatchers(HttpMethod.GET, "/members/list").permitAll()
+                        .antMatchers(HttpMethod.GET, "/members/myPage/**").hasAnyRole("USER", "ADMIN") // 2. 회원정보 접근 : USER, ADMIN
                         .antMatchers(HttpMethod.DELETE, "/members/**").hasRole("USER") // 2. 회원 삭제 : USER
                         .antMatchers(HttpMethod.PATCH, "/members/**").hasRole("USER") // 2. 회원 정보 수정 : USER
                         //answer

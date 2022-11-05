@@ -15,9 +15,18 @@ public interface MemberMapper {
     Member memberPostDtoToMember(MemberDto.Post memberPostDto);
     Member memberPatchDtoToMember(MemberDto.Patch memberPatchDto);
     MemberDto.Response memberToMemberResponseDto(Member member);
+    MemberDto.MemberForMyPage memberToMemberForMyPage(Member member);
 
     default MemberDto.MyPageResponse memberToMyPageResponse(Member member){
         MemberDto.MyPageResponse myPageResponse = new MemberDto.MyPageResponse();
+        MemberDto.MemberForMyPage memberForMyPage = new MemberDto.MemberForMyPage();
+
+
+        memberForMyPage.setMemberId(member.getMemberId());
+        memberForMyPage.setName(member.getName());
+        memberForMyPage.setImage(member.getImage());
+
+        myPageResponse.setMember(memberForMyPage);
 
         List<Question> questions = member.getQuestions();
         List<Answer> answers = member.getAnswers();
