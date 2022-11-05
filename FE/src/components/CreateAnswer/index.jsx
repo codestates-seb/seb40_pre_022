@@ -12,7 +12,7 @@ import {
 import ContentEditor from "../ContentEditor";
 import AnswerEditData from "../../store/AnswerEditData";
 import { useRecoilValue } from "recoil";
-import { createAnswer } from "../../api/answer/detailAApi";
+import { createAnswer } from "../../api/details";
 import { useMutation } from "@tanstack/react-query";
 
 const CreateAnswer = ({ questionId }) => {

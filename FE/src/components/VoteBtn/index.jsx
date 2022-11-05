@@ -3,7 +3,7 @@ import { Btn, VoteContainer, VoteCount } from "./style";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
-import { QvoteDown, QvoteUp } from "../../api/question/detailQApi";
+import { QvoteDown, QvoteUp } from "../../api/details";
 import { useMutation } from "@tanstack/react-query";
 
 const VoteBtn = ({ question }) => {
@@ -11,34 +11,25 @@ const VoteBtn = ({ question }) => {
   const [isVotedUp, setIsVotedUp] = useState(false);
   const [isVotedDown, setIsVotedDown] = useState(false);
   const [count, setCount] = useState(QVoteCount);
-  const voteUp = useMutation(
-    () => {
-      QvoteUp(question.questionId);
+
+  const voteUp = useMutation(QvoteUp, {
+    retry: 0,
+    onSuccess: (data) => {
+      console.log(data);
     },
-    {
-      retry: 0,
-      onSuccess: (data) => {
-        console.log(data);
-      },
-      onError: (error) => {
-        console.log(error.message);
-      },
+    onError: (error) => {
+      console.log(error.message);
     },
-  );
-  const voteDown = useMutation(
-    () => {
-      QvoteDown(question.questionId);
+  });
+  const voteDown = useMutation(QvoteDown, {
+    retry: 0,
+    onSuccess: (data) => {
+      console.log(data);
     },
-    {
-      retry: 0,
-      onSuccess: (data) => {
-        console.log(data);
-      },
-      onError: (error) => {
-        console.log(error.message);
-      },
+    onError: (error) => {
+      console.log(error.message);
     },
-  );
+  });
 
   const handleVoteClick = (status) => {
     // if (status === "up" && (count === QVoteCount || count === QVoteCount - 1)) {
@@ -88,13 +79,13 @@ const VoteBtn = ({ question }) => {
       />
       <FontAwesomeIcon
         icon={faBookmark}
-        color='hsl(210deg 8% 80%)'
-        className='icon'
+        color="hsl(210deg 8% 80%)"
+        className="icon"
       />
       <FontAwesomeIcon
         icon={faClockRotateLeft}
-        color='hsl(210deg 8% 80%)'
-        className='icon'
+        color="hsl(210deg 8% 80%)"
+        className="icon"
       />
     </VoteContainer>
   );

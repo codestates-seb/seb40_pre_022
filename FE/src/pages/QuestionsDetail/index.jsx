@@ -1,7 +1,7 @@
 import { React, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getDetailQPost } from "../../api/question/detailQApi";
+import { getDetailQPost } from "../../api/details";
 import { LeftPostContainer, PostContainer } from "./style";
 import DetailPost from "../../components/DetailPost";
 import DetailHeader from "../../components/DetailHeader";
@@ -18,7 +18,7 @@ const QuestionsDetail = () => {
     return getDetailQPost(params);
   });
   if (isLoading) return <div>now loading..</div>;
-
+  console.log(data);
   return (
     <>
       <Layout>

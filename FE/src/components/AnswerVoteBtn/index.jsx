@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
-import { AvoteDown, AvoteUp } from "../../api/answer/detailAApi";
+import { AvoteDown, AvoteUp } from "../../api/details";
 
 const AnswerVoteBtn = ({ answer, questionId }) => {
   const AVoteCount = answer.voteCount;

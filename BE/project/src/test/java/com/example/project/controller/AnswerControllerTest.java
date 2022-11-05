@@ -21,7 +21,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AnswerControllerTest {}
+class AnswerControllerTest {
+
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -60,7 +62,6 @@ public class AnswerControllerTest {}
     @DisplayName("답변 patch 테스트")
     void test2() throws Exception {
         AnswerDto.Patch answerPatchDto = AnswerDto.Patch.builder()
-                .memberId(0)
                 .answerId(0)
                 .body("답변 내용 수정입니다.")
                 .build();

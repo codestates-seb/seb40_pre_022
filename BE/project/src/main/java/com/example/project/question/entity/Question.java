@@ -6,26 +6,24 @@ import com.example.project.audit.Auditable;
 import com.example.project.member.entity.Member;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.example.project.vote.Vote;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Builder
-public class Question extends Auditable {
+public class Question extends Auditable implements Comparable<Question>{
 
     @Id
     @Column(name = "QUESTION_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long questionId;  // private, long -> Long : ver 1.1
+    private Long questionId;  // private, long -> Long : ver 1.1
 
     @Column(name = "QUESTION_TITLE")
     private String title;
@@ -43,7 +41,7 @@ public class Question extends Auditable {
 
     //질문을 작성한 사람
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
@@ -76,4 +74,14 @@ public class Question extends Auditable {
         answers.add(answer);
     }
 
+    // sorting 작업을 위한 Comparable 인터페이스 메서드 오버라이드
+    @Override
+    public int compareTo(Question question) {
+        if(question.questionId < questionId){
+            return 1;
+        } else if(question.questionId > questionId){
+            return -1;
+        }
+        return 0;
+    }
 }

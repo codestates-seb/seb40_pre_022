@@ -1,12 +1,12 @@
 package com.example.project.question.dto;
 
-import com.example.project.answer.entity.Answer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.List;
 // 수정 - private 지정자 : ver 1.1
@@ -21,10 +21,12 @@ public class QuestionDto {
     @NoArgsConstructor
     public static class Post {
 
-        @NotBlank
+        @NotBlank(message = "질문의 제목은 공백일 수 없습니다.")
         private String title;
-        @NotBlank
+
+        @NotBlank(message = "질문의 내용은 공백일 수 없습니다.")
         private String body;
+
         private List<QuestionTagDto> questionTags;
 
     }
@@ -38,11 +40,15 @@ public class QuestionDto {
     @NoArgsConstructor
     public static class Patch {
 
+        @Positive
         private long questionId;
-        @NotBlank
+
+        @NotBlank(message = "질문의 제목은 공백일 수 없습니다.")
         private String title;
-        @NotBlank
+
+        @NotBlank(message = "질문의 내용은 공백일 수 없습니다.")
         private String body;
+
         private List<QuestionTagDto> questionTags;
 
     }
@@ -60,8 +66,8 @@ public class QuestionDto {
         private String body;
         private int voteCount;
         private int viewCount;
-        private QuestionMemberDto questionMemberDto;  // * 놓치지 말 것 (mapper에서 name, email, image userStatus만 담아야함 -> 생성자생성)
-        private List<Answer> answers;
+        private QuestionMemberDto member;  // * 놓치지 말 것 (mapper에서 name, email, image userStatus만 담아야함 -> 생성자생성)
+        private List<QuestionAnswerDto> answers;
         private List<QuestionTagDto> questionTags;  // * 놓치지 말 것 (mapper에서 tagName만 담아야함 -> 생성자 생성)
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
@@ -80,7 +86,7 @@ public class QuestionDto {
         private String body;
         private int voteCount;
         private int viewCount;
-        private QuestionMemberDto questionMemberDto; // * mapper에서 name, email, image만 담아야 함 -> 생성자 생성)
+        private QuestionMemberDto member; // * mapper에서 name, email, image만 담아야 함 -> 생성자 생성)
         private List<QuestionTagDto> questionTags; // tagName만 가져오기
         private int answerCount;
         private LocalDateTime createdAt;
@@ -109,7 +115,9 @@ public class QuestionDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class QuestionVotePatch {
-        private long memberId; //fixme : 없어도 됨.
+        private long memberId;
+
+        @Positive
         private long questionId;
     }
 
@@ -144,8 +152,22 @@ public class QuestionDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class QuestionMemberDto {
+        private long memberId;              // All question memberId 출력을 위함.
         private String name;
         private String email;
         private String image;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class QuestionAnswerDto{
+        private long answerId;
+        private String body;
+        private int voteCount;
+        private int isAccepted;
+        private QuestionMemberDto member;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
     }
 }
