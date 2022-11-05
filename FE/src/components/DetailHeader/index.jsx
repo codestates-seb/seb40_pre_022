@@ -10,38 +10,37 @@ import {
 import { Button } from "../Button";
 import { DETAIL_HEADER_INFO } from "../../constants";
 import { Link } from "react-router-dom";
-
 import { calculateTime } from "../../utils/calculateTime";
-import { useRecoilValue } from "recoil";
-import { DetailQData } from "../../store/DetailQData";
 
-const DetailHeader = () => {
-  const data = useRecoilValue(DetailQData);
+const DetailHeader = ({ question }) => {
   const questionInfo = [
-    calculateTime(data.createdAt),
-    calculateTime(data.updatedAt),
-    data.view,
+    calculateTime(question.createdAt),
+    calculateTime(question.updatedAt),
+    question.viewCount,
   ];
+
   return (
     <>
       <HeaderContainer>
         <QuestionHeader>
-          <QuestionTitle>{data.title}</QuestionTitle>
-          <Link to='/question/ask'>
+          <QuestionTitle>{question.title}</QuestionTitle>
+          <Link to='/questions/ask'>
             <Button label='Ask Question' size='header-size' />
           </Link>
         </QuestionHeader>
       </HeaderContainer>
-      <InfoWrapper>
-        {DETAIL_HEADER_INFO.map((info, i) => {
-          return (
-            <InfoContainer key={info.title}>
-              <QuestionInfo>{info.title}</QuestionInfo>
-              <QuestionInfo color='black'>{questionInfo[i]}</QuestionInfo>
-            </InfoContainer>
-          );
-        })}
-      </InfoWrapper>
+      {
+        <InfoWrapper>
+          {DETAIL_HEADER_INFO.map((info, i) => {
+            return (
+              <InfoContainer key={info.title}>
+                <QuestionInfo>{info.title}</QuestionInfo>
+                <QuestionInfo color='black'>{questionInfo[i]}</QuestionInfo>
+              </InfoContainer>
+            );
+          })}
+        </InfoWrapper>
+      }
     </>
   );
 };

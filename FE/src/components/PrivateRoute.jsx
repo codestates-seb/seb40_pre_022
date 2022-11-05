@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 
-function PrivateRoute2({ auth, component: Component }) {
+function PrivateRoute({ auth, component: Component }) {
   return auth ? (
     Component
   ) : (
@@ -8,4 +8,4 @@ function PrivateRoute2({ auth, component: Component }) {
   );
 }
 
-export default PrivateRoute2;
+export default PrivateRoute;

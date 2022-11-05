@@ -1,0 +1,39 @@
+# 로컬 정보는 application-local.yml,
+# 서버 정보는 application.yml.
+
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    url: jdbc:h2:mem:test
+  jpa:
+    hibernate:
+      ddl-auto: create  # (1) ??? ?? ??
+    show-sql: true      # (2) SQL ?? ??
+    properties:
+      hibernate:
+        format_sql: true  # (3) SQL pretty print
+
+  mvc:
+    servlet:
+      path: /
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SMTP_USER}    # 환경변수에 gmail 아이디 / 비밀번호 추가.
+    password: ${SMTP_PW}
+    properties:
+      mail.smtp.auth: ture
+      mail.smtp.starttls.enable: true
+
+mail:
+  address:
+    admin: admin@gmail.com
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: 15
+  refresh-token-expiration-minutes: 30

@@ -18,7 +18,7 @@ public class MemberDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Post{
+    public static class Post {
 
         @NotBlank(message = "이름은 공백이 아니여야 합니다.")
         private String name;
@@ -38,6 +38,7 @@ public class MemberDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
+
     public static class Patch{
 
         @Positive
@@ -51,13 +52,14 @@ public class MemberDto {
 
         private String image;
     }
+
     /**
      * response에 멤버정보를 담아주기 위한 DTO
      */
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Response{
+    public static class Response {
         private long memberId;
         private String name;
         private String email;
@@ -72,7 +74,8 @@ public class MemberDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class MyPageResponse{
+    public static class MyPageResponse {
+        private MemberForMyPage member;
         private QuestionResponse questions;
         private AnswerResponse answers;
     }
@@ -84,8 +87,8 @@ public class MemberDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class AnswerResponse{
-        private List<Long> answerId;
+    public static class AnswerResponse {
+        private List<Long> answerIds;
         private int answersCount;
     }
 
@@ -96,10 +99,52 @@ public class MemberDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class QuestionResponse{
-        private List<Long> questionId;
+    public static class QuestionResponse {
+        private List<QuestionForMyPage> questionList;
         private int questionsCount;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class QuestionForMyPage {
+        private long questionId;
+        private String title;
+    }
 
 
+    /**
+     * 사용자 패스워드 초기화를 위한 클라이언트 request DTO
+     */
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class ResetPasswordDto{
+        @Email
+        @NotBlank(message = "이메일은 공백이 아니여야 합니다.")
+        private String email;
+    }
+
+    /**
+     * 사용자 패스워드 초기화 관련 내용을 담은 mail DTO
+     */
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class ResetPasswordMail{
+        private String address;
+        private String title;
+        private String body;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class MemberForMyPage{
+        private long memberId;
+        private String name;
+        private String image;
     }
 }

@@ -3,72 +3,89 @@ import { Btn, VoteContainer, VoteCount } from "./style";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
-import { useRecoilValue } from "recoil";
-import { DetailQData } from "../../store/DetailQData";
+import { QvoteDown, QvoteUp } from "../../api/details";
+import { useMutation } from "@tanstack/react-query";
 
-const VoteBtn = ({ answer, bestAnswer, vote }) => {
-  const QVoteCount = useRecoilValue(DetailQData).vote;
+const VoteBtn = ({ question }) => {
+  const QVoteCount = question.voteCount;
   const [isVotedUp, setIsVotedUp] = useState(false);
   const [isVotedDown, setIsVotedDown] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-  const [count, setCount] = useState(vote || QVoteCount);
+  const [count, setCount] = useState(QVoteCount);
+
+  const voteUp = useMutation(QvoteUp, {
+    retry: 0,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      console.log(error.message);
+    },
+  });
+  const voteDown = useMutation(QvoteDown, {
+    retry: 0,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      console.log(error.message);
+    },
+  });
 
   const handleVoteClick = (status) => {
-    if (
-      status === "up" &&
-      (count === (vote || QVoteCount) || count === (vote || QVoteCount) - 1)
-    ) {
+    // if (status === "up" && (count === QVoteCount || count === QVoteCount - 1)) {
+    //   setIsVotedUp(true);
+    //   setIsVotedDown(false);
+    //   setCount(count + 1);
+
+    // } else if (
+    //   status === "down" &&
+    //   (count === QVoteCount || count === QVoteCount + 1)
+    // ) {
+    //   setIsVotedDown(true);
+    //   setIsVotedUp(false);
+    //   setCount(count - 1);
+    // }
+
+    if (status === "up" && (count === QVoteCount || count === QVoteCount - 1)) {
       setIsVotedUp(true);
       setIsVotedDown(false);
       setCount(count + 1);
+      voteUp.mutate({
+        questionId: question.questionId,
+      });
     } else if (
       status === "down" &&
-      (count === (vote || QVoteCount) || count === (vote || QVoteCount) + 1)
+      (count === QVoteCount || count === QVoteCount + 1)
     ) {
       setIsVotedDown(true);
       setIsVotedUp(false);
       setCount(count - 1);
+      voteDown.mutate({
+        questionId: question.questionId,
+      });
     }
-    console.log(count);
-  };
-
-  const handleCheckClick = () => {
-    setIsChecked(!isChecked);
   };
 
   return (
     <VoteContainer>
       <Btn
         onClick={() => handleVoteClick("up")}
-        className={isVotedUp && count !== (vote || QVoteCount) ? "voted" : null}
+        className={isVotedUp && count !== QVoteCount ? "voted" : null}
       />
-      <VoteCount>{vote ? vote : QVoteCount}</VoteCount>
+      <VoteCount>{count}</VoteCount>
       <Btn
         onClick={() => handleVoteClick("down")}
-        className={
-          isVotedDown && count !== (vote || QVoteCount) ? "down voted" : "down"
-        }
+        className={isVotedDown && count !== QVoteCount ? "down voted" : "down"}
       />
       <FontAwesomeIcon
         icon={faBookmark}
-        color='hsl(210deg 8% 80%)'
-        className='icon'
+        color="hsl(210deg 8% 80%)"
+        className="icon"
       />
-      {answer ? (
-        <FontAwesomeIcon // 질문 작성자에게만 보이도록 해야 함
-          icon={faCheck}
-          className={
-            isChecked || bestAnswer ? "icon check checked" : "icon check"
-          }
-          color='hsl(210deg 8% 80%)'
-          onClick={handleCheckClick}
-        />
-      ) : null}
       <FontAwesomeIcon
         icon={faClockRotateLeft}
-        color='hsl(210deg 8% 80%)'
-        className='icon'
+        color="hsl(210deg 8% 80%)"
+        className="icon"
       />
     </VoteContainer>
   );

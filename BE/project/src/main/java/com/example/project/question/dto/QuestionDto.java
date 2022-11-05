@@ -115,7 +115,7 @@ public class QuestionDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class QuestionVotePatch {
-        private long memberId; //fixme : 없어도 됨.
+        private long memberId;
 
         @Positive
         private long questionId;
@@ -152,6 +152,7 @@ public class QuestionDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class QuestionMemberDto {
+        private long memberId;              // All question memberId 출력을 위함.
         private String name;
         private String email;
         private String image;

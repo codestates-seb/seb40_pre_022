@@ -2,10 +2,15 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEarthAmericas } from "@fortawesome/free-solid-svg-icons";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useMutation } from '@tanstack/react-query';
 
 import { SIDEBAR_ITEMS, SIDEBAR_SENTENCES } from "../../constants";
 import { asideState } from "../../store/user";
+import { userLogout } from "../../api/members";
+
+import { Button } from "../Button";
+
 
 import {
   Tabtitle,
@@ -17,11 +22,30 @@ import {
 } from "./style";
 
 const Leftsidebar = ({ isLeftSidebar }) => {
+  const auth = localStorage.getItem('isLogin');
+  
   let { pathname } = useLocation();
   let path = pathname.split("/")[1];
-  if (window.location.pathname === "/question/ask") return null;
+  if (window.location.pathname === "/questions/ask") return null;
 
   const isAside = useRecoilValue(asideState);
+
+  const navigate = useNavigate()
+  const handleLogout = ()=> {
+    mutate();
+    console.log('로그아웃')
+  }
+
+  const { mutate, isLoading, isError, data, error } = useMutation(userLogout, {
+    onSuccess: () => {
+      localStorage.removeItem("isLogin");
+      localStorage.removeItem('token');
+      navigate('/');
+    },
+    onError: (error) => {
+      alert(error.message)
+    }
+  });
 
   return (
     <>
@@ -66,6 +90,7 @@ const Leftsidebar = ({ isLeftSidebar }) => {
               </TabList>
             </TabItem>
           ))}
+          {auth && <Button className='logout' label='로그아웃' primary='Linkbutton' onClick={handleLogout} />}
         </TabList>
       </SidebarContainer>
     </>

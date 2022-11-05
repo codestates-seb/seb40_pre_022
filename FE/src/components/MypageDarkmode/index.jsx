@@ -21,16 +21,21 @@ const MypageDarkmode = () => {
       <Title>Dark mode</Title>
       <SettingContainer>
         <ModeContainer>
-          <Settingitem type='radio' name='darkmode' />
+          <Settingitem
+            type="radio"
+            name="darkmode"
+            checked="checked"
+            readOnly
+          />
           <ModeImg>
-            <img src='/theme-light.svg' className='img' />
+            <img src="/theme-light.svg" className="img" />
             <div>Light</div>
           </ModeImg>
         </ModeContainer>
         <ModeContainer>
-          <Settingitem type='radio' name='darkmode' />
+          <Settingitem type="radio" name="darkmode" readOnly />
           <ModeImg>
-            <img src='/theme-dark.svg' className='img' />
+            <img src="/theme-dark.svg" className="img" />
             <div>Dark</div>
           </ModeImg>
         </ModeContainer>

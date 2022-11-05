@@ -45,7 +45,7 @@ public class Member extends Auditable {
 
     // 이 사람이 쓴 질문들
     @JsonIgnore
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Question> questions = new ArrayList<>();
 
     // 이 사람이 쓴 답변들
