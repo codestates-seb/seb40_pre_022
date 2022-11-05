@@ -47,6 +47,9 @@ export const Container = styled.div`
     padding: 0 6px;
     margin-right: 15px;
     display: none;
+    border: 0 none;
+    background: transparent;
+    cursor: pointer;
     @media ${(props) => props.theme.mobile} {
       display: flex;
     }
@@ -283,7 +286,6 @@ export const IconUl = styled.ul`
   }
   li {
     font-size: 1.1rem;
-    padding: 14px 10px;
     &:nth-child(2),
     &:nth-child(4) {
       font-size: 1rem;
@@ -298,6 +300,11 @@ export const IconUl = styled.ul`
       background-color: hsl(210, 8%, 90%);
       cursor: pointer;
     }
+    a,
+    svg {
+      display: block;
+      padding: 14px 10px;
+    }
   }
 `;
 
@@ -305,6 +312,9 @@ export const ButtonWrap = styled.ul`
   ${flexCenter}
   min-width: 200px;
   justify-content: flex-end;
+  @media ${(props) => props.theme.mobile} {
+    flex-grow: 1;
+  }
   a {
     border: 1px solid hsl(206deg 100% 52%);
     background: hsl(205deg 100% 95%);
