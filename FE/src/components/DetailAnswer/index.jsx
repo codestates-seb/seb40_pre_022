@@ -1,7 +1,6 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
+import { Link } from "react-router-dom";
 import { calculateTime } from "../../utils/calculateTime";
-import DetailPost from "../DetailPost";
 import {
   AnswerCount,
   AnswerHeader,
@@ -10,15 +9,29 @@ import {
   SortSelect,
   SortText,
 } from "./style";
-import { DetailQData } from "../../store/DetailQData";
-import { sortDate } from "../../utils/sortDate";
+import {
+  PostLayout,
+  LayoutLeft,
+  LayoutRight,
+  PostBody,
+  InfoContainer,
+  PostMenuContainer,
+  PostMenu,
+  UserInfo,
+  UserInfoText,
+} from "../DetailPost/style";
+import ContentViewer from "../ContentViewer";
 
-const DetailAnswer = () => {
-  const answer = useRecoilValue(DetailQData).answers.data;
-  const date = answer.map((el) => el.createdAt);
-  const sortData = () => {
-    console.log(sortDate(date));
-  };
+import { sortDate } from "../../utils/sortDate";
+import AnswerVoteBtn from "../AnswerVoteBtn";
+import AnswerDetailProfile from "../AnswerDetailProfile";
+
+const DetailAnswer = ({ answer, questionId }) => {
+  // const date = answer.map((el) => el.createdAt);
+  // const sortData = () => {
+  //   console.log(sortDate(date));
+  // };
+
   return (
     <>
       {answer.length ? (
@@ -29,26 +42,43 @@ const DetailAnswer = () => {
             <SortSelect>
               <SortOption>Highest score (default)</SortOption>
               <SortOption>Date modified (newest first)</SortOption>
-              <SortOption selected={sortData}>
-                Date created (oldest first)
-              </SortOption>
+              <SortOption>Date created (oldest first)</SortOption>
             </SortSelect>
           </SortContainer>
         </AnswerHeader>
       ) : null}
       {answer.length
-        ? answer.map((answer) => (
-            <DetailPost
-              answer={answer.body}
-              vote={answer.vote}
-              key={answer.author.displayName}
-              answerer={answer.author.displayName}
-              createdAt={calculateTime(answer.createdAt)}
-              updatedAt={calculateTime(answer.updatedAt)}
-              profile={answer.author.image}
-              bestAnswer={answer.isChecked}
-            />
-          ))
+        ? answer.map((el) => {
+            return (
+              <PostLayout className='answer' key={el.answerId}>
+                <LayoutLeft>
+                  <AnswerVoteBtn answer={el} questionId={questionId} />
+                </LayoutLeft>
+                <LayoutRight>
+                  <PostBody>
+                    <ContentViewer markdown={el.body} />
+                  </PostBody>
+                  <InfoContainer>
+                    <PostMenuContainer>
+                      <PostMenu>Share</PostMenu>
+                      <Link to='/questions/edit'>
+                        <PostMenu>Edit</PostMenu>
+                      </Link>
+                      <PostMenu>Follow</PostMenu>
+                      <PostMenu>Delete</PostMenu>
+                    </PostMenuContainer>
+                    <UserInfo className='edit'>
+                      <UserInfoText>{calculateTime(el.updatedAt)}</UserInfoText>
+                    </UserInfo>
+                    <AnswerDetailProfile
+                      answers={el}
+                      AcreatedAt={el.createdAt}
+                    />
+                  </InfoContainer>
+                </LayoutRight>
+              </PostLayout>
+            );
+          })
         : null}
     </>
   );
