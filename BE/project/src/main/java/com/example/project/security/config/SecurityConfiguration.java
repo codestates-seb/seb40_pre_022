@@ -101,6 +101,7 @@ public class SecurityConfiguration {
         configuration.setAllowedMethods(Arrays.asList("GET","POST","PATCH","DELETE"));
         configuration.setExposedHeaders(Arrays.asList("*"));        // Cors 에러를 위한 임시방편, 보안 취약 가능성
         configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(false);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration); // 해당 인터페이스 구현 객체에 넣어준다.

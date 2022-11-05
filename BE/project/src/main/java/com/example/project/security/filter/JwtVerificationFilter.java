@@ -39,7 +39,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 //        setAuthenticationToContext(claims);
 
         try {
-            String refreshToken = jwtTokenizer.getRefreshTokenFromReq(request.getCookies());
+//            String refreshToken = jwtTokenizer.getRefreshTokenFromReq(request.getCookies());
+            String refreshToken = request.getHeader("refreshToken");
             jwtTokenizer.verifiedRefreshToken(refreshToken);
             Map<String, Object> claims = verifyJws(request);
             setAuthenticationToContext(claims);
