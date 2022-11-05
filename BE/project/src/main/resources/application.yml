@@ -3,13 +3,13 @@ spring:
 
 #    local mysql test 할 때,
 #    url: jdbc:mysql://localhost:3306/stackoverflow?characterEncoding=UTF-8&useSSL=false&useUnicode=true&allowPublicKeyRetrieval=true
-#    username: root
-#    password: 1234
+#    username: (로컬 mysql Id)
+#    password: (로컬 mysql Pw)
 
 #    aws 서버 올릴 때,
     url: jdbc:mysql://stackoverflow-database-deploy.cmt8diwmv4pt.ap-northeast-2.rds.amazonaws.com:3306/stackoverflow?characterEncoding=UTF-8&useSSL=false&useUnicode=true&allowPublicKeyRetrieval=true
-    username: admin
-    password: asdf1234!      # fixme : 비밀번호 환경변수로 변경
+    username: ${MYSQL_ID}
+    password: ${MYSQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
