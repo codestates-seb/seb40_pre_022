@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-export default atom({
+export const AnswerEditData = atom({
   key: "AnswerEditData",
   default: undefined,
 });

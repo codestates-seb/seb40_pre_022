@@ -20,18 +20,18 @@ const AQRightsidebar = () => {
           {YELLOWLIST.map((list, i) => {
             return (
               <YWList key={i}>
-                <YWListtitle>{list.title}</YWListtitle>
-                {list.sentence.map((item, i) => (
-                  <YWListitem key={i}>{item}</YWListitem>
+                <YWListtitle key={list.title}>{list.title}</YWListtitle>
+                {list.sentence.map((item) => (
+                  <YWListitem key={item}>{item}</YWListitem>
                 ))}
               </YWList>
             );
           })}
         </Yellowidget>
         <RelatedTags>
-          <Tagstitle>Reated Tags</Tagstitle>
+          <Tagstitle key='ReatedTags'>Reated Tags</Tagstitle>
           {TAGLIST.map((list, i) => (
-            <Tagsitems key={i}>
+            <Tagsitems>
               <Button primary='Linkbutton' label={list} Tagged='Tagged' />
             </Tagsitems>
           ))}
