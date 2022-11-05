@@ -50,7 +50,7 @@ const DetailAnswer = ({ answer, questionId }) => {
       {answer.length
         ? answer.map((el) => {
             return (
-              <PostLayout className='answer' key={el.answerId}>
+              <PostLayout className="answer" key={el.answerId}>
                 <LayoutLeft>
                   <AnswerVoteBtn answer={el} questionId={questionId} />
                 </LayoutLeft>
@@ -61,13 +61,13 @@ const DetailAnswer = ({ answer, questionId }) => {
                   <InfoContainer>
                     <PostMenuContainer>
                       <PostMenu>Share</PostMenu>
-                      <Link to='/questions/edit'>
+                      <Link to="/questions/edit">
                         <PostMenu>Edit</PostMenu>
                       </Link>
                       <PostMenu>Follow</PostMenu>
                       <PostMenu>Delete</PostMenu>
                     </PostMenuContainer>
-                    <UserInfo className='edit'>
+                    <UserInfo className="edit">
                       <UserInfoText>{calculateTime(el.updatedAt)}</UserInfoText>
                     </UserInfo>
                     <AnswerDetailProfile

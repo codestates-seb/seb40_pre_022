@@ -2,7 +2,6 @@ import { React, useState, useCallback } from "react";
 import { Button } from "../../components/Button";
 import Layout from "../../components/Layout";
 import ContentEditor from "../../components/ContentEditor";
-import ContentViewer from "../../components/ContentViewer";
 import EditSidebar from "../../components/EditSidebar";
 import TagInput from "../../components/TagInput";
 import { ENG_REGEX } from "../../constants/regex";
@@ -15,10 +14,21 @@ import {
   BtnBox,
   TagTitle,
 } from "./style";
+import { getDetailQPost } from "../../api/question/detailQApi";
+import { Link, useParams } from "react-router-dom";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const QuestionEdit = () => {
   const [tagInput, setTagInput] = useState("");
-  const [tagArr, setTagArr] = useState(["javascript", "react"]);
+  const [tagArr, setTagArr] = useState(["react"]);
+
+  const params = Number(useParams().id);
+  const queryClient = useQueryClient();
+
+  const { isError, isLoading, error, data } = useQuery(["detailQ"], () =>
+    getDetailQPost(params),
+  );
+  const queData = data;
 
   const handleTagInputOnKeyUp = useCallback(
     (e) => {
@@ -52,13 +62,15 @@ const QuestionEdit = () => {
       <EditContainer>
         <EditBox>
           <EditTitleText>Title</EditTitleText>
-          <EditInput placeholder='e.g. Is there an R function for finding the index of an element in a vector?'></EditInput>
+          <EditInput
+            question={queData}
+            placeholder='e.g. Is there an R function for finding the index of an element in a vector?'></EditInput>
           <EditTitleText>Body</EditTitleText>
-          <ContentEditor />
-          <ContentViewer />
+          <ContentEditor question={queData} />
           <TagsContainer>
             <TagTitle>Tags</TagTitle>
             <TagInput
+              question={queData}
               value={tagInput}
               tagArr={tagArr}
               placeholder='e.g. (angular sql-server string)'
@@ -70,8 +82,10 @@ const QuestionEdit = () => {
           <EditTitleText>Edit Summary</EditTitleText>
           <EditInput placeholder='briefly explain your changes (corrected spelling, fixed grammar, improved formatting)'></EditInput>
           <BtnBox>
-            <Button label='Save edits'></Button>
-            <Button primary='Linkbutton' label='Cancel'></Button>
+            <Link to='/question/edit'>
+              <Button label='Save edits'></Button>
+              <Button primary='Linkbutton' label='Cancel'></Button>
+            </Link>
           </BtnBox>
         </EditBox>
         <EditSidebar></EditSidebar>
