@@ -21,8 +21,9 @@ public class AuthController {
      * @param response - 돌려줄 response
      */
     @DeleteMapping("/members/logout")
-    public void logoutMember(@CookieValue(name = "RefreshToken") String refreshToken,
-                             @CookieValue(name = "MemberId") String memberId,
+    public void logoutMember(
+                            // @CookieValue(name = "RefreshToken") String refreshToken,
+                            //  @CookieValue(name = "MemberId") String memberId,
                              HttpServletRequest request,    // 헤더 사용하기 위함.
                              HttpServletResponse response){
         log.info("{}",response);
@@ -47,8 +48,9 @@ public class AuthController {
      * 3. 리스폰스에 추가해서 준다.
      */
     @GetMapping("/members/refresh")
-    public void refreshTokenReissue(@CookieValue(name = "RefreshToken") String refreshToken,
-                                    @CookieValue(name = "MemberId") String memberId,
+    public void refreshTokenReissue(
+        // @CookieValue(name = "RefreshToken") String refreshToken,
+        //                            @CookieValue(name = "MemberId") String memberId,
                                     HttpServletRequest request,  // 헤더 사용하기 위함.
                                     HttpServletResponse response){
 
@@ -62,14 +64,14 @@ public class AuthController {
         cookie.setPath("/");
         cookie.setHttpOnly(false);   // cookie 사용 이슈로 인한 true -> false 수정
 
-        Cookie mbCookie = new Cookie("MemberId", memberId);
-        mbCookie.setPath("/");
-        mbCookie.setHttpOnly(false);   // cookie 사용 이슈로 인한 true -> false 수정
+//        Cookie mbCookie = new Cookie("MemberId", memberId);
+//        mbCookie.setPath("/");
+//        mbCookie.setHttpOnly(false);   // cookie 사용 이슈로 인한 true -> false 수정
 
         response.setHeader("Authorization", "Bearer " + reIssueAccessToken);
         response.setHeader("refreshToken", reIssueRefreshToken);
 
         response.addCookie(cookie);
-        response.addCookie(mbCookie);
+//        response.addCookie(mbCookie);
     }
 }
