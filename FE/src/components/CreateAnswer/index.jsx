@@ -13,25 +13,22 @@ import ContentEditor from "../ContentEditor";
 import { AnswerEditData } from "../../store/AnswerEditData";
 import { useRecoilValue } from "recoil";
 import { createAnswer } from "../../api/details";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 const CreateAnswer = ({ questionId }) => {
   const answer = useRecoilValue(AnswerEditData);
   const [isSubmit, setIsSubmit] = useState(false);
-
-  const { mutate, isLoading, isError, data, error } = useMutation(
-    createAnswer,
-    {
-      retry: 0,
-      onSuccess: (data) => {
-        console.log(data);
-      },
-      onError: (error) => {
-        console.log(error.message);
-      },
-    }
-  );
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation(createAnswer, {
+    retry: 0,
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
+    onError: (error) => {
+      console.log(error.message);
+    },
+  });
 
   const clickHandle = () => {
     if (answer.length <= 0) return;
@@ -46,7 +43,7 @@ const CreateAnswer = ({ questionId }) => {
     <AnswerContainer>
       <AnswerMainTitle>Your Answer</AnswerMainTitle>
       <AnswerForm>
-        <ContentEditor isSubmit={isSubmit} />
+        <ContentEditor isSubmit={isSubmit} setIsSubmit={setIsSubmit} />
         <BtnContainer>
           <Button
             label="Post Your Answer"

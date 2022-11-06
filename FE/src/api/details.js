@@ -35,14 +35,14 @@ export const createAnswer = async (params) => {
 
 export const acceptAnswer = async (params) => {
   return await Api.patch(
-    `questions/${params.id}/answers/accept/${params.answerId}`,
+    `/questions/${params.id}/answers/accept/${params.answerId}`,
     { answerId: params.answerId }
   );
 };
 export const deleteAnswer = async (params) => {
-  return await Api.delete(`questions/${params.id}/answers/${params.answerId}`);
+  return await Api.delete(`/questions/${params.id}/answers/${params.answerId}`);
 };
 
 export const deleteQuestion = async (id) => {
-  return await Api.delete(`questions/${id}`);
+  return await Api.delete(`/questions/${id}`);
 };
