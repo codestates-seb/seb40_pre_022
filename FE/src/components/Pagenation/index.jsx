@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 
 import { Pagingcontainer, Pagination, Perpage } from "./style.js";
 import { Button } from "../Button/index.jsx";
-import { getAQuestion } from "../../API/AQuestion";
+import { getAQuestion } from "../../API/questions";
 import { AQPage } from "../../store/AQData.js";
 
 const Paging = () => {

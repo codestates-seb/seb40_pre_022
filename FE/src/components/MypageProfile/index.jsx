@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import { Title, UserContainer, Useritem, Qlist } from "./style";
 import { MypageSet } from "../../store/MypageData";
-import { getMembersPage } from "../../API/membersPage";
+import { getMembersPage } from "../../API/members";
 
 const MypageProfile = () => {
   const pageSet = useRecoilValue(MypageSet);
