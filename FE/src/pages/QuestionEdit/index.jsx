@@ -38,7 +38,7 @@ const QuestionEdit = () => {
     retry: 0,
     onSuccess: (data1) => {
       const postid = data1.questionId;
-      navigate(`/questions/${postid}`);
+      // navigate(`/questions/${postid}`);
     },
   });
 

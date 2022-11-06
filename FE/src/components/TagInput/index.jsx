@@ -11,23 +11,6 @@ const TagInput = ({ gotTag }) => {
   // const [isTagsFocus, setIsTagsFocus] = useState(false);
   const [tags, setTags] = useRecoilState(QuestionTags);
 
-  //   "questionTags": [
-  //     {
-  //         "questionTagName": "javascript"
-  //     },
-  //     {
-  //         "questionTagName": "python"
-  //     },
-  //     {
-  //         "questionTagName": "spring"
-  //     }
-  // ],
-
-  let tagArray = [];
-  gotTag.map((el) => tagArray.push(el.questionTagName));
-  console.log(tagArray);
-  // [java, react]
-
   const handleKeyDown = useCallback(
     (e) => {
       if (e.key !== "Enter") return;
@@ -66,5 +49,3 @@ const TagInput = ({ gotTag }) => {
 };
 
 export default TagInput;
-
-//"questionTags":[{"questionTagName": "javascript"}, {"questionTagName": "python"}

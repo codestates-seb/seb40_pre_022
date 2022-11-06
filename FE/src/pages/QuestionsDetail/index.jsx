@@ -24,10 +24,19 @@ const QuestionsDetail = () => {
       <Layout>
         <PostContainer>
           <LeftPostContainer>
-            <DetailHeader question={data} />
-            <DetailPost question={data} />
-            <DetailAnswer answer={data.answers} questionId={data.questionId} />
-            <CreateAnswer questionId={data.questionId} />
+            {isLoading ? (
+              <div>now loading..</div>
+            ) : (
+              <>
+                <DetailHeader question={data} />
+                <DetailPost question={data} />
+                <DetailAnswer
+                  answer={data.answers}
+                  questionId={data.questionId}
+                />
+                <CreateAnswer questionId={data.questionId} />
+              </>
+            )}
           </LeftPostContainer>
           <AQRightsidebar />
         </PostContainer>
@@ -35,5 +44,4 @@ const QuestionsDetail = () => {
     </>
   );
 };
-
 export default QuestionsDetail;
