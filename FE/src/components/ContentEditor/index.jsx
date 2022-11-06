@@ -4,19 +4,21 @@ import "@toast-ui/editor/dist/toastui-editor.css";
 import { useRecoilState } from "recoil";
 import { AnswerEditData } from "../../store/AnswerEditData";
 
-const ContentEditor = () => {
+const ContentEditor = ({ isSubmit }) => {
   const [answerData, setAnswerData] = useRecoilState(AnswerEditData);
   const editorRef = useRef();
-
+  if (isSubmit) {
+    editorRef.current.value = "";
+  }
   const onChangeHandle = () => {
     let data = editorRef.current.getInstance().getMarkdown();
     setAnswerData(data);
   };
   return (
     <Editor
-      placeholder='내용을 입력해주세요.'
-      previewStyle='tab'
-      height='300px'
+      placeholder="내용을 입력해주세요."
+      previewStyle="tab"
+      height="300px"
       toolbarItems={[
         ["heading", "bold", "italic", "strike"],
         ["hr", "quote"],
@@ -26,9 +28,10 @@ const ContentEditor = () => {
       ]}
       useCommandShortcut={true}
       hideModeSwitch={true}
-      initialValue=' '
+      initialValue=" "
       ref={editorRef}
-      onChange={onChangeHandle}></Editor>
+      onChange={onChangeHandle}
+    ></Editor>
   );
 };
 

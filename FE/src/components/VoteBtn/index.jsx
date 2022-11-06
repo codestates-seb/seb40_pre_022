@@ -14,38 +14,18 @@ const VoteBtn = ({ question }) => {
 
   const voteUp = useMutation(QvoteUp, {
     retry: 0,
-    onSuccess: (data) => {
-      console.log(data);
-    },
     onError: (error) => {
       console.log(error.message);
     },
   });
   const voteDown = useMutation(QvoteDown, {
     retry: 0,
-    onSuccess: (data) => {
-      console.log(data);
-    },
     onError: (error) => {
       console.log(error.message);
     },
   });
 
   const handleVoteClick = (status) => {
-    // if (status === "up" && (count === QVoteCount || count === QVoteCount - 1)) {
-    //   setIsVotedUp(true);
-    //   setIsVotedDown(false);
-    //   setCount(count + 1);
-
-    // } else if (
-    //   status === "down" &&
-    //   (count === QVoteCount || count === QVoteCount + 1)
-    // ) {
-    //   setIsVotedDown(true);
-    //   setIsVotedUp(false);
-    //   setCount(count - 1);
-    // }
-
     if (status === "up" && (count === QVoteCount || count === QVoteCount - 1)) {
       setIsVotedUp(true);
       setIsVotedDown(false);

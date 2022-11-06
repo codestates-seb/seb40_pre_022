@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 import { calculateTime } from "../../utils/calculateTime";
 import {
   AnswerCount,
@@ -25,12 +26,32 @@ import ContentViewer from "../ContentViewer";
 import { sortDate } from "../../utils/sortDate";
 import AnswerVoteBtn from "../AnswerVoteBtn";
 import AnswerDetailProfile from "../AnswerDetailProfile";
+import { deleteAnswer } from "../../api/details";
+import { useState } from "react";
 
 const DetailAnswer = ({ answer, questionId }) => {
   // const date = answer.map((el) => el.createdAt);
   // const sortData = () => {
   //   console.log(sortDate(date));
   // };
+  const [answerId, setAnswerId] = useState("");
+
+  const deleteA = useMutation(
+    deleteAnswer({ id: questionId, answerId: answerId }),
+    {
+      retry: 0,
+      onSuccess: (data) => {
+        console.log(data);
+      },
+      onError: (error) => {
+        console.log(error.message);
+      },
+    }
+  );
+  const handleDelete = (id) => {
+    setAnswerId(id);
+    deleteA.mutate();
+  };
 
   return (
     <>
@@ -65,7 +86,13 @@ const DetailAnswer = ({ answer, questionId }) => {
                         <PostMenu>Edit</PostMenu>
                       </Link>
                       <PostMenu>Follow</PostMenu>
-                      <PostMenu>Delete</PostMenu>
+                      <PostMenu
+                        onClick={() => {
+                          handleDelete(el.answerId);
+                        }}
+                      >
+                        Delete
+                      </PostMenu>
                     </PostMenuContainer>
                     <UserInfo className="edit">
                       <UserInfoText>{calculateTime(el.updatedAt)}</UserInfoText>
