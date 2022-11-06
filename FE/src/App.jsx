@@ -59,10 +59,7 @@ function App() {
                 }
               />
               <Route path="/members/myPage/:id" element={<MyPage />} />
-              <Route
-                path="/question/detail/:id"
-                element={<QuestionsDetail />}
-              />
+              <Route path="/questions/:id" element={<QuestionsDetail />} />
               <Route path="/*" element={<Error />} />
             </Routes>
           </BrowserRouter>

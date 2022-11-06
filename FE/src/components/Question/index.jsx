@@ -14,7 +14,7 @@ import {
   Questiontags,
 } from "./style";
 import { Button } from "../Button";
-import { getAQuestion } from "../../API/AQuestion/AQuestion";
+import { getAQuestion } from "../../API/AQuestion";
 import { AQPage } from "../../store/AQData";
 
 const Question = () => {
@@ -48,16 +48,16 @@ const Question = () => {
                   {data.questionTags.map((list) => {
                     return (
                       <Button
-                        primary='Linkbutton'
+                        primary="Linkbutton"
                         label={list.questionTagName}
-                        Tagged='Tagged'
+                        Tagged="Tagged"
                       />
                     );
                   })}
                 </Questiontags>
                 <a href={Mid}>
                   <Questionuser>
-                    <img src={data.member.image} className='img' />
+                    <img src={data.member.image} className="img" />
                     {data.member.name} asked{" "}
                   </Questionuser>
                 </a>

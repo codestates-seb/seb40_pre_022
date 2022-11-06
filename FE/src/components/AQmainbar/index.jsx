@@ -18,8 +18,8 @@ const AQMainbar = () => {
       <MainbarContainer>
         <AQheader>
           <h1>All Questions</h1>
-          <Link to={"/question/ask"}>
-            <Button label='Ask Question' size='large' />
+          <Link to={"/questions/ask"}>
+            <Button label="Ask Question" size="large" />
           </Link>
         </AQheader>
         <AQsorting>
@@ -33,7 +33,7 @@ const AQMainbar = () => {
             />
             <Button primary='Linkbutton' label='Unanswered' Position='Middle' />
             <Button primary='Linkbutton' label='Views' Position='Right' /> */}
-            <Button primary='Linkbutton' label='Newest' Choosed='Choosed' />
+            <Button primary="Linkbutton" label="Newest" Choosed="Choosed" />
           </AQsortingButton>
         </AQsorting>
         <Question />
