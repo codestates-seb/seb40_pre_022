@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Container, Item } from "./style";
-import { getAllMembers } from "../../API/membersPage";
+import { getAllMembers } from "../../api/membersPage";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 

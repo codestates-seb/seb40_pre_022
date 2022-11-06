@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 
 import { MPSContainer, MPSImg, MPSName, Postbutton } from "./style";
-import { getMembersPage, PatchMembersPage } from "../../API/membersPage";
+import { getMembersPage, PatchMembersPage } from "../../api/membersPage";
 
 const MPSChange = () => {
   let str = String(document.location.href);
