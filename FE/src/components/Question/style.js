@@ -26,6 +26,7 @@ const Questiontitle = styled.h3`
 `;
 
 const Questionbody = styled.div`
+  font-size: 14px;
   margin-top: -2px;
   margin-bottom: 8px;
   -webkit-line-clamp: 2;

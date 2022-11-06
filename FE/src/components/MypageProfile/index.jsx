@@ -1,6 +1,7 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 
 import { Title, UserContainer, Useritem, Qlist } from "./style";
 import { MypageSet } from "../../store/MypageData";
@@ -8,7 +9,6 @@ import { getMembersPage } from "../../API/members";
 
 const MypageProfile = () => {
   const pageSet = useRecoilValue(MypageSet);
-  let link = `${import.meta.env.VITE_API_BASE_URL}/questions/`;
   let str = String(document.location.href);
   str = str.split("/");
 
@@ -25,7 +25,9 @@ const MypageProfile = () => {
         <Useritem>{data.questions.questionsCount} question</Useritem>
         <Useritem>
           {data.questions.questionList.map((data) => (
-            <Qlist href={link + data.questionId}>{data.title}</Qlist>
+            <Link to={`/questions/${data.questionId}`}>
+              <Qlist>{data.title}</Qlist>
+            </Link>
           ))}
         </Useritem>
         <Useritem>{data.answers.answersCount} answers</Useritem>

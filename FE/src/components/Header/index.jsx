@@ -32,6 +32,9 @@ const Header = () => {
   const productsTooltip = useRef();
 
   const isLogin = localStorage.getItem("isLogin");
+  const Loggedin = `/members/myPage/${JSON.parse(
+    localStorage.getItem("memberId")
+  )}`;
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -61,18 +64,19 @@ const Header = () => {
   return (
     <Wrapper>
       <Container>
-        <button className='menu' onClick={handleMenuToggle}>
+        <button className="menu" onClick={handleMenuToggle}>
           <FontAwesomeIcon icon={faBars} />
         </button>
-        <Link className='logo' to='/'>
+        <Link className="logo" to="/">
           <span>stack overflow</span>
         </Link>
         <ProductsBox ref={productsTooltip}>
           <Button
-            primary='Linkbutton'
-            label='Products'
+            primary="Linkbutton"
+            label="Products"
             className={isTooltip ? "active" : ""}
-            onClick={() => handleToggle("products")}>
+            onClick={() => handleToggle("products")}
+          >
             Products
           </Button>
           {isTooltip && (
@@ -94,8 +98,8 @@ const Header = () => {
         </ProductsBox>
         <SearchBox className={isSearchBox ? "active" : ""}>
           <SearchInnerBox>
-            <FontAwesomeIcon className='icon' icon={faMagnifyingGlass} />
-            <input type='text' placeholder='Search...' />
+            <FontAwesomeIcon className="icon" icon={faMagnifyingGlass} />
+            <input type="text" placeholder="Search..." />
             <SearchDropBox>
               {SEARCH_TOOLTIPS.map((tooltip, i) => {
                 const { title, detail } = tooltip;
@@ -107,7 +111,7 @@ const Header = () => {
                 );
               })}
               <li>
-                <Button label='Ask a question' size='small' />
+                <Button label="Ask a question" size="small" />
                 <Link>Search help</Link>
               </li>
             </SearchDropBox>
@@ -118,14 +122,14 @@ const Header = () => {
           <IconUl>
             <li>
               <FontAwesomeIcon
-                className='icon'
+                className="icon"
                 icon={faMagnifyingGlass}
                 onClick={() => handleToggle("search")}
               />
             </li>
             <li>
-              <Link className='profile' to='/mypage'>
-                <img src='/initialProfile.png' alt='profile' />
+              <Link className="profile" to={Loggedin}>
+                <img src="/initialProfile.png" alt="profile" />
                 <span>1</span>
               </Link>
             </li>
@@ -134,8 +138,8 @@ const Header = () => {
               return (
                 <li key={i}>
                   <FontAwesomeIcon
-                    className='icon'
-                    role='menuitem'
+                    className="icon"
+                    role="menuitem"
                     title={title}
                     icon={icon}
                   />
@@ -147,16 +151,16 @@ const Header = () => {
           <ButtonWrap>
             <li>
               <FontAwesomeIcon
-                className='icon'
+                className="icon"
                 icon={faMagnifyingGlass}
                 onClick={() => handleToggle("search")}
               />
             </li>
             <li>
-              <Link to='/members/login'>Log in</Link>
+              <Link to="/members/login">Log in</Link>
             </li>
             <li>
-              <Link to='/join'>Sign up</Link>
+              <Link to="/join">Sign up</Link>
             </li>
           </ButtonWrap>
         )}

@@ -1,27 +1,32 @@
 import styled from "styled-components";
-import { flexRowBetween } from "../../styles";
 
 export const Container = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(25%, auto));
+  display: block;
   margin-top: 50px;
 `;
 
 export const Item = styled.div`
-  ${flexRowBetween}
+  overflow: hidden;
+  display: flex;
   align-items: flex-start;
-  width: 220px;
-  margin: 0 auto 0 -10px;
+
+  padding-top: 25px;
   column-gap: 10px;
+
   img {
-    width: 40px;
+    width: 50px;
+    margin-top: 2px;
     border-radius: 5px;
-    margin-left: auto;
+    margin-left: 30px;
+    margin-right: 10px;
   }
   ul {
     font-size: 0.8rem;
     .blue {
       color: hsl(206, 100%, 40%);
+    }
+    .Name {
+      font-size: 1.2em;
     }
   }
 `;
