@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
-import { AvoteDown, AvoteUp } from "../../api/details";
+import { acceptAnswer, AvoteDown, AvoteUp } from "../../api/details";
 
 const AnswerVoteBtn = ({ answer, questionId }) => {
   const AVoteCount = answer.voteCount;
@@ -14,35 +14,32 @@ const AnswerVoteBtn = ({ answer, questionId }) => {
   const [isVotedDown, setIsVotedDown] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [count, setCount] = useState(AVoteCount);
-  const voteUp = useMutation(
-    () => {
-      AvoteUp(questionId, answer.answerId);
-    },
-    {
-      retry: 0,
-      onSuccess: (data) => {
-        console.log(data);
-      },
-      onError: (error) => {
-        console.log(error.message);
-      },
-    },
-  );
 
-  const voteDown = useMutation(
-    () => {
-      AvoteDown(questionId, answer.answerId);
+  const voteUp = useMutation(AvoteUp, {
+    retry: 0,
+
+    onError: (error) => {
+      console.log(error.message);
     },
-    {
-      retry: 0,
-      onSuccess: (data) => {
-        console.log(data);
-      },
-      onError: (error) => {
-        console.log(error.message);
-      },
+  });
+
+  const voteDown = useMutation(AvoteDown, {
+    retry: 0,
+
+    onError: (error) => {
+      console.log(error.message);
     },
-  );
+  });
+
+  const checkAnswer = useMutation(acceptAnswer, {
+    retry: 0,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      console.log(error.message);
+    },
+  });
 
   const handleVoteClick = (status) => {
     if (status === "up" && (count === AVoteCount || count === AVoteCount - 1)) {
@@ -50,6 +47,7 @@ const AnswerVoteBtn = ({ answer, questionId }) => {
       setIsVotedDown(false);
       setCount(count + 1);
       voteUp.mutate({
+        id: questionId,
         answerId: answer.answerId,
       });
     } else if (
@@ -60,16 +58,17 @@ const AnswerVoteBtn = ({ answer, questionId }) => {
       setIsVotedUp(false);
       setCount(count - 1);
       voteDown.mutate({
+        id: questionId,
         answerId: answer.answerId,
       });
     }
-    console.log(count);
   };
 
   const handleCheckClick = () => {
-    if (!isChecked) {
-    }
     setIsChecked(!isChecked);
+    if (!isChecked) {
+      checkAnswer.mutate();
+    }
   };
 
   return (
@@ -85,21 +84,21 @@ const AnswerVoteBtn = ({ answer, questionId }) => {
       />
       <FontAwesomeIcon
         icon={faBookmark}
-        color='hsl(210deg 8% 80%)'
-        className='icon'
+        color="hsl(210deg 8% 80%)"
+        className="icon"
       />
       <FontAwesomeIcon // 질문 작성자에게만 보이도록 해야 함
         icon={faCheck}
         className={
           isChecked || bestAnswer ? "icon check checked" : "icon check"
         }
-        color='hsl(210deg 8% 80%)'
+        color="hsl(210deg 8% 80%)"
         onClick={handleCheckClick}
       />
       <FontAwesomeIcon
         icon={faClockRotateLeft}
-        color='hsl(210deg 8% 80%)'
-        className='icon'
+        color="hsl(210deg 8% 80%)"
+        className="icon"
       />
     </VoteContainer>
   );

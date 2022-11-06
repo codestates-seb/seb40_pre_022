@@ -44,11 +44,11 @@ Api.interceptors.response.use(
         if (data) {
           localStorage.setItem(
             "token",
-            JSON.stringify(data.headers.authorization),
+            JSON.stringify(data.headers.authorization)
           );
           localStorage.setItem(
             "refreshToken",
-            JSON.stringify(data.headers.refreshtoken),
+            JSON.stringify(data.headers.refreshtoken)
           );
           return await Api.request(originalConfig);
         }
@@ -58,7 +58,7 @@ Api.interceptors.response.use(
       return Promise.reject(err);
     }
     return Promise.reject(err);
-  },
+  }
 );
 
 export default Api;

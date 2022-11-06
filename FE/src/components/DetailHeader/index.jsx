@@ -24,8 +24,8 @@ const DetailHeader = ({ question }) => {
       <HeaderContainer>
         <QuestionHeader>
           <QuestionTitle>{question.title}</QuestionTitle>
-          <Link to='/questions/ask'>
-            <Button label='Ask Question' size='header-size' />
+          <Link to="/questions/ask">
+            <Button label="Ask Question" size="header-size" />
           </Link>
         </QuestionHeader>
       </HeaderContainer>
@@ -35,7 +35,7 @@ const DetailHeader = ({ question }) => {
             return (
               <InfoContainer key={info.title}>
                 <QuestionInfo>{info.title}</QuestionInfo>
-                <QuestionInfo color='black'>{questionInfo[i]}</QuestionInfo>
+                <QuestionInfo color="black">{questionInfo[i]}</QuestionInfo>
               </InfoContainer>
             );
           })}

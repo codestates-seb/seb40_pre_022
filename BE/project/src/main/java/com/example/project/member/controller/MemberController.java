@@ -7,6 +7,7 @@ import com.example.project.member.dto.MemberDto;
 import com.example.project.member.entity.Member;
 import com.example.project.member.mapper.MemberMapper;
 import com.example.project.member.service.MemberService;
+import com.example.project.security.jwt.JwtTokenizer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import java.util.List;
@@ -27,6 +29,8 @@ public class MemberController {
 
     private final MemberService memberService;
     private final MemberMapper mapper;
+
+    private final JwtTokenizer jwtTokenizer;
 
 
     /**
@@ -45,9 +49,11 @@ public class MemberController {
      */
     @PatchMapping("/{member_Id}")
     public ResponseEntity patchMember(@PathVariable("member_Id") long memberId,
+                                      HttpServletRequest request,
                                       @Valid @RequestBody MemberDto.Patch memberPatchDto){
+        String curEmail = extractMemberEmail(request);
 
-        Member result = memberService.updateMember(mapper.memberPatchDtoToMember(memberPatchDto));
+        Member result = memberService.updateMember(mapper.memberPatchDtoToMember(memberPatchDto), curEmail);
 
         return new ResponseEntity(new SingleResponseDto<>(mapper.memberToMemberResponseDto(result)),HttpStatus.OK);
     }
@@ -110,5 +116,16 @@ public class MemberController {
         return new ResponseEntity(
                 new SingleResponseDto<>(mail), HttpStatus.OK
         );
+    }
+
+
+    /**
+     * 메서드 : email정보를 추출한다.
+     * @return request 헤더의 토큰에서 추출한 로그인 유저의 email정보
+     */
+    private String extractMemberEmail(HttpServletRequest request){
+        String jws = request.getHeader("Authorization").replace("Bearer ", "");
+        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+        return jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody().getSubject();
     }
 }

@@ -10,18 +10,18 @@ import {
   TagWrapper,
 } from "./style";
 import ContentEditor from "../ContentEditor";
-import AnswerEditData from "../../store/AnswerEditData";
+import { AnswerEditData } from "../../store/AnswerEditData";
 import { useRecoilValue } from "recoil";
 import { createAnswer } from "../../api/details";
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 
 const CreateAnswer = ({ questionId }) => {
   const answer = useRecoilValue(AnswerEditData);
-  console.log(answer);
+  const [isSubmit, setIsSubmit] = useState(false);
+
   const { mutate, isLoading, isError, data, error } = useMutation(
-    () => {
-      createAnswer(questionId);
-    },
+    createAnswer,
     {
       retry: 0,
       onSuccess: (data) => {
@@ -30,12 +30,14 @@ const CreateAnswer = ({ questionId }) => {
       onError: (error) => {
         console.log(error.message);
       },
-    },
+    }
   );
 
   const clickHandle = () => {
     if (answer.length <= 0) return;
+    setIsSubmit(true);
     mutate({
+      id: questionId,
       body: answer,
     });
   };
@@ -44,11 +46,11 @@ const CreateAnswer = ({ questionId }) => {
     <AnswerContainer>
       <AnswerMainTitle>Your Answer</AnswerMainTitle>
       <AnswerForm>
-        <ContentEditor />
+        <ContentEditor isSubmit={isSubmit} />
         <BtnContainer>
           <Button
-            label='Post Your Answer'
-            size='header-size'
+            label="Post Your Answer"
+            size="header-size"
             onClick={clickHandle}
           />
         </BtnContainer>
@@ -56,15 +58,15 @@ const CreateAnswer = ({ questionId }) => {
       <AnswerText>
         Browse other questions tagged
         <TagWrapper>
-          <Button label='javascript' Tagged='Tagged' />
+          <Button label="javascript" Tagged="Tagged" />
         </TagWrapper>
         <TagWrapper>
-          <Button label='reactjs' Tagged='Tagged' />
+          <Button label="reactjs" Tagged="Tagged" />
         </TagWrapper>
         <TagWrapper>
-          <Button label='css' Tagged='Tagged' />
+          <Button label="css" Tagged="Tagged" />
         </TagWrapper>
-        <Link to='/questions/ask' className='link'>
+        <Link to="/questions/ask" className="link">
           ask your own question.
         </Link>
       </AnswerText>
