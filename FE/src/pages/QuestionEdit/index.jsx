@@ -32,13 +32,12 @@ const QuestionEdit = () => {
     return questionsData(data.questionId);
   });
   if (isLoading) return <div>now loading..</div>;
-  console.log(data);
 
   const { mutate, data1 } = useMutation(questionsEdit, {
     retry: 0,
     onSuccess: (data1) => {
-      const postid = data1.questionId;
-      // navigate(`/questions/${postid}`);
+      const postid = data1.data.data.questionId;
+      navigate(`/questions/${postid}`);
     },
   });
 
