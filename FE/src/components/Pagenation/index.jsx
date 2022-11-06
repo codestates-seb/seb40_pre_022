@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 
 import { Pagingcontainer, Pagination, Perpage } from "./style.js";
 import { Button } from "../Button/index.jsx";
-import { getAQuestion } from "../../API/AQuestion/AQuestion";
+import { getAQuestion } from "../../API/questions";
 import { AQPage } from "../../store/AQData.js";
 
 const Paging = () => {
@@ -45,8 +45,8 @@ const Paging = () => {
       <Pagination>
         {choosed + 2 > 5 ? (
           <Button
-            primary='Pagingbutton'
-            label='1'
+            primary="Pagingbutton"
+            label="1"
             onClick={(e) => {
               setPage(e.target.value);
             }}
@@ -58,7 +58,7 @@ const Paging = () => {
           return (
             <Button
               key={i}
-              primary='Pagingbutton'
+              primary="Pagingbutton"
               Selected={choosed === num ? "Selected" : null}
               label={`${num}`}
               onClick={(e) => {
@@ -72,7 +72,7 @@ const Paging = () => {
           : null}
         {choosed - 2 < pageInfo.totalPages - 4 && pageInfo.totalPages !== 5 ? (
           <Button
-            primary='Pagingbutton'
+            primary="Pagingbutton"
             label={pageInfo.totalPages}
             onClick={(e) => {
               setPage(e.target.value);
@@ -81,7 +81,7 @@ const Paging = () => {
         ) : null}
       </Pagination>
       <Perpage>
-        <Button primary='Pagingbutton' Selected='Selected' label='10' />
+        <Button primary="Pagingbutton" Selected="Selected" label="10" />
         per page
       </Perpage>
     </Pagingcontainer>

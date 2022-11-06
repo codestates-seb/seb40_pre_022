@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Title, UserContainer, Useritem, Qlist } from "./style";
 import { MypageSet } from "../../store/MypageData";
-import { getMembersPage } from "../../API/membersPage/membersPage";
+import { getMembersPage } from "../../API/members";
 
 const MypageProfile = () => {
   const pageSet = useRecoilValue(MypageSet);

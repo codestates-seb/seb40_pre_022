@@ -14,7 +14,7 @@ import {
   Questiontags,
 } from "./style";
 import { Button } from "../Button";
-import { getAQuestion } from "../../API/AQuestion/AQuestion";
+import { getAQuestion } from "../../API/questions";
 import { AQPage } from "../../store/AQData";
 
 const Question = () => {

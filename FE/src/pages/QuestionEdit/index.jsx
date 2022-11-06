@@ -5,6 +5,10 @@ import ContentEditor from "../../components/ContentEditor";
 import EditSidebar from "../../components/EditSidebar";
 import TagInput from "../../components/TagInput";
 import { ENG_REGEX } from "../../constants/regex";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { questionsData } from "../../api/questions";
+
 import {
   EditBox,
   EditContainer,
@@ -14,9 +18,6 @@ import {
   BtnBox,
   TagTitle,
 } from "./style";
-import { getDetailQPost } from "../../api/question/detailQApi";
-import { Link, useParams } from "react-router-dom";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const QuestionEdit = () => {
   const [tagInput, setTagInput] = useState("");
@@ -24,37 +25,56 @@ const QuestionEdit = () => {
 
   const params = Number(useParams().id);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
-  const { isError, isLoading, error, data } = useQuery(["detailQ"], () =>
-    getDetailQPost(params),
-  );
-  const queData = data;
+  const { isLoading, data } = useQuery(["detailQ"], () => {
+    return questionsData(params);
+  });
+  if (isLoading) return <div>now loading..</div>;
+  console.log(data);
 
-  const handleTagInputOnKeyUp = useCallback(
-    (e) => {
-      const target = e.target;
-      if (
-        e.key === "Enter" &&
-        target.value.trim() !== "" &&
-        !tagArr.includes(target.value)
-      ) {
-        setTagArr((prev) => [...prev, target.value]);
-        setTagInput("");
-      }
+  const { mutate, data1 } = useMutation(questionsPost, {
+    retry: 0,
+    onSuccess: (data1) => {
+      const postid = data.data.data.questionId;
+      navigate(`/questions/${postid}`);
     },
-    [tagArr],
-  );
+  });
 
-  const handleTagInputChange = (e) => {
-    const { value } = e.target;
-    if (ENG_REGEX.test(value)) {
-      setTagInput(value);
-    }
-  };
+  // const handleTagInputOnKeyUp = useCallback(
+  //   (e) => {
+  //     const target = e.target;
+  //     if (
+  //       e.key === "Enter" &&
+  //       target.value.trim() !== "" &&
+  //       !tagArr.includes(target.value)
+  //     ) {
+  //       setTagArr((prev) => [...prev, target.value]);
+  //       setTagInput("");
+  //     }
+  //   },
+  //   [tagArr]
+  // );
 
-  const handleTagDelete = (name) => {
-    const deletedTags = tagArr.filter((tag) => tag !== name);
-    setTagArr(deletedTags);
+  // const handleTagInputChange = (e) => {
+  //   const { value } = e.target;
+  //   if (ENG_REGEX.test(value)) {
+  //     setTagInput(value);
+  //   }
+  // };
+
+  // const handleTagDelete = (name) => {
+  //   const deletedTags = tagArr.filter((tag) => tag !== name);
+  //   setTagArr(deletedTags);
+  // };
+
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    mutate({
+      title: titleText,
+      body: bodyText,
+      questionTags: tagArr,
+    });
   };
 
   return (
@@ -63,28 +83,29 @@ const QuestionEdit = () => {
         <EditBox>
           <EditTitleText>Title</EditTitleText>
           <EditInput
-            question={queData}
-            placeholder='e.g. Is there an R function for finding the index of an element in a vector?'></EditInput>
+            question={data}
+            placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
+          ></EditInput>
           <EditTitleText>Body</EditTitleText>
-          <ContentEditor question={queData} />
+          <ContentEditor question={data} />
           <TagsContainer>
             <TagTitle>Tags</TagTitle>
             <TagInput
-              question={queData}
+              question={data}
               value={tagInput}
               tagArr={tagArr}
-              placeholder='e.g. (angular sql-server string)'
+              placeholder="e.g. (angular sql-server string)"
               onChange={handleTagInputChange}
               onKeyUp={handleTagInputOnKeyUp}
               onClick={handleTagDelete}
             />
           </TagsContainer>
           <EditTitleText>Edit Summary</EditTitleText>
-          <EditInput placeholder='briefly explain your changes (corrected spelling, fixed grammar, improved formatting)'></EditInput>
+          <EditInput placeholder="briefly explain your changes (corrected spelling, fixed grammar, improved formatting)"></EditInput>
           <BtnBox>
-            <Link to='/question/edit'>
-              <Button label='Save edits'></Button>
-              <Button primary='Linkbutton' label='Cancel'></Button>
+            <Link to="/question/edit">
+              <Button label="Save edits" onClick={handleEditSubmit}></Button>
+              <Button primary="Linkbutton" label="Cancel"></Button>
             </Link>
           </BtnBox>
         </EditBox>

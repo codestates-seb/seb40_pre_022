@@ -6,7 +6,7 @@ import { faPen } from "@fortawesome/free-solid-svg-icons";
 
 import { MPSContainer, MPSImg, MPSName, Postbutton } from "./style";
 import { MypageSet } from "../../store/MypageData";
-import { getMembersPage } from "../../API/membersPage/membersPage";
+import { getMembersPage } from "../../API/members";
 
 const MPSChange = () => {
   const pageSet = useRecoilValue(MypageSet);
@@ -47,25 +47,25 @@ const MPSChange = () => {
   return (
     <MPSContainer>
       <MPSImg>
-        <img src={data.member.image} className='img' />
+        <img src={data.member.image} className="img" />
 
-        <form method='post' enctype='multipart/form-data'>
+        <form method="post" enctype="multipart/form-data">
           <Postbutton onClick={() => {}}>
             <FontAwesomeIcon icon={faPen} />
           </Postbutton>
           <input
-            type='file'
-            id='chooseFile'
-            name='chooseFile'
-            accept='image/*'
-            onchange='loadFile(this)'
+            type="file"
+            id="chooseFile"
+            name="chooseFile"
+            accept="image/*"
+            onchange="loadFile(this)"
           />
         </form>
       </MPSImg>
       <MPSName>
         {data.member.name}
         <Postbutton>
-          <FontAwesomeIcon icon={faPen} fontSize='13px' />
+          <FontAwesomeIcon icon={faPen} fontSize="13px" />
         </Postbutton>
         <input></input>
       </MPSName>

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { getMembersPage } from "../../API/membersPage/membersPage";
+import { getMembersPage } from "../../API/members";
 
 import { UserContainer, Username } from "./style";
 
@@ -17,7 +17,7 @@ const MypageUser = () => {
   return (
     <>
       <UserContainer>
-        <img src={data.member.image} className='img' />
+        <img src={data.member.image} className="img" />
         <Username>{data.member.name}</Username>
       </UserContainer>
     </>
