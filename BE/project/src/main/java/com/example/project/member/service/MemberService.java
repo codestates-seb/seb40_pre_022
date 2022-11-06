@@ -61,9 +61,11 @@ public class MemberService{
      * 4. 저장한다.
      */
     // 2. 멤버 정보 수정
-    public Member updateMember(Member member){
+    public Member updateMember(Member member, String curEmail){
 
         Member findMember = findExistMember(member.getMemberId());
+        if(!findMember.getEmail().equals(curEmail))
+            throw new BusinessLogicException(ExceptionCode.CANNOT_CHANGE_MEMBER);
 
         Optional.ofNullable(member.getName())
                 .ifPresent(name -> findMember.setName(name));
