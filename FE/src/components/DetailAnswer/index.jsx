@@ -28,6 +28,7 @@ import AnswerVoteBtn from "../AnswerVoteBtn";
 import AnswerDetailProfile from "../AnswerDetailProfile";
 import { deleteAnswer } from "../../api/details";
 import { useState } from "react";
+import { useEffect } from "react";
 
 const DetailAnswer = ({ answer, questionId }) => {
   // const date = answer.map((el) => el.createdAt);
@@ -36,21 +37,26 @@ const DetailAnswer = ({ answer, questionId }) => {
   // };
   const [answerId, setAnswerId] = useState("");
 
-  const deleteA = useMutation(
-    deleteAnswer({ id: questionId, answerId: answerId }),
-    {
-      retry: 0,
-      onSuccess: (data) => {
-        console.log(data);
-      },
-      onError: (error) => {
-        console.log(error.message);
-      },
+  const deleteA = useMutation(deleteAnswer, {
+    retry: 0,
+    onError: (error) => {
+      if (error.message === "Request failed with status code 403") {
+        alert("삭제할 권한이 없는 답변입니다.");
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (answerId) {
+      deleteA.mutate({
+        id: questionId,
+        answerId: answerId,
+      });
     }
-  );
+  }, [answerId]);
+
   const handleDelete = (id) => {
     setAnswerId(id);
-    deleteA.mutate();
   };
 
   return (

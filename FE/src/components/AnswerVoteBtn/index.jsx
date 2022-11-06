@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Btn, VoteContainer, VoteCount } from "../VoteBtn/style";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
@@ -14,10 +14,12 @@ const AnswerVoteBtn = ({ answer, questionId }) => {
   const [isVotedDown, setIsVotedDown] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [count, setCount] = useState(AVoteCount);
-
+  const queryClient = useQueryClient();
   const voteUp = useMutation(AvoteUp, {
     retry: 0,
-
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
     onError: (error) => {
       console.log(error.message);
     },
@@ -25,7 +27,9 @@ const AnswerVoteBtn = ({ answer, questionId }) => {
 
   const voteDown = useMutation(AvoteDown, {
     retry: 0,
-
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
     onError: (error) => {
       console.log(error.message);
     },
@@ -33,11 +37,16 @@ const AnswerVoteBtn = ({ answer, questionId }) => {
 
   const checkAnswer = useMutation(acceptAnswer, {
     retry: 0,
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
+      queryClient.invalidateQueries();
     },
     onError: (error) => {
-      console.log(error.message);
+      if (error.message === "Request failed with status code 409")
+        alert("이미 채택된 답변이 있습니다.");
+      else if (error.message === "Request failed with status code 403") {
+        alert("채택할 권한이 없는 글입니다.");
+      }
+      setIsChecked(false);
     },
   });
 
@@ -66,9 +75,10 @@ const AnswerVoteBtn = ({ answer, questionId }) => {
 
   const handleCheckClick = () => {
     setIsChecked(!isChecked);
-    if (!isChecked) {
-      checkAnswer.mutate();
-    }
+    checkAnswer.mutate({
+      id: questionId,
+      answerId: answer.answerId,
+    });
   };
 
   return (
