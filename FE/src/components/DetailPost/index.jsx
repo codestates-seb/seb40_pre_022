@@ -56,7 +56,7 @@ const DetailPost = ({ question }) => {
         <InfoContainer>
           <PostMenuContainer>
             <PostMenu>Share</PostMenu>
-            <Link to="/questions/edit">
+            <Link to={`/questions/edit/${question.questionId}`}>
               <PostMenu>Edit</PostMenu>
             </Link>
             <PostMenu>Follow</PostMenu>

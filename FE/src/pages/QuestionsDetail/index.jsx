@@ -44,5 +44,4 @@ const QuestionsDetail = () => {
     </>
   );
 };
-
 export default QuestionsDetail;
