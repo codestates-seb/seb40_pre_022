@@ -7,9 +7,26 @@ import { useRecoilState } from "recoil";
 import { HashTagContainer, HashTags } from "./style";
 import { QuestionTags } from "../../store/QuestionPost";
 
-const TagInput = () => {
+const TagInput = ({ gotTag }) => {
   // const [isTagsFocus, setIsTagsFocus] = useState(false);
   const [tags, setTags] = useRecoilState(QuestionTags);
+
+  //   "questionTags": [
+  //     {
+  //         "questionTagName": "javascript"
+  //     },
+  //     {
+  //         "questionTagName": "python"
+  //     },
+  //     {
+  //         "questionTagName": "spring"
+  //     }
+  // ],
+
+  let tagArray = [];
+  gotTag.map((el) => tagArray.push(el.questionTagName));
+  console.log(tagArray);
+  // [java, react]
 
   const handleKeyDown = useCallback(
     (e) => {
@@ -21,8 +38,6 @@ const TagInput = () => {
     },
     [tags]
   );
-
-  console.log(tags);
 
   function removeTag(index) {
     setTags(tags.filter((el, i) => i !== index));
