@@ -4,7 +4,7 @@ import Layout from "../../components/Layout";
 import ContentEditor from "../../components/ContentEditor";
 import EditSidebar from "../../components/EditSidebar";
 import TagInput from "../../components/TagInput";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { questionsData, questionsEdit } from "../../api/questions";
@@ -25,12 +25,11 @@ const QuestionEdit = () => {
   const bodyText = useRecoilValue(AnswerEditData); // 에디터 컴포넌트에서 받아오기
   const tagText = useRecoilValue(QuestionTags); // 태그 컴포넌트에서 받아오기
 
-  const params = Number(useParams().id);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const { isLoading, data } = useQuery(["detailQ"], () => {
-    return questionsData(params);
+    return questionsData(data.questionId);
   });
   if (isLoading) return <div>now loading..</div>;
   console.log(data);
