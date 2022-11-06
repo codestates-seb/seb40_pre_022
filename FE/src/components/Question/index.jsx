@@ -48,16 +48,16 @@ const Question = () => {
                   {data.questionTags.map((list, i) => {
                     return (
                       <Button
-                        primary='Linkbutton'
+                        primary="Linkbutton"
                         label={list.questionTagName}
-                        Tagged='Tagged'
+                        Tagged="Tagged"
                         key={i}
                       />
                     );
                   })}
                 </Questiontags>
                 <Questionuser href={Mid}>
-                  <img src={data.member.image} className='img' />
+                  <img src={data.member.image} className="img" />
                   {data.member.name} asked{" "}
                 </Questionuser>
               </Questionfooter>

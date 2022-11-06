@@ -16,7 +16,7 @@ import QuestionEdit from "./pages/QuestionEdit";
 import Error from "./pages/Error";
 import Logout from "./pages/Logout";
 import Recovery from "./pages/Recovery";
-import Users from './pages/Users';
+import Users from "./pages/Users";
 
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -61,10 +61,7 @@ function App() {
                 }
               />
               <Route path="/members/myPage/:id" element={<MyPage />} />
-              <Route
-                path="/questions/:id"
-                element={<QuestionsDetail />}
-              />
+              <Route path="/questions/:id" element={<QuestionsDetail />} />
               <Route path="/*" element={<Error />} />
             </Routes>
           </BrowserRouter>
