@@ -11,7 +11,7 @@ export const questionsData = async (id) => {
 };
 
 export const questionsEdit = async (formData) => {
-  const result = await Api.patch(`/questions/${id}`, formData);
+  const result = await Api.patch(`/questions/${formData.questionId}`, formData);
   return result;
 };
 

@@ -7,7 +7,7 @@ import { useRecoilState } from "recoil";
 import { HashTagContainer, HashTags } from "./style";
 import { QuestionTags } from "../../store/QuestionPost";
 
-const TagInput = () => {
+const TagInput = ({ gotTag }) => {
   // const [isTagsFocus, setIsTagsFocus] = useState(false);
   const [tags, setTags] = useRecoilState(QuestionTags);
 
@@ -21,8 +21,6 @@ const TagInput = () => {
     },
     [tags]
   );
-
-  console.log(tags);
 
   function removeTag(index) {
     setTags(tags.filter((el, i) => i !== index));
@@ -51,5 +49,3 @@ const TagInput = () => {
 };
 
 export default TagInput;
-
-//"questionTags":[{"questionTagName": "javascript"}, {"questionTagName": "python"}

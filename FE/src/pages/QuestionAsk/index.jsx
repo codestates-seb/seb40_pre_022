@@ -8,9 +8,9 @@ import Accordian from "../../components/Accordian";
 import TagInput from "../../components/TagInput";
 import Layout from "../../components/Layout/index";
 
+import { QuestionTitle, QuestionTags } from "../../store/QuestionPost";
 import { AnswerEditData } from "../../store/AnswerEditData";
 import { questionsPost } from "../../api/questions";
-import { QuestionTitle, QuestionTags } from "../../store/QuestionPost";
 
 import {
   AskForm,
