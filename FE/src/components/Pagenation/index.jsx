@@ -54,12 +54,13 @@ const Paging = () => {
         ) : null}
         {choosed + 2 > 5 ? "... " : null}
 
-        {pages.map((num) => {
+        {pages.map((num, i) => {
           return (
             <Button
+              key={i}
               primary='Pagingbutton'
               Selected={choosed === num ? "Selected" : null}
-              label={num}
+              label={`${num}`}
               onClick={(e) => {
                 setPage(e.target.value);
               }}

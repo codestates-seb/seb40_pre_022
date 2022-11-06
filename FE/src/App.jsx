@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { GlobalStyles, theme } from "./styles";
@@ -15,15 +16,15 @@ import QuestionEdit from "./pages/QuestionEdit";
 import Error from "./pages/Error";
 import Logout from "./pages/Logout";
 import Recovery from "./pages/Recovery";
-import PrivateRoute from "./components/PrivateRoute";
-import { useEffect } from "react";
-import { useState } from "react";
+import Users from "./pages/Users";
 
-// 전역에서 이벤트를 핸들링
+import PrivateRoute from "./components/PrivateRoute";
+
 const queryClient = new QueryClient();
 
 function App() {
   const [auth, setAuth] = useState(false);
+
   useEffect(() => {
     if (auth !== null) {
       setAuth(localStorage.getItem("isLogin"));
@@ -46,6 +47,7 @@ function App() {
               <Route path="/join" element={<Join />} />
               <Route path="/recovery" element={<Recovery />} />
               <Route path="/questions" element={<AllQuestion />} />
+              <Route path="/users" element={<Users />} />
               <Route
                 path="/questions/ask"
                 element={
