@@ -54,6 +54,9 @@ const Btn = styled.button`
     line-height: calc(15 / 13);
     margin: 2 2 2 0;
     white-space: nowrap;
+    :hover {
+      background: #ddd;
+    }
   }
 
   &.Middle {

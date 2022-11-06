@@ -31,7 +31,7 @@ const AQRightsidebar = () => {
         <RelatedTags>
           <Tagstitle key='ReatedTags'>Reated Tags</Tagstitle>
           {TAGLIST.map((list, i) => (
-            <Tagsitems>
+            <Tagsitems key={i}>
               <Button primary='Linkbutton' label={list} Tagged='Tagged' />
             </Tagsitems>
           ))}
