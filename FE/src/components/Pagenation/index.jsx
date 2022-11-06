@@ -80,10 +80,14 @@ const Paging = () => {
           />
         ) : null}
       </Pagination>
-      <Perpage>
-        <Button primary="Pagingbutton" Selected="Selected" label="10" />
-        per page
-      </Perpage>
+      {window.location.href.includes("users") ? (
+        <></>
+      ) : (
+        <Perpage>
+          <Button primary="Pagingbutton" Selected="Selected" label="10" />
+          per page
+        </Perpage>
+      )}
     </Pagingcontainer>
   );
 };

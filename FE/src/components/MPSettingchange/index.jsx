@@ -27,7 +27,7 @@ const MPSChange = () => {
     },
   });
 
-  const id = localStorage.getItem("memberId");
+  const id = JSON.parse(localStorage.getItem("memberId"));
 
   return (
     <MPSContainer>
@@ -35,9 +35,12 @@ const MPSChange = () => {
         <img src={data.member.image} className="img" />
         <Postbutton
           onClick={() => {
+            let chooseFile = document.getElementById("chooseFile").value;
             PatchMember.mutate({
+              memberId: id,
               image: chooseFile,
             });
+            location.reload();
           }}
         >
           <FontAwesomeIcon icon={faPen} />
@@ -48,18 +51,17 @@ const MPSChange = () => {
         {data.member.name}
         <Postbutton
           onClick={() => {
-            console.log(id);
+            let name = document.getElementById("changeName").value;
             PatchMember.mutate({
               memberId: id,
-              name: "change?",
-              password: "n123456789!",
-              image: "~~d",
+              name: name,
             });
+            location.reload();
           }}
         >
           <FontAwesomeIcon icon={faPen} fontSize="13px" />
         </Postbutton>
-        <input id="changeName"></input>
+        <input id="changeName" placeholder="변경할 Name"></input>
       </MPSName>
     </MPSContainer>
   );
