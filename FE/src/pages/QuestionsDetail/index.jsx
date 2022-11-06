@@ -17,8 +17,8 @@ const QuestionsDetail = () => {
   const { isLoading, data } = useQuery(["detailQ"], () => {
     return getDetailQPost(params);
   });
-  if (isLoading) return <div>now loading..</div>;
-  console.log(data);
+
+  console.log("render");
   return (
     <>
       <Layout>

@@ -4,11 +4,13 @@ import "@toast-ui/editor/dist/toastui-editor.css";
 import { useRecoilState } from "recoil";
 import { AnswerEditData } from "../../store/AnswerEditData";
 
-const ContentEditor = ({ isSubmit, bodyData }) => {
+const ContentEditor = ({ isSubmit, setIsSubmit }) => {
   const [answerData, setAnswerData] = useRecoilState(AnswerEditData);
-  const editorRef = useRef();
+  const editorRef = useRef(null);
+
   if (isSubmit) {
-    editorRef.current.value = "";
+    editorRef.current.getInstance().reset();
+    setIsSubmit(!isSubmit);
   }
 
   const onChangeHandle = () => {

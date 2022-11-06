@@ -1,5 +1,9 @@
 import { React, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import {
   PostLayout,
   LayoutLeft,
@@ -21,15 +25,17 @@ import { deleteQuestion } from "../../api/details";
 
 const DetailPost = ({ question }) => {
   const navigate = useNavigate();
-  const deleteQ = useMutation(deleteQuestion(question.questionId), {
+  const deleteQ = useMutation(deleteQuestion, {
     retry: 0,
+    onSuccess: () => {
+      navigate(`/questions`);
+    },
     onError: (error) => {
-      console.log(error.message);
+      alert("삭제할 권한이 없는 글입니다.");
     },
   });
   const handleDelete = () => {
-    deleteQ.mutate();
-    navigate(`/questions`);
+    deleteQ.mutate(question.questionId);
   };
   return (
     <PostLayout>

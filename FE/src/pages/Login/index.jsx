@@ -36,7 +36,7 @@ const Login = () => {
       alert(error.message);
     },
   });
-
+  console.log("!", data);
   useEffect(() => {
     if (isLogin) {
       localStorage.setItem("isLogin", true);
@@ -45,6 +45,7 @@ const Login = () => {
         "refreshToken",
         JSON.stringify(data.headers.refreshtoken)
       );
+      localStorage.setItem("memberId", JSON.stringify(data.headers.memberid));
       navigate("/");
     }
   }, [isLogin]);
