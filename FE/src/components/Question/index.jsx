@@ -28,11 +28,11 @@ const Question = () => {
 
   return (
     <>
-      {data.data.map((data) => {
+      {data.data.map((data, i) => {
         const Mid = `/members/myPage/${data.member.memberId}`;
         let Qid = `/questions/${data.questionId}`;
         return (
-          <QuestionContainer>
+          <QuestionContainer key={i}>
             <Questionsummary>
               <div>{data.voteCount} votes</div>
               <div>{data.answerCount} answers</div>
@@ -45,22 +45,21 @@ const Question = () => {
               <Questionbody>{data.body}</Questionbody>
               <Questionfooter>
                 <Questiontags>
-                  {data.questionTags.map((list) => {
+                  {data.questionTags.map((list, i) => {
                     return (
                       <Button
                         primary="Linkbutton"
                         label={list.questionTagName}
                         Tagged="Tagged"
+                        key={i}
                       />
                     );
                   })}
                 </Questiontags>
-                <a href={Mid}>
-                  <Questionuser>
-                    <img src={data.member.image} className="img" />
-                    {data.member.name} asked{" "}
-                  </Questionuser>
-                </a>
+                <Questionuser href={Mid}>
+                  <img src={data.member.image} className="img" />
+                  {data.member.name} asked{" "}
+                </Questionuser>
               </Questionfooter>
             </Questioncontent>
           </QuestionContainer>
