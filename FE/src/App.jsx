@@ -46,23 +46,10 @@ function App() {
               <Route path="/join" element={<Join />} />
               <Route path="/recovery" element={<Recovery />} />
               <Route path="/questions" element={<AllQuestion />} />
-              <Route
-                path="/questions/ask"
-                element={
-                  <PrivateRoute component={<QuestionAsk />} auth={auth} />
-                }
-              />
-              <Route
-                path="/questions/edit"
-                element={
-                  <PrivateRoute component={<QuestionEdit />} auth={auth} />
-                }
-              />
+              <Route path="/questions/ask" element={<QuestionAsk />} />
+              <Route path="/questions/edit" element={<QuestionEdit />} />
               <Route path="/members/myPage/:id" element={<MyPage />} />
-              <Route
-                path="/questions/detail/:id"
-                element={<QuestionsDetail />}
-              />
+              <Route path="/questions/:id" element={<QuestionsDetail />} />
               <Route path="/*" element={<Error />} />
             </Routes>
           </BrowserRouter>
