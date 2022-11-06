@@ -14,14 +14,14 @@ import { AnswerEditData } from "../../store/AnswerEditData";
 import { useRecoilValue } from "recoil";
 import { createAnswer } from "../../api/details";
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 
 const CreateAnswer = ({ questionId }) => {
   const answer = useRecoilValue(AnswerEditData);
-  console.log(answer);
+  const [isSubmit, setIsSubmit] = useState(false);
+
   const { mutate, isLoading, isError, data, error } = useMutation(
-    () => {
-      createAnswer(questionId);
-    },
+    createAnswer,
     {
       retry: 0,
       onSuccess: (data) => {
@@ -35,7 +35,9 @@ const CreateAnswer = ({ questionId }) => {
 
   const clickHandle = () => {
     if (answer.length <= 0) return;
+    setIsSubmit(true);
     mutate({
+      id: questionId,
       body: answer,
     });
   };
@@ -44,7 +46,7 @@ const CreateAnswer = ({ questionId }) => {
     <AnswerContainer>
       <AnswerMainTitle>Your Answer</AnswerMainTitle>
       <AnswerForm>
-        <ContentEditor />
+        <ContentEditor isSubmit={isSubmit} />
         <BtnContainer>
           <Button
             label="Post Your Answer"
