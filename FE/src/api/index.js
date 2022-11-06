@@ -29,7 +29,10 @@ Api.interceptors.response.use(
   async function (err) {
     const originalConfig = err.config;
 
-    if (err.response && err.response.status === 401) {
+    if (
+      (err.response && err.response.status === 401) ||
+      (err.response && err.response.status === 405)
+    ) {
       const accessToken = originalConfig.headers["Authorization"];
       const refreshToken = originalConfig.headers["refreshToken"];
       try {
@@ -44,11 +47,11 @@ Api.interceptors.response.use(
         if (data) {
           localStorage.setItem(
             "token",
-            JSON.stringify(data.headers.authorization),
+            JSON.stringify(data.headers.authorization)
           );
           localStorage.setItem(
             "refreshToken",
-            JSON.stringify(data.headers.refreshtoken),
+            JSON.stringify(data.headers.refreshtoken)
           );
           return await Api.request(originalConfig);
         }
@@ -58,7 +61,7 @@ Api.interceptors.response.use(
       return Promise.reject(err);
     }
     return Promise.reject(err);
-  },
+  }
 );
 
 export default Api;
