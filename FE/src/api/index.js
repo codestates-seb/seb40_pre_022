@@ -29,10 +29,7 @@ Api.interceptors.response.use(
   async function (err) {
     const originalConfig = err.config;
 
-    if (
-      (err.response && err.response.status === 401) ||
-      (err.response && err.response.status === 405)
-    ) {
+    if (err.response && err.response.status === 401) {
       const accessToken = originalConfig.headers["Authorization"];
       const refreshToken = originalConfig.headers["refreshToken"];
       try {
