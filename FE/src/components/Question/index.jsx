@@ -48,6 +48,7 @@ const Question = () => {
                   {data.questionTags.map((list, i) => {
                     return (
                       <Button
+                        key={i}
                         primary="Linkbutton"
                         label={list.questionTagName}
                         Tagged="Tagged"

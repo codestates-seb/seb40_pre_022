@@ -3,6 +3,8 @@ import { Button } from "@components/Button";
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 
+import { getAQuestion } from "../../../../api/questions";
+
 import {
   Container,
   QuestionContainer,

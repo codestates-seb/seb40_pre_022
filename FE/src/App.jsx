@@ -29,6 +29,7 @@ function App() {
     if (auth !== null) {
       setAuth(localStorage.getItem("isLogin"));
     }
+    window.scrollTo(0,0) // 페이지 이동시 스크롤 상단 고정
     return () => {
       setAuth(false);
     };

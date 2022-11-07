@@ -29,7 +29,7 @@ Api.interceptors.response.use(
   async function (err) {
     const originalConfig = err.config;
 
-    if (err.response && err.response.status === 401) {
+    if (err.response && err.response.status === 403) {
       const accessToken = originalConfig.headers["Authorization"];
       const refreshToken = originalConfig.headers["refreshToken"];
       try {
@@ -44,11 +44,11 @@ Api.interceptors.response.use(
         if (data) {
           localStorage.setItem(
             "token",
-            JSON.stringify(data.headers.authorization)
+            JSON.stringify(data.headers.authorization).replace(/\"/gi, "")
           );
           localStorage.setItem(
             "refreshToken",
-            JSON.stringify(data.headers.refreshtoken)
+            JSON.stringify(data.headers.refreshtoken).replace(/\"/gi, "")
           );
           return await Api.request(originalConfig);
         }
