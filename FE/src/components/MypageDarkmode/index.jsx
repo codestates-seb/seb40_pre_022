@@ -18,13 +18,13 @@ const MypageDarkmode = () => {
       <SettingContainer>
         <MPSChange />
       </SettingContainer>
-      <Title>Dark mode</Title>
+      <Title>Dark mode (not implemented..)</Title>
       <SettingContainer>
         <ModeContainer>
           <Settingitem
             type="radio"
             name="darkmode"
-            checked="checked"
+            disabled="disabled"
             readOnly
           />
           <ModeImg>
@@ -33,7 +33,7 @@ const MypageDarkmode = () => {
           </ModeImg>
         </ModeContainer>
         <ModeContainer>
-          <Settingitem type="radio" name="darkmode" readOnly />
+          <Settingitem type="radio" name="darkmode" disabled="disabled" />
           <ModeImg>
             <img src="/theme-dark.svg" className="img" />
             <div>Dark</div>

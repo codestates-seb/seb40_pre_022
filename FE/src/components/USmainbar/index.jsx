@@ -24,7 +24,11 @@ const USMainbar = () => {
           <SearchBox>
             <SearchInnerBox>
               <FontAwesomeIcon className="icon" icon={faMagnifyingGlass} />
-              <input type="text" placeholder="Filter by user" />
+              <input
+                type="text"
+                placeholder="Filter by user"
+                disabled="disabled"
+              />
             </SearchInnerBox>
           </SearchBox>
           <BtnList>

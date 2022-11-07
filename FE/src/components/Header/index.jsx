@@ -128,7 +128,7 @@ const Header = () => {
               />
             </li>
             <li>
-              <Link className="profile" to={Loggedin}>
+              <Link className="profile" to={Loggedin} onClick={() => reload()}>
                 <img src="/initialProfile.png" alt="profile" />
                 <span>1</span>
               </Link>

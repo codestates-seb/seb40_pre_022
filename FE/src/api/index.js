@@ -44,11 +44,11 @@ Api.interceptors.response.use(
         if (data) {
           localStorage.setItem(
             "token",
-            JSON.stringify(data.headers.authorization)
+            JSON.stringify(data.headers.authorization).replace(/\"/gi, "")
           );
           localStorage.setItem(
             "refreshToken",
-            JSON.stringify(data.headers.refreshtoken)
+            JSON.stringify(data.headers.refreshtoken).replace(/\"/gi, "")
           );
           return await Api.request(originalConfig);
         }

@@ -7,16 +7,18 @@ import { calculateTime } from "../../utils/calculateTime";
 const DetailUserProfile = ({ questions, QcreatedAt }) => {
   const question = questions.member;
 
+  const userpage = `/members/myPage/${question.memberId}`;
+
   return (
     <UserInfo>
       <UserInfoText>{calculateTime(QcreatedAt)}</UserInfoText>
       <InfoContainer>
-        <Link to="/mypage">
+        <Link to={userpage} onClick={() => reload()}>
           <UserInfoItem>
             <img src={question.image} className="img" />
           </UserInfoItem>
         </Link>
-        <Link to="/mypage">
+        <Link to={userpage} onClick={() => reload()}>
           {<UserInfoItem className="user-name">{question.name}</UserInfoItem>}
         </Link>
       </InfoContainer>

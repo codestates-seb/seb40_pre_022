@@ -7,17 +7,19 @@ import { calculateTime } from "../../utils/calculateTime";
 const AnswerDetailProfile = ({ answers, AcreatedAt }) => {
   const answer = answers.member;
 
+  const answerer = `/members/myPage/${answer.memberId}`;
+
   return (
     <UserInfo>
       <UserInfoText>{calculateTime(AcreatedAt)}</UserInfoText>
       <InfoContainer>
-        <Link to='/mypage'>
+        <Link to={answerer} onClick={() => reload()}>
           <UserInfoItem>
-            <img src={answer.image} className='img' />
+            <img src={answer.image} className="img" />
           </UserInfoItem>
         </Link>
-        <Link to='/mypage'>
-          <UserInfoItem className='user-name'>{answer.name}</UserInfoItem>
+        <Link to={answerer} onClick={() => reload()}>
+          <UserInfoItem className="user-name">{answer.name}</UserInfoItem>
         </Link>
       </InfoContainer>
     </UserInfo>

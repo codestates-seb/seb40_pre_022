@@ -24,14 +24,11 @@ import {
   TagsText,
   BtnBox,
 } from "./style";
-// import Modal from "../../components/Modal";
 
 const QuestionAsk = () => {
   const titleText = useRecoilValue(QuestionTitle);
   const bodyText = useRecoilValue(AnswerEditData);
   const tagText = useRecoilValue(QuestionTags);
-
-  // const [isPost, setIsPost] = useRecoilState(postState);
 
   const navigate = useNavigate();
 
@@ -49,29 +46,6 @@ const QuestionAsk = () => {
     },
   });
 
-  // const { mutate } = useMutation(userJoin, {
-  //   retry: 0,
-  //   onSuccess: () => {
-  //     alert('회원가입이 완료되었습니다.');
-  //     navigate('/members/login');
-  //   },
-  // });
-
-  // useEffect(() => {
-  //   if (isPost) {
-  //     navigate("/question/detail/:id");
-  //   }
-  // }, [isPost]);
-
-  // const [modalOpen, setModalOpen] = useState(false);
-
-  // const openModal = () => {
-  //   setModalOpen(true);
-  // };
-  // const closeModal = () => {
-  //   setModalOpen(false);
-  // };
-
   const handleAskSubmit = (e) => {
     e.preventDefault();
     mutate({
@@ -87,10 +61,6 @@ const QuestionAsk = () => {
         <AskTitleHeader>
           <AskTitleH1>Ask a public question</AskTitleH1>
         </AskTitleHeader>
-        {/* <button onClick={openModal}>모달팝업</button>
-        <Modal open={modalOpen} close={closeModal} header='Modal heading'>
-          모두 화이팅
-        </Modal> */}
         <AskBox>
           <AskForm>
             <AskWrapper>
