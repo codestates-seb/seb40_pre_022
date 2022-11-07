@@ -1,18 +1,14 @@
-import React, { useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import ContentEditor from "../ContentEditor";
 import { TitleInput, AskInputText, QuestionContainer } from "./style";
 import { useRecoilState } from "recoil";
 import { QuestionTitle } from "../../store/QuestionPost";
 
-function CreatePost() {
-  // const titleRegist = () => {
-  //   handleTitleChange();
-  // };
-  const [title, setTitle] = useRecoilState(QuestionTitle);
-
+function CreatePost({title, setTitle}) {
   const handleTitleChange = useCallback((e) => {
     setTitle(e.target.value);
   });
+
 
   return (
     <>

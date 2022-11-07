@@ -1,5 +1,5 @@
-import React from "react";
-import { useRecoilValue } from "recoil";
+import React, { useState, useEffect } from "react";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import CreatePost from "../../components/CreatePost/index";
@@ -24,24 +24,21 @@ import {
   TagsText,
   BtnBox,
 } from "./style";
-// import Modal from "../../components/Modal";
 
 const QuestionAsk = () => {
-  const titleText = useRecoilValue(QuestionTitle);
-  const bodyText = useRecoilValue(AnswerEditData);
-  const tagText = useRecoilValue(QuestionTags);
-
-  // const [isPost, setIsPost] = useRecoilState(postState);
-
-  const navigate = useNavigate();
+  const [title, setTitle] = useState('');
+  const [bodyText, setBodyText] = useRecoilState(AnswerEditData);
+  const [tagText, setTagText] = useRecoilState(QuestionTags);
 
   const tagArr = tagText.map((tag) => {
     return {
       questionTagName: tag,
     };
-  });
+  })
 
-  const { mutate, data } = useMutation(questionsPost, {
+  const navigate = useNavigate();
+
+  const { mutate } = useMutation(questionsPost, {
     retry: 0,
     onSuccess: (data) => {
       const postid = data.data.data.questionId;
@@ -49,39 +46,20 @@ const QuestionAsk = () => {
     },
   });
 
-  // const { mutate } = useMutation(userJoin, {
-  //   retry: 0,
-  //   onSuccess: () => {
-  //     alert('회원가입이 완료되었습니다.');
-  //     navigate('/members/login');
-  //   },
-  // });
-
-  // useEffect(() => {
-  //   if (isPost) {
-  //     navigate("/question/detail/:id");
+  // useEffect(()=>{
+  //   if(auth){
+  //     location.reload();
   //   }
-  // }, [isPost]);
-
-  // const [modalOpen, setModalOpen] = useState(false);
-
-  // const openModal = () => {
-  //   setModalOpen(true);
-  // };
-  // const closeModal = () => {
-  //   setModalOpen(false);
-  // };
+  // },[])
 
   const handleAskSubmit = (e) => {
     e.preventDefault();
     mutate({
-      title: titleText,
+      title: title,
       body: bodyText,
       questionTags: tagArr,
     });
   };
-
-
 
   return (
     <Layout background isLeftSidebar={false}>
@@ -89,14 +67,10 @@ const QuestionAsk = () => {
         <AskTitleHeader>
           <AskTitleH1>Ask a public question</AskTitleH1>
         </AskTitleHeader>
-        {/* <button onClick={openModal}>모달팝업</button>
-        <Modal open={modalOpen} close={closeModal} header='Modal heading'>
-          모두 화이팅
-        </Modal> */}
         <AskBox>
           <AskForm>
             <AskWrapper>
-              <CreatePost />
+              <CreatePost title={title} setTitle={setTitle}/>
               <TagsContainer>
                 <TagTitle>Tags</TagTitle>
                 <TagsText>
