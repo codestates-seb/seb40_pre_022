@@ -19,9 +19,9 @@ import {
   TagsContainer,
   BtnBox,
   TagTitle,
-} from "./style";
+} from "../QuestionEdit/style";
 
-const QuestionEdit = () => {
+const AnswerEdit = () => {
   const bodyText = useRecoilValue(AnswerEditData); // 에디터 컴포넌트에서 받아오기
   const tagText = useRecoilValue(QuestionTags); // 태그 컴포넌트에서 받아오기
 
@@ -31,6 +31,7 @@ const QuestionEdit = () => {
   const { isLoading, data } = useQuery(["detailQ"], () => {
     return questionsData(data.questionId);
   });
+
   if (isLoading) return <div>now loading..</div>;
 
   const { mutate, data1 } = useMutation(questionsEdit, {
@@ -61,27 +62,12 @@ const QuestionEdit = () => {
       questionTags: tagArr,
     });
   };
-
   return (
     <Layout>
       <EditContainer>
         <EditBox>
-          <EditTitleText>Title</EditTitleText>
-          <EditInput
-            label="Title"
-            defaultValue={data.title}
-            value={title}
-            onChange={(e) => handleTitleChange(e)}
-            placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
-          ></EditInput>
           <EditTitleText>Body</EditTitleText>
           <ContentEditor bodyData={data.body} />
-          <TagsContainer>
-            <TagTitle>Tags</TagTitle>
-            <TagInput gotTag={data.questionTags} />
-          </TagsContainer>
-          {/* <EditTitleText>Edit Summary</EditTitleText>
-          <EditInput placeholder="briefly explain your changes (corrected spelling, fixed grammar, improved formatting)"></EditInput> */}
           <BtnBox>
             <Button label="Save edits" onClick={handleEditSubmit}></Button>
             <Link to={`/questions/${data.questionId}`}>
@@ -95,4 +81,4 @@ const QuestionEdit = () => {
   );
 };
 
-export default QuestionEdit;
+export default AnswerEdit;

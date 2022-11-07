@@ -12,13 +12,10 @@ import AQRightsidebar from "../../components/AQsidebar";
 
 const QuestionsDetail = () => {
   const params = Number(useParams().id);
-  const queryClient = useQueryClient();
-
   const { isLoading, data } = useQuery(["detailQ"], () => {
     return getDetailQPost(params);
   });
 
-  console.log("render");
   return (
     <>
       <Layout>
@@ -33,6 +30,7 @@ const QuestionsDetail = () => {
                 <DetailAnswer
                   answer={data.answers}
                   questionId={data.questionId}
+                  member={data.member.memberId}
                 />
                 <CreateAnswer questionId={data.questionId} />
               </>

@@ -19,7 +19,6 @@ import { AQPage } from "../../store/AQData";
 
 const Question = () => {
   const page = useRecoilValue(AQPage);
-
   const { isLoading, data } = useQuery(["AllQuestion", { page }], () => {
     return getAQuestion(page);
   });
@@ -52,7 +51,6 @@ const Question = () => {
                         primary="Linkbutton"
                         label={list.questionTagName}
                         Tagged="Tagged"
-                        key={i}
                       />
                     );
                   })}

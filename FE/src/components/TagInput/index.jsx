@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 // import { ENG_REGEX } from "../../constants/regex";
@@ -9,15 +9,7 @@ import { QuestionTags } from "../../store/QuestionPost";
 
 const TagInput = ({ gotTag }) => {
   // const [isTagsFocus, setIsTagsFocus] = useState(false);
-  const [tags, setTags] = useState([]);
-
-  console.log('gotTag',gotTag)
-
-  useEffect(()=>{
-    if(gotTag){
-      setTags([gotTag])
-    }
-  },[gotTag])
+  const [tags, setTags] = useRecoilState(QuestionTags);
 
   const handleKeyDown = useCallback(
     (e) => {

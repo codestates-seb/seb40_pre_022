@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useRecoilValue, useRecoilState } from "recoil";
+import React from "react";
+import { useRecoilValue } from "recoil";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import CreatePost from "../../components/CreatePost/index";
@@ -26,19 +26,19 @@ import {
 } from "./style";
 
 const QuestionAsk = () => {
-  const [title, setTitle] = useState('');
-  const [bodyText, setBodyText] = useRecoilState(AnswerEditData);
-  const [tagText, setTagText] = useRecoilState(QuestionTags);
+  const titleText = useRecoilValue(QuestionTitle);
+  const bodyText = useRecoilValue(AnswerEditData);
+  const tagText = useRecoilValue(QuestionTags);
+
+  const navigate = useNavigate();
 
   const tagArr = tagText.map((tag) => {
     return {
       questionTagName: tag,
     };
-  })
+  });
 
-  const navigate = useNavigate();
-
-  const { mutate } = useMutation(questionsPost, {
+  const { mutate, data } = useMutation(questionsPost, {
     retry: 0,
     onSuccess: (data) => {
       const postid = data.data.data.questionId;
@@ -46,23 +46,17 @@ const QuestionAsk = () => {
     },
   });
 
-  // useEffect(()=>{
-  //   if(auth){
-  //     location.reload();
-  //   }
-  // },[])
-
   const handleAskSubmit = (e) => {
     e.preventDefault();
     mutate({
-      title: title,
+      title: titleText,
       body: bodyText,
       questionTags: tagArr,
     });
   };
 
   return (
-    <Layout background isLeftSidebar={false}>
+    <Layout isLeftSidebar={false}>
       <AskContainer>
         <AskTitleHeader>
           <AskTitleH1>Ask a public question</AskTitleH1>
@@ -70,7 +64,7 @@ const QuestionAsk = () => {
         <AskBox>
           <AskForm>
             <AskWrapper>
-              <CreatePost title={title} setTitle={setTitle}/>
+              <CreatePost />
               <TagsContainer>
                 <TagTitle>Tags</TagTitle>
                 <TagsText>

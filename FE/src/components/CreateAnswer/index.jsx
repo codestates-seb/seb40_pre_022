@@ -26,7 +26,9 @@ const CreateAnswer = ({ questionId }) => {
       queryClient.invalidateQueries();
     },
     onError: (error) => {
-      console.log(error.message);
+      if (error.message === "Request failed with status code 403") {
+        alert("권한이 없습니다. 로그인 후 다시 시도해 주세요.");
+      }
     },
   });
 
