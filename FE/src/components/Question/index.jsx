@@ -14,12 +14,11 @@ import {
   Questiontags,
 } from "./style";
 import { Button } from "../Button";
-import { getAQuestion } from "../../API/questions";
+import { getAQuestion } from "../../api/questions";
 import { AQPage } from "../../store/AQData";
 
 const Question = () => {
   const page = useRecoilValue(AQPage);
-
   const { isLoading, data } = useQuery(["AllQuestion", { page }], () => {
     return getAQuestion(page);
   });
@@ -48,6 +47,7 @@ const Question = () => {
                   {data.questionTags.map((list, i) => {
                     return (
                       <Button
+                        key={i}
                         primary="Linkbutton"
                         label={list.questionTagName}
                         Tagged="Tagged"

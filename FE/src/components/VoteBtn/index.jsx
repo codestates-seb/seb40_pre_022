@@ -4,42 +4,48 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { QvoteDown, QvoteUp } from "../../api/details";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRecoilState } from "recoil";
+import { voteDownState, voteUpState } from "../../store/voteCheck";
 
 const VoteBtn = ({ question }) => {
   const QVoteCount = question.voteCount;
-  const [isVotedUp, setIsVotedUp] = useState(false);
-  const [isVotedDown, setIsVotedDown] = useState(false);
+  // const [isVotedUp, setIsVotedUp] = useState(false);
+  // const [isVotedDown, setIsVotedDown] = useState(false);
+  const [isVotedUp, setIsVotedUp] = useRecoilState(voteUpState);
+  const [isVotedDown, setIsVotedDown] = useRecoilState(voteDownState);
   const [count, setCount] = useState(QVoteCount);
+  const queryClient = useQueryClient();
 
   const voteUp = useMutation(QvoteUp, {
     retry: 0,
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
     onError: (error) => {
       console.log(error.message);
     },
   });
   const voteDown = useMutation(QvoteDown, {
     retry: 0,
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
     onError: (error) => {
       console.log(error.message);
     },
   });
 
   const handleVoteClick = (status) => {
-    if (status === "up" && (count === QVoteCount || count === QVoteCount - 1)) {
+    if (status === "up") {
       setIsVotedUp(true);
       setIsVotedDown(false);
-      setCount(count + 1);
       voteUp.mutate({
         questionId: question.questionId,
       });
-    } else if (
-      status === "down" &&
-      (count === QVoteCount || count === QVoteCount + 1)
-    ) {
+    } else if (status === "down") {
       setIsVotedDown(true);
       setIsVotedUp(false);
-      setCount(count - 1);
       voteDown.mutate({
         questionId: question.questionId,
       });
@@ -50,12 +56,12 @@ const VoteBtn = ({ question }) => {
     <VoteContainer>
       <Btn
         onClick={() => handleVoteClick("up")}
-        className={isVotedUp && count !== QVoteCount ? "voted" : null}
+        className={isVotedUp && QVoteCount !== count ? "voted" : null}
       />
-      <VoteCount>{count}</VoteCount>
+      <VoteCount>{question.voteCount}</VoteCount>
       <Btn
         onClick={() => handleVoteClick("down")}
-        className={isVotedDown && count !== QVoteCount ? "down voted" : "down"}
+        className={isVotedDown && QVoteCount !== count ? "down voted" : "down"}
       />
       <FontAwesomeIcon
         icon={faBookmark}

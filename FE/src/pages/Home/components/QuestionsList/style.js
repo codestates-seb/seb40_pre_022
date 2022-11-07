@@ -4,6 +4,7 @@ export const Container = styled.ul`
   display: inline-block;
   flex: 3;
   padding-top: 24px;
+  width: 100%;
 `;
 
 const QuestionContainer = styled.div`

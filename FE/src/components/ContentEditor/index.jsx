@@ -4,7 +4,7 @@ import "@toast-ui/editor/dist/toastui-editor.css";
 import { useRecoilState } from "recoil";
 import { AnswerEditData } from "../../store/AnswerEditData";
 
-const ContentEditor = ({ isSubmit, setIsSubmit, bodyData }) => {
+const ContentEditor = ({ isSubmit, setIsSubmit, bodyData, answerBody }) => {
   const [answerData, setAnswerData] = useRecoilState(AnswerEditData);
   const editorRef = useRef(null);
 
@@ -32,7 +32,9 @@ const ContentEditor = ({ isSubmit, setIsSubmit, bodyData }) => {
       ]}
       useCommandShortcut={true}
       hideModeSwitch={true}
-      initialValue={bodyData ? bodyData : " "}
+      initialValue={
+        bodyData || answerBody ? (bodyData ? bodyData : answerBody) : " "
+      }
       ref={editorRef}
       onChange={onChangeHandle}
     ></Editor>

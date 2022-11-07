@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { getMembersPage } from "../../API/members";
+import { getMembersPage } from "../../api/members";
 
 import { UserContainer, Username } from "./style";
 

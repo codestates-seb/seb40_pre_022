@@ -7,8 +7,9 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { acceptAnswer, AvoteDown, AvoteUp } from "../../api/details";
 
-const AnswerVoteBtn = ({ answer, questionId }) => {
+const AnswerVoteBtn = ({ answer, questionId, member }) => {
   const AVoteCount = answer.voteCount;
+  const memberId = Number(JSON.parse(localStorage.getItem("memberId")));
   const [bestAnswer, setBestAnswer] = useState(answer.isAccepted);
   const [isVotedUp, setIsVotedUp] = useState(false);
   const [isVotedDown, setIsVotedDown] = useState(false);
@@ -51,21 +52,16 @@ const AnswerVoteBtn = ({ answer, questionId }) => {
   });
 
   const handleVoteClick = (status) => {
-    if (status === "up" && (count === AVoteCount || count === AVoteCount - 1)) {
+    if (status === "up") {
       setIsVotedUp(true);
       setIsVotedDown(false);
-      setCount(count + 1);
       voteUp.mutate({
         id: questionId,
         answerId: answer.answerId,
       });
-    } else if (
-      status === "down" &&
-      (count === AVoteCount || count === AVoteCount + 1)
-    ) {
+    } else if (status === "down") {
       setIsVotedDown(true);
       setIsVotedUp(false);
-      setCount(count - 1);
       voteDown.mutate({
         id: questionId,
         answerId: answer.answerId,
@@ -87,7 +83,7 @@ const AnswerVoteBtn = ({ answer, questionId }) => {
         onClick={() => handleVoteClick("up")}
         className={isVotedUp && count !== AVoteCount ? "voted" : null}
       />
-      <VoteCount>{count}</VoteCount>
+      <VoteCount>{answer.voteCount}</VoteCount>
       <Btn
         onClick={() => handleVoteClick("down")}
         className={isVotedDown && count !== AVoteCount ? "down voted" : "down"}
@@ -97,14 +93,16 @@ const AnswerVoteBtn = ({ answer, questionId }) => {
         color="hsl(210deg 8% 80%)"
         className="icon"
       />
-      <FontAwesomeIcon // 질문 작성자에게만 보이도록 해야 함
-        icon={faCheck}
-        className={
-          isChecked || bestAnswer ? "icon check checked" : "icon check"
-        }
-        color="hsl(210deg 8% 80%)"
-        onClick={handleCheckClick}
-      />
+      {memberId === member ? (
+        <FontAwesomeIcon
+          icon={faCheck}
+          className={
+            isChecked || bestAnswer ? "icon check checked" : "icon check"
+          }
+          color="hsl(210deg 8% 80%)"
+          onClick={handleCheckClick}
+        />
+      ) : null}
       <FontAwesomeIcon
         icon={faClockRotateLeft}
         color="hsl(210deg 8% 80%)"

@@ -13,9 +13,12 @@ import { Link } from "react-router-dom";
 import { calculateTime } from "../../utils/calculateTime";
 
 const DetailHeader = ({ question }) => {
+  const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+  let createdAt = new Date(Date.parse(question.createdAt) + KR_TIME_DIFF);
+  let updatedAt = new Date(Date.parse(question.createdAt) + KR_TIME_DIFF);
   const questionInfo = [
-    calculateTime(question.createdAt),
-    calculateTime(question.updatedAt),
+    calculateTime(createdAt),
+    calculateTime(updatedAt),
     question.viewCount,
   ];
 

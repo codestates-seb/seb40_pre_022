@@ -57,15 +57,16 @@ const Leftsidebar = ({ isLeftSidebar }) => {
           </TabItem>
           <TabItem>
             <Tabtitle>PUBLIC</Tabtitle>
+
             <TabList>
-              <TabItem className={path === "questions" ? "active" : null}>
-                <Link to="/questions">
+              <Link to="/questions">
+                <TabItem className={path === "questions" ? "active" : null}>
                   <ItemContainer>
                     <FontAwesomeIcon icon={faEarthAmericas} className="icon" />
                     Questions
                   </ItemContainer>
-                </Link>
-              </TabItem>
+                </TabItem>
+              </Link>
               {SIDEBAR_ITEMS.map((item) => (
                 <TabItem
                   className={
@@ -76,9 +77,9 @@ const Leftsidebar = ({ isLeftSidebar }) => {
                   }
                   key={item.name}
                 >
-                  <TabItemText>
-                    <Link to="/users">{item.name}</Link>
-                  </TabItemText>
+                  <Link to="/users">
+                    <TabItemText>{item.name}</TabItemText>
+                  </Link>
                 </TabItem>
               ))}
             </TabList>

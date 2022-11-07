@@ -8,12 +8,6 @@ const QuestionHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  a {
-    width: 150px;
-    margin-right: auto;
-    display: inline-flex;
-    justify-content: flex-end;
-  }
 `;
 
 const QuestionTitle = styled.h1`

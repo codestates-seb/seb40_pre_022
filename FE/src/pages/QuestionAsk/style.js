@@ -3,12 +3,11 @@ import styled from "styled-components";
 const AskContainer = styled.div`
   width: 100vw;
   margin-top: 5px;
-  background-color: #f8f9f9;
 `;
 
 const AskTitleHeader = styled.header`
   display: flex;
-  background-image: url("../../../public/background.svg");
+  background-image: url("/background.svg");
   background-repeat: no-repeat;
   background-position: right;
   background-color: #f8f9f9;
@@ -19,7 +18,7 @@ const AskTitleHeader = styled.header`
 const AskTitleH1 = styled.h1`
   display: block;
   font-size: 2rem;
-  padding: 40px 10px 40px 30px;
+  padding: 40px 10px 40px 0px;
   margin-right: auto;
 `;
 

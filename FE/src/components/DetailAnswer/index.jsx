@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { calculateTime } from "../../utils/calculateTime";
 import {
   AnswerCount,
@@ -22,27 +22,52 @@ import {
   UserInfoText,
 } from "../DetailPost/style";
 import ContentViewer from "../ContentViewer";
-
 import { sortDate } from "../../utils/sortDate";
 import AnswerVoteBtn from "../AnswerVoteBtn";
 import AnswerDetailProfile from "../AnswerDetailProfile";
-import { deleteAnswer } from "../../api/details";
+import { deleteAnswer, updateAnswer } from "../../api/details";
 import { useState } from "react";
 import { useEffect } from "react";
+import ContentEditor from "../ContentEditor";
+import { useRecoilValue } from "recoil";
+import { AnswerEditData } from "../../store/AnswerEditData";
 
-const DetailAnswer = ({ answer, questionId }) => {
+const DetailAnswer = ({ answer, questionId, member }) => {
   // const date = answer.map((el) => el.createdAt);
   // const sortData = () => {
   //   console.log(sortDate(date));
   // };
   const [answerId, setAnswerId] = useState("");
+  const [editMode, setEditMode] = useState(false);
+  const [editId, setEditId] = useState("");
+  const loginMember = localStorage.getItem("memberId");
+
+  const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+
+  const queryClient = useQueryClient();
+  const answerValue = useRecoilValue(AnswerEditData);
 
   const deleteA = useMutation(deleteAnswer, {
     retry: 0,
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
     onError: (error) => {
       if (error.message === "Request failed with status code 403") {
         alert("삭제할 권한이 없는 답변입니다.");
       }
+    },
+  });
+
+  const updateA = useMutation(updateAnswer, {
+    retry: 0,
+    onSuccess: () => {
+      setEditMode(false);
+      location.reload();
+      queryClient.invalidateQueries();
+    },
+    onError: (error) => {
+      console.log(error);
     },
   });
 
@@ -57,6 +82,19 @@ const DetailAnswer = ({ answer, questionId }) => {
 
   const handleDelete = (id) => {
     setAnswerId(id);
+  };
+
+  const handleEdit = (id) => {
+    setEditId(id);
+    setEditMode(true);
+  };
+
+  const editAnswer = (el) => {
+    updateA.mutate({
+      id: questionId,
+      answerId: el.answerId,
+      body: answerValue,
+    });
   };
 
   return (
@@ -79,33 +117,63 @@ const DetailAnswer = ({ answer, questionId }) => {
             return (
               <PostLayout className="answer" key={el.answerId}>
                 <LayoutLeft>
-                  <AnswerVoteBtn answer={el} questionId={questionId} />
+                  <AnswerVoteBtn
+                    answer={el}
+                    questionId={questionId}
+                    member={member}
+                  />
                 </LayoutLeft>
                 <LayoutRight>
                   <PostBody>
-                    <ContentViewer markdown={el.body} />
+                    {el.answerId === editId && editMode ? (
+                      <ContentEditor answerBody={el.body} />
+                    ) : (
+                      <ContentViewer markdown={el.body} />
+                    )}
                   </PostBody>
                   <InfoContainer>
                     <PostMenuContainer>
-                      <PostMenu>Share</PostMenu>
-                      <Link to="/questions/edit">
-                        <PostMenu>Edit</PostMenu>
-                      </Link>
-                      <PostMenu>Follow</PostMenu>
-                      <PostMenu
-                        onClick={() => {
-                          handleDelete(el.answerId);
-                        }}
-                      >
-                        Delete
-                      </PostMenu>
+                      {el.answerId === editId && editMode ? (
+                        <PostMenu onClick={() => editAnswer(el)}>Save</PostMenu>
+                      ) : (
+                        <>
+                          <PostMenu>Share</PostMenu>
+                          {Number(JSON.parse(loginMember)) ===
+                          el.member.memberId ? (
+                            <PostMenu
+                              onClick={() => {
+                                handleEdit(el.answerId);
+                              }}
+                            >
+                              Edit
+                            </PostMenu>
+                          ) : null}
+                          <PostMenu>Follow</PostMenu>
+                          {Number(JSON.parse(loginMember)) ===
+                          el.member.memberId ? (
+                            <PostMenu
+                              onClick={() => {
+                                handleDelete(el.answerId);
+                              }}
+                            >
+                              Delete
+                            </PostMenu>
+                          ) : null}
+                        </>
+                      )}
                     </PostMenuContainer>
                     <UserInfo className="edit">
-                      <UserInfoText>{calculateTime(el.updatedAt)}</UserInfoText>
+                      <UserInfoText>
+                        {calculateTime(
+                          new Date(Date.parse(el.updatedAt) + KR_TIME_DIFF)
+                        )}
+                      </UserInfoText>
                     </UserInfo>
                     <AnswerDetailProfile
                       answers={el}
-                      AcreatedAt={el.createdAt}
+                      AcreatedAt={
+                        new Date(Date.parse(el.createdAt) + KR_TIME_DIFF)
+                      }
                     />
                   </InfoContainer>
                 </LayoutRight>
