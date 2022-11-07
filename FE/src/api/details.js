@@ -39,6 +39,14 @@ export const acceptAnswer = async (params) => {
     { answerId: params.answerId }
   );
 };
+
+export const updateAnswer = async (params) => {
+  return await Api.patch(`/questions/${params.id}/answers/${params.answerId}`, {
+    answerId: params.answerId,
+    body: params.body,
+  });
+};
+
 export const deleteAnswer = async (params) => {
   return await Api.delete(`/questions/${params.id}/answers/${params.answerId}`);
 };

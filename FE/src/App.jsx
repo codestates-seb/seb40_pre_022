@@ -19,6 +19,7 @@ import Recovery from "./pages/Recovery";
 import Users from "./pages/Users";
 
 import PrivateRoute from "./components/PrivateRoute";
+import AnswerEdit from "./pages/AnswerEdit";
 
 const queryClient = new QueryClient();
 
@@ -58,6 +59,12 @@ function App() {
                 path="/questions/edit/:id"
                 element={
                   <PrivateRoute component={<QuestionEdit />} auth={auth} />
+                }
+              />
+              <Route
+                path="/questions/answer/edit/:id"
+                element={
+                  <PrivateRoute component={<AnswerEdit />} auth={auth} />
                 }
               />
               <Route path="/members/myPage/:id" element={<MyPage />} />

@@ -22,13 +22,15 @@ import {
   UserInfoText,
 } from "../DetailPost/style";
 import ContentViewer from "../ContentViewer";
-
 import { sortDate } from "../../utils/sortDate";
 import AnswerVoteBtn from "../AnswerVoteBtn";
 import AnswerDetailProfile from "../AnswerDetailProfile";
-import { deleteAnswer } from "../../api/details";
+import { deleteAnswer, updateAnswer } from "../../api/details";
 import { useState } from "react";
 import { useEffect } from "react";
+import ContentEditor from "../ContentEditor";
+import { useRecoilValue } from "recoil";
+import { AnswerEditData } from "../../store/AnswerEditData";
 
 const DetailAnswer = ({ answer, questionId, member }) => {
   // const date = answer.map((el) => el.createdAt);
@@ -36,18 +38,15 @@ const DetailAnswer = ({ answer, questionId, member }) => {
   //   console.log(sortDate(date));
   // };
   const [answerId, setAnswerId] = useState("");
-  const [isWriter, setIsWriter] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [editId, setEditId] = useState("");
   const loginMember = localStorage.getItem("memberId");
-
-  useEffect(() => {
-    // if (Number(JSON.parse(loginMember)) === answer.member.memberId) {
-    //   setIsWriter(true);
-    // }
-  }, []);
 
   const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
 
   const queryClient = useQueryClient();
+  const answerValue = useRecoilValue(AnswerEditData);
+
   const deleteA = useMutation(deleteAnswer, {
     retry: 0,
     onSuccess: () => {
@@ -57,6 +56,18 @@ const DetailAnswer = ({ answer, questionId, member }) => {
       if (error.message === "Request failed with status code 403") {
         alert("삭제할 권한이 없는 답변입니다.");
       }
+    },
+  });
+
+  const updateA = useMutation(updateAnswer, {
+    retry: 0,
+    onSuccess: () => {
+      setEditMode(false);
+      location.reload();
+      queryClient.invalidateQueries();
+    },
+    onError: (error) => {
+      console.log(error);
     },
   });
 
@@ -71,6 +82,19 @@ const DetailAnswer = ({ answer, questionId, member }) => {
 
   const handleDelete = (id) => {
     setAnswerId(id);
+  };
+
+  const handleEdit = (id) => {
+    setEditId(id);
+    setEditMode(true);
+  };
+
+  const editAnswer = (el) => {
+    updateA.mutate({
+      id: questionId,
+      answerId: el.answerId,
+      body: answerValue,
+    });
   };
 
   return (
@@ -101,30 +125,42 @@ const DetailAnswer = ({ answer, questionId, member }) => {
                 </LayoutLeft>
                 <LayoutRight>
                   <PostBody>
-                    <ContentViewer markdown={el.body} />
+                    {el.answerId === editId && editMode ? (
+                      <ContentEditor answerBody={el.body} />
+                    ) : (
+                      <ContentViewer markdown={el.body} />
+                    )}
                   </PostBody>
                   <InfoContainer>
                     <PostMenuContainer>
-                      <PostMenu>Share</PostMenu>
-
-                      {Number(JSON.parse(loginMember)) ===
-                      el.member.memberId ? (
-                        <Link to="/questions/edit">
-                          <PostMenu>Edit</PostMenu>
-                        </Link>
-                      ) : null}
-
-                      <PostMenu>Follow</PostMenu>
-                      {Number(JSON.parse(loginMember)) ===
-                      el.member.memberId ? (
-                        <PostMenu
-                          onClick={() => {
-                            handleDelete(el.answerId);
-                          }}
-                        >
-                          Delete
-                        </PostMenu>
-                      ) : null}
+                      {el.answerId === editId && editMode ? (
+                        <PostMenu onClick={() => editAnswer(el)}>Save</PostMenu>
+                      ) : (
+                        <>
+                          <PostMenu>Share</PostMenu>
+                          {Number(JSON.parse(loginMember)) ===
+                          el.member.memberId ? (
+                            <PostMenu
+                              onClick={() => {
+                                handleEdit(el.answerId);
+                              }}
+                            >
+                              Edit
+                            </PostMenu>
+                          ) : null}
+                          <PostMenu>Follow</PostMenu>
+                          {Number(JSON.parse(loginMember)) ===
+                          el.member.memberId ? (
+                            <PostMenu
+                              onClick={() => {
+                                handleDelete(el.answerId);
+                              }}
+                            >
+                              Delete
+                            </PostMenu>
+                          ) : null}
+                        </>
+                      )}
                     </PostMenuContainer>
                     <UserInfo className="edit">
                       <UserInfoText>

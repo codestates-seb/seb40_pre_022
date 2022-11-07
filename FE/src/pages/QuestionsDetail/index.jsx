@@ -12,8 +12,6 @@ import AQRightsidebar from "../../components/AQsidebar";
 
 const QuestionsDetail = () => {
   const params = Number(useParams().id);
-  const queryClient = useQueryClient();
-
   const { isLoading, data } = useQuery(["detailQ"], () => {
     return getDetailQPost(params);
   });
