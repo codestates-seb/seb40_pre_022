@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Button } from "@components/Button";
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
-import { useInView } from 'react-intersection-observer'
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
 
 import {
   Container,
@@ -17,42 +17,36 @@ import {
 
 import { getAQuestion } from "../../../../API/questions";
 
-
 const QuestionsList = () => {
-  const { ref, inView } = useInView()
+  const { ref, inView } = useInView();
 
-  const { 
-    status,
-    data,
-    error,
-    isFetching,
-    fetchNextPage } = useInfiniteQuery(
-      ['questions'],
-      async ({pageParam=1}) => {
-        const res = await getAQuestion(pageParam);
-        console.log('res', res)
-        const nextPage = res.pageInfo.page + 1;
-        const totalPages = res.pageInfo.totalPages;
-        return {
-          result: res.data,
-          nextPage,
-          totalPages
-        }
-      },
-      {
-        getNextPageParam: (lastPage) => lastPage.nextPage + 1,
-      }
-    )
+  const { status, data, error, isFetching, fetchNextPage } = useInfiniteQuery(
+    ["questions"],
+    async ({ pageParam = 1 }) => {
+      const res = await getAQuestion(pageParam);
+      console.log("res", res);
+      const nextPage = res.pageInfo.page + 1;
+      const totalPages = res.pageInfo.totalPages;
+      return {
+        result: res.data,
+        nextPage,
+        totalPages,
+      };
+    },
+    {
+      getNextPageParam: (lastPage) => lastPage.nextPage + 1,
+    }
+  );
 
-    console.log('!!!',data)
+  console.log("!!!", data);
 
-    useEffect(() => {
-      const totalPage = data?.pages[0].totalPages
-      const nextPage = data?.pages[0].nextPage
-      if (inView && (nextPage < totalPage)) {
-        fetchNextPage()
-      }
-    }, [inView])
+  useEffect(() => {
+    const totalPage = data?.pages[0].totalPages;
+    const nextPage = data?.pages[0].nextPage;
+    if (inView && nextPage < totalPage) {
+      fetchNextPage();
+    }
+  }, [inView]);
 
   // const { isLoading, data } = useQuery(["AllQuestion", { page }], () => {
   //   return getAQuestion(page);
@@ -60,17 +54,13 @@ const QuestionsList = () => {
 
   // if (isLoading) return;
 
-  if( status === 'loading') {
-    return ( <p>Loading...</p>)
+  if (status === "loading") {
+    return <p>Loading...</p>;
   }
 
   return (
     <Container>
-       <button
-              onClick={() => fetchPreviousPage()}
-            >
-              이전패치버튼
-            </button>
+      <button onClick={() => fetchPreviousPage()}>이전패치버튼</button>
       {/* {data.pages[0].map((data, i) => {
         const Mid = `/members/myPage/${data.member?.memberId}`;
         let Qid = `/questions/${data.questionId}`;
@@ -108,10 +98,7 @@ const QuestionsList = () => {
           </QuestionContainer>
         );
       })} */}
-      <button
-        ref={ref}
-        onClick={() => fetchNextPage()}
-      >
+      <button ref={ref} onClick={() => fetchNextPage()}>
         버튼
       </button>
     </Container>

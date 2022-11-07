@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import { Title, UserContainer, Useritem, Qlist } from "./style";
 import { MypageSet } from "../../store/MypageData";
-import { getMembersPage } from "../../API/members";
+import { getMembersPage } from "../../api/members";
 
 const MypageProfile = () => {
   const pageSet = useRecoilValue(MypageSet);
@@ -24,8 +24,8 @@ const MypageProfile = () => {
       <UserContainer>
         <Useritem>{data.questions.questionsCount} question</Useritem>
         <Useritem>
-          {data.questions.questionList.map((data) => (
-            <Link to={`/questions/${data.questionId}`}>
+          {data.questions.questionList.map((data, i) => (
+            <Link to={`/questions/${data.questionId}`} key={i}>
               <Qlist>{data.title}</Qlist>
             </Link>
           ))}

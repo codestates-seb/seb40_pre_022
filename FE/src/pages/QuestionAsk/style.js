@@ -8,7 +8,7 @@ const AskContainer = styled.div`
 
 const AskTitleHeader = styled.header`
   display: flex;
-  background-image: url("../../../public/background.svg");
+  background-image: url("/background.svg");
   background-repeat: no-repeat;
   background-position: right;
   background-color: #f8f9f9;
