@@ -1,13 +1,16 @@
 import styled from "styled-components";
 
-const Container = styled.div`
-  flex: 1;
+const PageContainer = styled.div`
+  display: block;
   flex-direction: column;
-  + div {
-    float: none;
-    padding-left: 30px;
-    max-width: 298px;
-  }
+  justify-content: center;
+  flex: 1 1 auto;
 `;
 
-export { Container };
+const PostContainer = styled.div`
+  padding: 24px;
+  display: flex;
+  flex: 1 1 auto;
+`;
+
+export { PageContainer, PostContainer };

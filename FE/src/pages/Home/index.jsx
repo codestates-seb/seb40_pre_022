@@ -1,22 +1,22 @@
 import React from "react";
 
 import Layout from "@components/Layout";
-import Header from "./components/Header";
-import QuestionsList from "./components/QuestionsList";
+import AQMainbar from "../../components/AQmainbar";
 import AQRightsidebar from "../../components/AQsidebar";
 
-import { Container } from "./style";
+import { PageContainer, PostContainer } from "./style";
 
 const Home = () => {
   return (
     <Layout>
-      <Container>
-        <Header />
-        <QuestionsList />
-      </Container>
-      <AQRightsidebar />
+      <PageContainer>
+        <PostContainer>
+          <AQMainbar />
+          <AQRightsidebar />
+        </PostContainer>
+      </PageContainer>
     </Layout>
-  )
+  );
 };
 
 export default Home;

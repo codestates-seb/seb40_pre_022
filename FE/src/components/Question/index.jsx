@@ -14,7 +14,7 @@ import {
   Questiontags,
 } from "./style";
 import { Button } from "../Button";
-import { getAQuestion } from "../../API/questions";
+import { getAQuestion } from "../../api/questions";
 import { AQPage } from "../../store/AQData";
 
 const Question = () => {
@@ -52,6 +52,7 @@ const Question = () => {
                         primary="Linkbutton"
                         label={list.questionTagName}
                         Tagged="Tagged"
+                        key={i}
                       />
                     );
                   })}

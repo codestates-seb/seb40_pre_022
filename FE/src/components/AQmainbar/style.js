@@ -25,6 +25,7 @@ const AQsorting = styled.div`
 const AQsortingButton = styled.div`
   font-size: 1.3em;
   display: flex;
+  justify-content: space-between;
 `;
 
 export { MainbarContainer, AQheader, AQsorting, AQsortingButton };

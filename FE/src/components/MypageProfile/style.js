@@ -15,7 +15,7 @@ const UserContainer = styled.div`
   padding-right: 50px;
 `;
 
-const Qlist = styled.a`
+const Qlist = styled.div`
   display: block;
   margin-bottom: 10px;
   color: #33a7ff;
