@@ -15,23 +15,28 @@ const MypageSetting = () => {
       <MembersContainer>
         <ButtonContainer>
           <Button
-            primary='Mypagebutton'
-            label='profile'
+            primary="Mypagebutton"
+            label="profile"
             Selected={pageSet === "profile" ? "Selected" : null}
             onClick={(e) => {
               setPageSet(e.target.value);
             }}
           />
-          <Button
-            primary='Mypagebutton'
-            label='Setting'
-            Selected={pageSet === "Setting" ? "Selected" : null}
-            onClick={(e) => {
-              setPageSet(e.target.value);
-            }}
-          />
-          <Button primary='Mypagebutton' label='nothing' />
-          <Button primary='Mypagebutton' label='nothing' />
+          {JSON.parse(localStorage.getItem("memberId")) ===
+          window.location.href.split("myPage/")[1] ? (
+            <Button
+              primary="Mypagebutton"
+              label="Setting"
+              Selected={pageSet === "Setting" ? "Selected" : null}
+              onClick={(e) => {
+                setPageSet(e.target.value);
+              }}
+            />
+          ) : (
+            <></>
+          )}
+          <Button primary="Mypagebutton" label="nothing" />
+          <Button primary="Mypagebutton" label="nothing" />
         </ButtonContainer>
         <MypageProfile />
         <MypageDarkmode />

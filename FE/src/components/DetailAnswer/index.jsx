@@ -30,12 +30,23 @@ import { deleteAnswer } from "../../api/details";
 import { useState } from "react";
 import { useEffect } from "react";
 
-const DetailAnswer = ({ answer, questionId }) => {
+const DetailAnswer = ({ answer, questionId, member }) => {
   // const date = answer.map((el) => el.createdAt);
   // const sortData = () => {
   //   console.log(sortDate(date));
   // };
   const [answerId, setAnswerId] = useState("");
+  const [isWriter, setIsWriter] = useState(false);
+  const loginMember = localStorage.getItem("memberId");
+
+  useEffect(() => {
+    // if (Number(JSON.parse(loginMember)) === answer.member.memberId) {
+    //   setIsWriter(true);
+    // }
+  }, []);
+
+  const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+
   const queryClient = useQueryClient();
   const deleteA = useMutation(deleteAnswer, {
     retry: 0,
@@ -82,7 +93,11 @@ const DetailAnswer = ({ answer, questionId }) => {
             return (
               <PostLayout className="answer" key={el.answerId}>
                 <LayoutLeft>
-                  <AnswerVoteBtn answer={el} questionId={questionId} />
+                  <AnswerVoteBtn
+                    answer={el}
+                    questionId={questionId}
+                    member={member}
+                  />
                 </LayoutLeft>
                 <LayoutRight>
                   <PostBody>
@@ -91,24 +106,38 @@ const DetailAnswer = ({ answer, questionId }) => {
                   <InfoContainer>
                     <PostMenuContainer>
                       <PostMenu>Share</PostMenu>
-                      <Link to="/questions/edit">
-                        <PostMenu>Edit</PostMenu>
-                      </Link>
+
+                      {Number(JSON.parse(loginMember)) ===
+                      el.member.memberId ? (
+                        <Link to="/questions/edit">
+                          <PostMenu>Edit</PostMenu>
+                        </Link>
+                      ) : null}
+
                       <PostMenu>Follow</PostMenu>
-                      <PostMenu
-                        onClick={() => {
-                          handleDelete(el.answerId);
-                        }}
-                      >
-                        Delete
-                      </PostMenu>
+                      {Number(JSON.parse(loginMember)) ===
+                      el.member.memberId ? (
+                        <PostMenu
+                          onClick={() => {
+                            handleDelete(el.answerId);
+                          }}
+                        >
+                          Delete
+                        </PostMenu>
+                      ) : null}
                     </PostMenuContainer>
                     <UserInfo className="edit">
-                      <UserInfoText>{calculateTime(el.updatedAt)}</UserInfoText>
+                      <UserInfoText>
+                        {calculateTime(
+                          new Date(Date.parse(el.updatedAt) + KR_TIME_DIFF)
+                        )}
+                      </UserInfoText>
                     </UserInfo>
                     <AnswerDetailProfile
                       answers={el}
-                      AcreatedAt={el.createdAt}
+                      AcreatedAt={
+                        new Date(Date.parse(el.createdAt) + KR_TIME_DIFF)
+                      }
                     />
                   </InfoContainer>
                 </LayoutRight>

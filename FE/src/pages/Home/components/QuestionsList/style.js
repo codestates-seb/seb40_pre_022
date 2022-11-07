@@ -1,13 +1,17 @@
 import styled from "styled-components";
 
+export const Container = styled.ul`
+  display: inline-block;
+  flex: 3;
+  padding-top: 24px;
+`;
+
 const QuestionContainer = styled.div`
-  margin-left: -24px;
   border-top: 1px solid hsl(210, 8%, 85%);
   padding: 16px;
   padding-right: 0px;
   display: flex;
   position: relative;
-  max-width: 751px;
 `;
 
 const Questioncontent = styled.div`
@@ -26,7 +30,6 @@ const Questiontitle = styled.h3`
 `;
 
 const Questionbody = styled.div`
-  font-size: 14px;
   margin-top: -2px;
   margin-bottom: 8px;
   -webkit-line-clamp: 2;

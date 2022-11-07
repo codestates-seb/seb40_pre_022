@@ -12,10 +12,12 @@ const ContentEditor = ({ isSubmit, setIsSubmit, bodyData }) => {
     editorRef.current.getInstance().reset();
     setIsSubmit(!isSubmit);
   }
+
   const onChangeHandle = () => {
     let data = editorRef.current.getInstance().getMarkdown();
     setAnswerData(data);
   };
+
   return (
     <Editor
       placeholder="내용을 입력해주세요."
@@ -30,7 +32,7 @@ const ContentEditor = ({ isSubmit, setIsSubmit, bodyData }) => {
       ]}
       useCommandShortcut={true}
       hideModeSwitch={true}
-      initialValue=" "
+      initialValue={bodyData ? bodyData : " "}
       ref={editorRef}
       onChange={onChangeHandle}
     ></Editor>

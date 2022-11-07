@@ -1,9 +1,5 @@
 import { React, useState } from "react";
-import {
-  QueryClient,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import {
   PostLayout,
   LayoutLeft,
@@ -22,9 +18,19 @@ import { Button } from "../Button";
 import { TagWrapper } from "../CreateAnswer/style";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteQuestion } from "../../api/details";
+import { useEffect } from "react";
 
 const DetailPost = ({ question }) => {
   const navigate = useNavigate();
+  const [isWriter, setIsWriter] = useState(false);
+  const loginMember = localStorage.getItem("memberId");
+
+  useEffect(() => {
+    if (Number(JSON.parse(loginMember)) === question.member.memberId) {
+      setIsWriter(true);
+    }
+  }, []);
+
   const deleteQ = useMutation(deleteQuestion, {
     retry: 0,
     onSuccess: () => {
@@ -37,6 +43,10 @@ const DetailPost = ({ question }) => {
   const handleDelete = () => {
     deleteQ.mutate(question.questionId);
   };
+
+  const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+  let time = new Date(Date.parse(question.createdAt) + KR_TIME_DIFF);
+
   return (
     <PostLayout>
       <LayoutLeft>
@@ -56,17 +66,18 @@ const DetailPost = ({ question }) => {
         <InfoContainer>
           <PostMenuContainer>
             <PostMenu>Share</PostMenu>
-            <Link to="/questions/edit">
-              <PostMenu>Edit</PostMenu>
-            </Link>
+
+            {isWriter ? (
+              <Link to={`/questions/edit/${question.questionId}`}>
+                <PostMenu>Edit</PostMenu>
+              </Link>
+            ) : null}
+
             <PostMenu>Follow</PostMenu>
-            <PostMenu onClick={handleDelete}>Delete</PostMenu>
+            {isWriter ? <PostMenu onClick={handleDelete}>Edit</PostMenu> : null}
           </PostMenuContainer>
           <UserInfo className="edit"></UserInfo>
-          <DetailUserProfile
-            questions={question}
-            QcreatedAt={question.createdAt}
-          />
+          <DetailUserProfile questions={question} QcreatedAt={time} />
         </InfoContainer>
       </LayoutRight>
     </PostLayout>

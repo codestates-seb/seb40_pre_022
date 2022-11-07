@@ -11,7 +11,7 @@ import Paging from "../Pagenation";
 import { Link } from "react-router-dom";
 
 const AQMainbar = () => {
-  const Questions = ["23,156,830"];
+  const Questions = ["list of "];
 
   return (
     <>

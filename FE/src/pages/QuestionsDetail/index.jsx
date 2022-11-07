@@ -32,6 +32,7 @@ const QuestionsDetail = () => {
                 <DetailAnswer
                   answer={data.answers}
                   questionId={data.questionId}
+                  member={data.member.memberId}
                 />
                 <CreateAnswer questionId={data.questionId} />
               </>
@@ -43,5 +44,4 @@ const QuestionsDetail = () => {
     </>
   );
 };
-
 export default QuestionsDetail;

@@ -55,7 +55,7 @@ function App() {
                 }
               />
               <Route
-                path="/questions/edit"
+                path="/questions/edit/:id"
                 element={
                   <PrivateRoute component={<QuestionEdit />} auth={auth} />
                 }

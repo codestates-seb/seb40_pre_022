@@ -6,8 +6,14 @@ const { persistAtom } = recoilPersist({
   storage: sessionStorage,
 });
 
-export const AnswerEditData = atom({
-  key: "AnswerEditData",
-  default: undefined,
+export const voteUpState = atom({
+  key: "voteUpState",
+  default: false,
+  effects: [persistAtom],
+});
+
+export const voteDownState = atom({
+  key: "voteDownState",
+  default: false,
   effects: [persistAtom],
 });
