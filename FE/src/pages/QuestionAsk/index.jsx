@@ -81,8 +81,10 @@ const QuestionAsk = () => {
     });
   };
 
+
+
   return (
-    <Layout isLeftSidebar={false}>
+    <Layout background isLeftSidebar={false}>
       <AskContainer>
         <AskTitleHeader>
           <AskTitleH1>Ask a public question</AskTitleH1>
