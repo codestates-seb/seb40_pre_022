@@ -24,8 +24,8 @@ const MypageProfile = () => {
       <UserContainer>
         <Useritem>{data.questions.questionsCount} question</Useritem>
         <Useritem>
-          {data.questions.questionList.map((data) => (
-            <Link to={`/questions/${data.questionId}`}>
+          {data.questions.questionList.map((data, i) => (
+            <Link to={`/questions/${data.questionId}`} key={i}>
               <Qlist>{data.title}</Qlist>
             </Link>
           ))}

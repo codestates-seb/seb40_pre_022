@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { Container, Item } from "./style";
 import { getAllMembers } from "../../api/membersPage";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
 
 const User = () => {
   const { isLoading, data } = useQuery(["AllQuestion"], () => {
@@ -13,17 +12,21 @@ const User = () => {
 
   return (
     <Container>
-      {data.map((data) => {
+      {data.map((data, i) => {
         let link = `/members/myPage/${data.memberId}`;
         return (
-          <a href={link}>
+          <a href={link} key={i}>
             <Item>
               <img src="/initialProfile.png" />
               <ul>
-                <li className="Name blue">{data.name}</li>
-                <li>준비중..</li>
-                <li>준비중..</li>
-                <li className="blue">준비중..</li>
+                <li className="Name blue" key={data.name}>
+                  {data.name}
+                </li>
+                <li key="준비중 1">준비중..</li>
+                <li key="준비중 2">준비중..</li>
+                <li className="blue" key="준비중 3">
+                  준비중..
+                </li>
               </ul>
             </Item>
           </a>

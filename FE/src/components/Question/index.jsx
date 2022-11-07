@@ -51,6 +51,7 @@ const Question = () => {
                         primary="Linkbutton"
                         label={list.questionTagName}
                         Tagged="Tagged"
+                        key={i}
                       />
                     );
                   })}

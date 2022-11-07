@@ -21,10 +21,15 @@ const Paging = () => {
   const choosed = pageInfo.page;
 
   let upper = 5;
-  if (choosed + 2 < pageInfo.totalPages && choosed + 2 > 5) {
-    upper = choosed + 2;
-  } else if (choosed + 2 >= pageInfo.totalPages) {
+
+  if (pageInfo.totalPages < 5) {
     upper = pageInfo.totalPages;
+  } else {
+    if (choosed + 2 < pageInfo.totalPages && choosed + 2 > 5) {
+      upper = choosed + 2;
+    } else if (choosed + 2 >= pageInfo.totalPages) {
+      upper = pageInfo.totalPages;
+    }
   }
 
   let downer = choosed - 2;
@@ -32,6 +37,9 @@ const Paging = () => {
     downer = 1;
   } else if (choosed - 2 > pageInfo.totalPages - 4) {
     downer = pageInfo.totalPages - 4;
+    if (downer <= 0) {
+      downer = 1;
+    }
   }
 
   {
@@ -43,7 +51,7 @@ const Paging = () => {
   return (
     <Pagingcontainer>
       <Pagination>
-        {choosed + 2 > 5 ? (
+        {choosed + 2 > 5 && pageInfo.totalPages > 5 ? (
           <Button
             primary="Pagingbutton"
             label="1"
@@ -52,7 +60,7 @@ const Paging = () => {
             }}
           />
         ) : null}
-        {choosed + 2 > 5 ? "... " : null}
+        {choosed + 2 > 5 && pageInfo.totalPages > 5 ? "... " : null}
 
         {pages.map((num, i) => {
           return (
@@ -67,10 +75,10 @@ const Paging = () => {
             />
           );
         })}
-        {choosed - 2 < pageInfo.totalPages - 4 && pageInfo.totalPages !== 5
+        {choosed - 2 < pageInfo.totalPages - 4 && pageInfo.totalPages > 5
           ? "... "
           : null}
-        {choosed - 2 < pageInfo.totalPages - 4 && pageInfo.totalPages !== 5 ? (
+        {choosed - 2 < pageInfo.totalPages - 4 && pageInfo.totalPages > 5 ? (
           <Button
             primary="Pagingbutton"
             label={pageInfo.totalPages}

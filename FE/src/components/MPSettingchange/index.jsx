@@ -35,12 +35,13 @@ const MPSChange = () => {
         <img src={data.member.image} className="img" />
         <Postbutton
           onClick={() => {
-            let chooseFile = document.getElementById("chooseFile").value;
-            PatchMember.mutate({
-              memberId: id,
-              image: chooseFile,
-            });
-            location.reload();
+            alert("준비중입니다!");
+            // let chooseFile = document.getElementById("chooseFile").value;
+            // PatchMember.mutate({
+            //   memberId: id,
+            //   image: chooseFile,
+            // });
+            // location.reload();
           }}
         >
           <FontAwesomeIcon icon={faPen} />
