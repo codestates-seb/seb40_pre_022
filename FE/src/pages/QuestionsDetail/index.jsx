@@ -18,7 +18,6 @@ const QuestionsDetail = () => {
     return getDetailQPost(params);
   });
 
-  console.log("render");
   return (
     <>
       <Layout>

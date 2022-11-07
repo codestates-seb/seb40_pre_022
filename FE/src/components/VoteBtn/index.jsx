@@ -4,22 +4,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-solid-svg-icons";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { QvoteDown, QvoteUp } from "../../api/details";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const VoteBtn = ({ question }) => {
   const QVoteCount = question.voteCount;
   const [isVotedUp, setIsVotedUp] = useState(false);
   const [isVotedDown, setIsVotedDown] = useState(false);
   const [count, setCount] = useState(QVoteCount);
+  const queryClient = useQueryClient();
 
   const voteUp = useMutation(QvoteUp, {
     retry: 0,
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
     onError: (error) => {
       console.log(error.message);
     },
   });
   const voteDown = useMutation(QvoteDown, {
     retry: 0,
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
     onError: (error) => {
       console.log(error.message);
     },

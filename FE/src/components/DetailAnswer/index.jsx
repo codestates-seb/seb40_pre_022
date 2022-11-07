@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { calculateTime } from "../../utils/calculateTime";
 import {
   AnswerCount,
@@ -36,9 +36,12 @@ const DetailAnswer = ({ answer, questionId }) => {
   //   console.log(sortDate(date));
   // };
   const [answerId, setAnswerId] = useState("");
-
+  const queryClient = useQueryClient();
   const deleteA = useMutation(deleteAnswer, {
     retry: 0,
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
     onError: (error) => {
       if (error.message === "Request failed with status code 403") {
         alert("삭제할 권한이 없는 답변입니다.");
