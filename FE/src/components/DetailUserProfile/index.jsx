@@ -13,13 +13,13 @@ const DetailUserProfile = ({ questions, QcreatedAt }) => {
     <UserInfo>
       <UserInfoText>{calculateTime(QcreatedAt)}</UserInfoText>
       <InfoContainer>
-        <Link to='/mypage'>
+        <Link to="/mypage">
           <UserInfoItem>
-            <img src={question.profile} className='img' />
+            <img src={question.image} className="img" />
           </UserInfoItem>
         </Link>
-        <Link to='/mypage'>
-          {<UserInfoItem className='user-name'>{question.name}</UserInfoItem>}
+        <Link to="/mypage">
+          {<UserInfoItem className="user-name">{question.name}</UserInfoItem>}
         </Link>
       </InfoContainer>
     </UserInfo>

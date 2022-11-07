@@ -5,9 +5,6 @@ import { useRecoilState } from "recoil";
 import { QuestionTitle } from "../../store/QuestionPost";
 
 function CreatePost() {
-  // const titleRegist = () => {
-  //   handleTitleChange();
-  // };
   const [title, setTitle] = useRecoilState(QuestionTitle);
 
   const handleTitleChange = useCallback((e) => {

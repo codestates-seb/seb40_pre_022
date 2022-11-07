@@ -16,7 +16,6 @@ const ContentEditor = ({ isSubmit, setIsSubmit, bodyData }) => {
   const onChangeHandle = () => {
     let data = editorRef.current.getInstance().getMarkdown();
     setAnswerData(data);
-    console.log(data);
   };
 
   return (

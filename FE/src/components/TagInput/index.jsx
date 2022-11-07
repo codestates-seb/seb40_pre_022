@@ -1,14 +1,10 @@
-import { useState, useCallback } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-// import { ENG_REGEX } from "../../constants/regex";
+import { useCallback } from "react";
 import Tag from "../Tag";
 import { useRecoilState } from "recoil";
 import { HashTagContainer, HashTags } from "./style";
 import { QuestionTags } from "../../store/QuestionPost";
 
-const TagInput = ({ gotTag }) => {
-  // const [isTagsFocus, setIsTagsFocus] = useState(false);
+const TagInput = () => {
   const [tags, setTags] = useRecoilState(QuestionTags);
 
   const handleKeyDown = useCallback(
@@ -31,10 +27,12 @@ const TagInput = ({ gotTag }) => {
       <HashTags>
         {tags.map((tag, index) => (
           <div key={index}>
-            <Tag key={tag} name={tag} />
-            <div onClick={() => removeTag(index)}>
-              <FontAwesomeIcon icon={faXmark} />
-            </div>
+            <Tag
+              key={tag}
+              name={tag}
+              deleteButton
+              onClick={() => removeTag(index)}
+            />
           </div>
         ))}
       </HashTags>
