@@ -4,11 +4,12 @@ import { TitleInput, AskInputText, QuestionContainer } from "./style";
 import { useRecoilState } from "recoil";
 import { QuestionTitle } from "../../store/QuestionPost";
 
-function CreatePost({title, setTitle}) {
+function CreatePost() {
+  const [title, setTitle] = useRecoilState(QuestionTitle);
+
   const handleTitleChange = useCallback((e) => {
     setTitle(e.target.value);
   });
-
 
   return (
     <>

@@ -22,8 +22,8 @@ import {
 } from "./style";
 
 const QuestionEdit = () => {
-  const bodyText = useRecoilValue(AnswerEditData); // 에디터 컴포넌트에서 받아오기
-  const tagText = useRecoilValue(QuestionTags); // 태그 컴포넌트에서 받아오기
+  const bodyText = useRecoilValue(AnswerEditData);
+  const tagText = useRecoilValue(QuestionTags);
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -78,10 +78,8 @@ const QuestionEdit = () => {
           <ContentEditor bodyData={data.body} />
           <TagsContainer>
             <TagTitle>Tags</TagTitle>
-            <TagInput gotTag={data.questionTags} />
+            <TagInput />
           </TagsContainer>
-          {/* <EditTitleText>Edit Summary</EditTitleText>
-          <EditInput placeholder="briefly explain your changes (corrected spelling, fixed grammar, improved formatting)"></EditInput> */}
           <BtnBox>
             <Button label="Save edits" onClick={handleEditSubmit}></Button>
             <Link to={`/questions/${data.questionId}`}>

@@ -1,5 +1,5 @@
-import React from "react";
-import { useRecoilValue } from "recoil";
+import React, { useEffect } from "react";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import CreatePost from "../../components/CreatePost/index";

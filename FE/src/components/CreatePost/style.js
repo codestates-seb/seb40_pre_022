@@ -21,8 +21,10 @@ const TitleInput = styled.input`
   height: 35px;
   border: 1px solid rgb(186, 191, 196);
   border-radius: 3px;
-  color: rgb(133, 133, 133);
   margin-bottom: 30px;
+  input::placeholder {
+    color: rgb(133, 133, 133);
+  }
 `;
 
 export { QuestionContainer, AskInputText, TitleInput };
