@@ -1,0 +1,47 @@
+spring:
+  datasource:
+
+#    local mysql test 할 때,
+#    url: jdbc:mysql://localhost:3306/stackoverflow?characterEncoding=UTF-8&useSSL=false&useUnicode=true&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false
+#    username: (로컬 mysql Id)
+#    password: (로컬 mysql Pw)
+
+#    aws 서버 올릴 때,
+    url: jdbc:mysql://stackoverflow-database-deploy.cmt8diwmv4pt.ap-northeast-2.rds.amazonaws.com:3306/stackoverflow?characterEncoding=UTF-8&useSSL=false&useUnicode=true&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false
+    username: ${MYSQL_ID}
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate  # (1) ??? ?? ??
+    show-sql: true      # (2) SQL ?? ??
+    properties:
+      hibernate:
+        format_sql: true  # (3) SQL pretty print
+
+  mvc:
+    servlet:
+      path: /
+
+
+
+# mail사용할때 주석해제
+
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username: ${SMTP_USER}    # 환경변수에 gmail 아이디 / 비밀번호 추가.
+#    password: ${SMTP_PW}
+#    properties:
+#      mail.smtp.auth: ture
+#      mail.smtp.starttls.enable: true
+
+mail:
+  address:
+    admin: admin@gmail.com
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: 15
+  refresh-token-expiration-minutes: 30
