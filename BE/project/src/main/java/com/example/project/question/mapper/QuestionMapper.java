@@ -59,7 +59,7 @@ public interface QuestionMapper {
         questionMemberDto.setMemberId(member.getMemberId());
         questionMemberDto.setName(member.getName());
         questionMemberDto.setEmail(member.getEmail());
-        questionMemberDto.setImage(member.getImage());
+        questionMemberDto.setImage("/initialProfile.png");
 
         List<QuestionDto.QuestionAnswerDto> questionAnswerDtos = question.getAnswers().stream()
                 .map(answer -> {
@@ -69,6 +69,7 @@ public interface QuestionMapper {
                     questionAnswerDto.setVoteCount(answer.getVote().getVoteCount());
                     Member answerMember = answer.getMember();
                     QuestionDto.QuestionMemberDto answerQuestionMemberDto = new QuestionDto.QuestionMemberDto();
+                    answerQuestionMemberDto.setMemberId(answerMember.getMemberId()); // 이부분
                     answerQuestionMemberDto.setName(answerMember.getName());
                     answerQuestionMemberDto.setEmail(answerMember.getEmail());
                     answerQuestionMemberDto.setImage(answerQuestionMemberDto.getImage());
@@ -127,7 +128,7 @@ public interface QuestionMapper {
         questionMemberDto.setMemberId(member.getMemberId());
         questionMemberDto.setName(member.getName());
         questionMemberDto.setEmail(member.getEmail());
-        questionMemberDto.setImage(member.getImage());
+        questionMemberDto.setImage("/initialProfile.png");
 
         questionListResponseDto.setQuestionId(question.getQuestionId());
         questionListResponseDto.setTitle(question.getTitle());

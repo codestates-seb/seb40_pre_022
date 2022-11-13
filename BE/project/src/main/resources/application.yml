@@ -10,7 +10,7 @@ spring:
     url: jdbc:mysql://stackoverflow-database-deploy.cmt8diwmv4pt.ap-northeast-2.rds.amazonaws.com:3306/stackoverflow?characterEncoding=UTF-8&useSSL=false&useUnicode=true&allowPublicKeyRetrieval=true
     username: ${MYSQL_ID}
     password: ${MYSQL_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+#    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:

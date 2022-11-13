@@ -29,6 +29,7 @@ public class MemberDto {
 
         @NotBlank(message = "비밀번호는 공백이 아니여야 합니다.")
         private String password;
+        private String image = "/initialProfile.png";
     }
 
     /**
@@ -50,7 +51,7 @@ public class MemberDto {
         @NotBlank(message = "비밀번호는 공백이 아니여야 합니다.")
         private String password;
 
-        private String image;
+        private String image = "/initialProfile.png";
     }
 
     /**
@@ -145,6 +146,6 @@ public class MemberDto {
     public static class MemberForMyPage{
         private long memberId;
         private String name;
-        private String image;
+        private String image = "/initialProfile.png";
     }
 }

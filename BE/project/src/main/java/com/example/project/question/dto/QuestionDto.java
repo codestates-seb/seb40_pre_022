@@ -155,7 +155,7 @@ public class QuestionDto {
         private long memberId;              // All question memberId 출력을 위함.
         private String name;
         private String email;
-        private String image;
+        private String image = "/initialProfile.png";
     }
 
     @Data
