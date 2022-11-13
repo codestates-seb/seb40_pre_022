@@ -80,11 +80,13 @@
 
 <img width="1268" alt="질문작성시도" src="https://user-images.githubusercontent.com/107601591/201514591-e2e68bcf-6414-4f16-9f3f-6da8618f4668.png">
 
-<img width="1269" alt="질문작성" src="https://user-images.githubusercontent.com/107601591/201514581-06a74d63-680a-4349-aab3-06f0ad48ceab.png">
-
 <img width="1267" alt="질문작성완료" src="https://user-images.githubusercontent.com/107601591/201514599-725d4a73-1633-43f6-9450-efa8a6acf371.png">
 
 ---
+
+- **답변 추천**
+
+<img width="1269" alt="추천기능" src="https://user-images.githubusercontent.com/107601591/201514595-4892edec-0272-4662-8927-c2875bd15682.png">
 
 - **답변 작성**
 
@@ -92,9 +94,6 @@
 
 <img width="1269" alt="답변작성" src="https://user-images.githubusercontent.com/107601591/201514585-bfd1d11d-e582-4cde-abdb-5c6ca98fc988.png">
 
-- **답변 추천**
-
-<img width="1269" alt="추천기능" src="https://user-images.githubusercontent.com/107601591/201514595-4892edec-0272-4662-8927-c2875bd15682.png">
 
 - **답변 채택**
 
