@@ -29,7 +29,7 @@ public class Member extends Auditable {
     private String email;
 
     @Column(name = "MEMBER_IMAGE")
-    private String image;
+    private String image = "/initialProfile.png";
 
     @Column(name = "MEMBER_PASSWORD")
     private String password;

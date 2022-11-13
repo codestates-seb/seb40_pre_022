@@ -24,7 +24,7 @@ public interface MemberMapper {
 
         memberForMyPage.setMemberId(member.getMemberId());
         memberForMyPage.setName(member.getName());
-        memberForMyPage.setImage(member.getImage());
+        memberForMyPage.setImage("/initialProfile.png");
 
         myPageResponse.setMember(memberForMyPage);
 
