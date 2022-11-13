@@ -57,6 +57,7 @@
 - **메인페이지**
 
 <img width="1269" alt="메인페이지" src="https://user-images.githubusercontent.com/107601591/201514559-ec505d6e-fd67-4f9b-840f-d8e28817d121.png">
+
 ---
 
 - **회원가입 시도**
@@ -66,11 +67,13 @@
 - **회원가입**
 
 <img width="1268" alt="회원가입" src="https://user-images.githubusercontent.com/107601591/201514584-08f51060-e613-414e-86f4-2a166e5642d0.png">
+
 ---
 
 - **로그인**
 
 <img width="1267" alt="로그인시도" src="https://user-images.githubusercontent.com/107601591/201514579-86ec44a6-5018-4a2b-8aaf-a31cac67d215.png">
+
 ---
 
 - **질문 작성**
@@ -80,6 +83,7 @@
 <img width="1269" alt="질문작성" src="https://user-images.githubusercontent.com/107601591/201514581-06a74d63-680a-4349-aab3-06f0ad48ceab.png">
 
 <img width="1267" alt="질문작성완료" src="https://user-images.githubusercontent.com/107601591/201514599-725d4a73-1633-43f6-9450-efa8a6acf371.png">
+
 ---
 
 - **답변 작성**
@@ -95,16 +99,19 @@
 - **답변 채택**
 
 <img width="1269" alt="답변채택" src="https://user-images.githubusercontent.com/107601591/201514582-ad2c804d-3452-40c1-946f-0f44b60c671e.png">
+
 ---
 
 - **유저 목록**
 
 <img width="1269" alt="유저목록" src="https://user-images.githubusercontent.com/107601591/201514596-2c06fcfd-5fe0-4a51-8246-b0f073aabc86.png">
+
 ---
 
 - **마이 페이지**
 
 <img width="1269" alt="마이페이지" src="https://user-images.githubusercontent.com/107601591/201514590-521e1ad2-7aa2-4e98-8571-882d92e4162b.png">
+
 ---
 
 
